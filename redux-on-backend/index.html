@@ -1,0 +1,477 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<!-- Head tag -->
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!--Description-->
+    
+        <meta name="description" content="You have multiple options to start your mobile development. But why React Native is the best choice for your mobile application?">
+    
+
+    <!--Author-->
+    
+        <meta name="author" content="WebbyLab">
+    
+
+    <!--Open Graph Title-->
+    
+        <meta property="og:title" content="How We Used Redux on Backend and Got Offline-First Mobile App as a Result"/>
+    
+
+    <!--Open Graph Description-->
+    
+        <meta property="og:description" content="You have multiple options to start your mobile development. But why React Native is the best choice for your mobile application?" />
+    
+
+    <!--Open Graph Site Name-->
+    <meta property="og:site_name" content="Agile developer"/>
+
+    <!--Type page-->
+    
+        <meta property="og:type" content="article" />
+    
+
+    <!--Page Cover-->
+    
+
+        <meta name="twitter:card" content="summary" />
+    
+
+    <!-- Title -->
+    
+    <title>How We Used Redux on Backend and Got Offline-First Mobile App as a Result - Agile developer</title>
+
+    <!-- Bootstrap Core CSS -->
+    <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet"/>
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/style.css">
+
+    <!-- Custom Fonts -->
+    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+    <link href="//fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic" rel="stylesheet" type="text/css">
+    <link href="//fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800" rel="stylesheet" type="text/css">
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+    <script src="//oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+    <script src="//oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+    <!-- Gallery -->
+    <link href="//cdnjs.cloudflare.com/ajax/libs/featherlight/1.3.5/featherlight.min.css" type="text/css" rel="stylesheet" />
+
+    <!-- Google Analytics -->
+    
+    <script>
+        (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+                    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+                m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+        })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+        ga('create', 'UA-9638621-10', 'auto');
+        ga('send', 'pageview');
+
+    </script>
+
+
+
+    <!-- LEELOO Init -->
+    <!-- leeloo init code -->
+<script>
+window.LEELOO = function(){
+    window.LEELOO_INIT = { id: "59049996ac641a00190cb1b4" };
+    var js = document.createElement('script');
+    js.src = 'https://app.leeloo.ai/init.js';
+    document.getElementsByTagName('head')[0].appendChild(js);
+}; LEELOO();
+</script>
+<!-- leeloo init code end -->
+
+
+    <!-- favicon -->
+    
+    <link rel="icon" href="/img/favicon.ico">
+    
+	
+</head>
+
+
+<body>
+    <!-- Menu -->
+    <!-- Navigation -->
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">WebbyLab's Engineering Blog</a>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+            <ul class="nav navbar-nav navbar-right">
+                
+                    <li>
+                        <a target="_blank" href="https://webbylab.com">
+                            
+                                Main Company Site
+                            
+                        </a>
+                    </li>
+                
+                    <li>
+                        <a target="_blank" href="https://react.webbylab.com">
+                            
+                                React/Mobile/Nodejs Department
+                            
+                        </a>
+                    </li>
+                
+            </ul>
+        </div>
+        <!-- /.navbar-collapse -->
+    </div>
+    <!-- /.container -->
+</nav>
+
+
+    <!-- Main Content -->
+    <!-- LEELOO POPUP -->
+<!-- Leeloo popup start -->
+<script>
+    window.LEELOO_LEADGENTOOLS = (window.LEELOO_LEADGENTOOLS || []).concat('3nqz71');
+</script>
+<!-- Leeloo popup start -->
+
+
+<!-- Page Header -->
+<!-- Set your background image for this header in your post front-matter: cover -->
+
+<header class="intro-header" style="background-image: url('/images/redux-on-backend/react-redux-mobile.jpg')">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <div class="post-heading">
+                    <h1>How We Used Redux on Backend and Got Offline-First Mobile App as a Result</h1>
+                    
+                    <span class="meta">
+                        <!-- Date and Author -->
+                        
+                            Posted by Artem Tymchenko (JavaScript Developer) on
+                        
+                        2018-06-22
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+<!-- Post Content -->
+<article>
+    <div class="container">
+        <div class="row">
+
+            <!-- Tags and categories -->
+           
+                <div class="col-lg-4 col-lg-offset-2 col-md-5 col-md-offset-1 post-tags">
+                    
+                        
+
+
+<a href="/tags/javascript-team/">#JavaScript Team</a> <a href="/tags/reactjs/">#ReactJS</a>
+
+
+                    
+                </div>
+                <div class="col-lg-4 col-md-5 post-categories">
+                    
+                </div>
+            
+
+            <!-- Gallery -->
+            
+
+            <!-- Post Main Content -->
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <h1 id="Preface"><a href="#Preface" class="headerlink" title="Preface"></a>Preface</h1><p>Today I want to share with you our experience of building offline-first React-Native application, using Redux-like approach on our NodeJS backend server. </p>
+<p>Indeed we just kind of leveraged so called event-sourcing pattern in our system without any specific tools for this purpose (e.g. <a href="http://samza.apache.org/" target="_blank" rel="noopener">Samza</a> or <a href="http://kafka.apache.org/" target="_blank" rel="noopener">Kafka</a>). Altough you may prefer to use this tools in your project, what I’m trying to show here is that by actually understating the core principals that stand behind event-sourcing you can gain benefits of this approach even without a need to change the whole architecture of your system or incorporate some specific rocker-science technologies and tools. </p>
+<p>Let’s get started.</p>
+<h1 id="Problem-description"><a href="#Problem-description" class="headerlink" title="Problem description"></a>Problem description</h1><p>So what type of the application are we talking about. Indeed it’s quite a massive Learning Management System that consists of 3 main parts:</p>
+<ul>
+<li>Web-client (React + Redux)</li>
+<li>iOS-client and Android-client (React-Native + Redux)</li>
+<li>Backend (Node JS + MongoDB + Redux?)</li>
+</ul>
+<p>Also I should mention the following general requirements for the system:</p>
+<ul>
+<li><em>Offline mode for mobile</em>, so the user can get data while he’s offline as well as complete any actions and we should reflect the result of these actions in the app</li>
+<li><em>Detailed analytics in mobile and web</em>, that may be the same and may not be the same, so for example on web we can show an aggregated statistics of a group of users and on mobile just individual person’s results</li>
+<li><em>Requirments for analytics is constantly evolving</em>, which practically means that any time your boss can come to your table and say something like “Hey I’m glad that you’ve been working so hard on this charts for the last month but we just decided that we need some completly differrent metrics and statistics”</li>
+<li><em>Audit trail support</em>, because the project is really closely tight with a legal field of activity</li>
+</ul>
+<p>But at first let’s take a step back and ponder on how we used to process the data, because this problem is really crucial for our future solution.</p>
+<h1 id="How-we-think-about-data"><a href="#How-we-think-about-data" class="headerlink" title="How we think about data"></a>How we think about data</h1><p>The actual result of any operation in the OS is a memory transformation. In an application memory is represented by a state in general. It may be a complicated DB, a raw file or just a plain javascript object. Similaly to an OS the result of any action in our application is a state transformation. And it’s not really that important how we represent our state but how me change it.</p>
+<p>The common approach for this task is to maintain only the curently relevant state and mutate it once user performes actions. Take a standard create, read, update, delete (CRUD) model. The typical flow in this model is to fetch data, modify it somehow and put updated data back to the storage. Also you need to control concurrent updates, becase they can really mess everything up if the state of your whole application is represented by currently accumulated piece of data.</p>
+<p align="center"><img src="/images/redux-on-backend/1.png" alt="CRUD"></p>
+
+<p>As software engineering began to rapidly evolving developers realized that this traditional paradigm of thinking about data is not very effective in some type of applications (say Enterprise). As a result new architectural patterns started to emerge. </p>
+<p>I really encourage you to get to know yourself with <strong>DDD</strong>, <strong>CQRS</strong> and <strong>Event Sourcing</strong> patterns (as they are quite related and often mentioned side by side), to get a more wide view on data processing, but in this article I won’t dig deep into any of them. The main point of our interest here is <strong>Event sourcing</strong> and how it changes the way we think about data.</p>
+<p>What if instead of keeping one aggregated state of the date we would record all of the actions taken on that data and postprocess them later. It’s like we don’t know at the time of how exatly this action should influence the state but we totally can’t just ignore it. So we keep appending these actions to our log and use them later when we would figure out how to deal with that.</p>
+<p align="center"><img src="/images/redux-on-backend/2.png" alt="Event sourcing"></p>
+
+<h1 id="Wait-but-why"><a href="#Wait-but-why" class="headerlink" title="Wait but why?"></a>Wait but why?</h1><p>At first you make think that this approach is a very weird thing, like why should we keep all this events and process them later if the only result we want to get is to change the state. Isn’t it adds more complexity to our system and an extra work to perform?</p>
+<p>Yes it is, but it also gives a lot of unvaluable benefits which we will be deprived otherwise. Ideed it’s quite a common solution and to ensure yourself just take a look to a real life. </p>
+<p>When you come to visit a doctor and bring you medical file with you (or it may be in electronical variant), does your doctor just crosses out all the information in your file and writes just your current pysical condition? Or is he just keeps appending your health status to your file, so overtime you have a complete picture of how the things went and a full history of all the problems you’ve encountered? That’s an event sourcing model.</p>
+<p>Or take jurisprudence. Let’s say you’ve signed a contract and in some time you’ve decided to review the conditions and make some changes. Do you just tear your old contract and create a brand new from scratch or just make the addendum to the previous contract? So as years go by you can always check the initial contract and all the addendums that follow to correctly identify what the contract eventually says. That’s an event sourcing as well.</p>
+<p>By the way, I can’t really undestand how we became so confident that we don’t need to store the data. Indeed we can’t even imagine how valuable a data may be in some situation so why do we neglect it so easily? Wouldn’t it be much more rational to keep it?</p>
+<h1 id="When-not-to-use-it"><a href="#When-not-to-use-it" class="headerlink" title="When not to use it"></a>When not to use it</h1><p>I will show you all of the benefits we gained from this approach in our application later, but you definetly should keep in mind that it’s not suitable for all cases. If your system has a little or no business logic which is not in danger of a concurrent updates and works naturally good with CRUD or have real-time updates between data and views then you probably good to go without event sourcing at all. But in other cases you can gain a lot of advantages if you incorporate at least some of the patterns that will be discussed later.</p>
+<h1 id="And-what-about-Redux"><a href="#And-what-about-Redux" class="headerlink" title="And what about Redux"></a>And what about Redux</h1><p>As we all know, a few years ago Facebook suggested a new approach to state managing on frontend called Flux which hardly relies on unidirectional data flow and is completly differentiates from how things previousy worked (e.g. two-way data binding in Angular). And Redux enhanced these approach with some new concepts and took an honorable place in modern frontend developer’s tools set. </p>
+<p>In order to change the state you need to dispatch an action and an action is indeed an event description, or an event itself. And as a reaction to this event we change our state accordingly. So it’s pretty much similar to event-sourcing pattern, so how Redux really relates to event-sourcing?</p>
+<p>First of all we should mention that Redux and event-sourcing serve the same purpose - managing transactional state. The main difference is that Redux goes a lot more futher with presciptions on how to actually do it.</p>
+<p>Redux explicitly demonstrates how reducers over actions (events) can be the single source of truth for the application state. Event sourcing on the other hand never prescribed how events should be processed, only their creation and recording.</p>
+<p>Taking a look at a typical event sourcing implementations you can encounter a lot of object-oriented and imperative code with side effects all over the way.<br>Redux on the other hand favours pure functions (without any side effects by definition) which tends more to functional programming paradigm.</p>
+<p>As you do event sourcing you often emphasize that your events is the source of truth and you hardly rely on them. But on Redux example we can see that it’s more like reducers are the source of truth. Take the same actions but different reducers and you’ll get a completely different state as a result.</p>
+<p>Almost any event sourcing solution relies hardly on events queue and the ability to process events asyncronously as a result. But Redux prefers to handle all actions syncronosly and omits creating any queues.</p>
+<p>You can bring on event some more differences but now let’s concentrate on two very important concepts which are similar for event sourcing and Redux.</p>
+<ul>
+<li>The state is derived from events</li>
+<li>Events are immutable. This is very important if we want to have a realy predictable and stable state, which we can traverse in time back and forward. But not only that, events immutability offers us some more interesting perks but we’ll get back to it later</li>
+</ul>
+<p align="center"><img src="/images/redux-on-backend/3.png" alt="Redux and event sourcing"></p>
+
+<h1 id="Let-the-fight-begin"><a href="#Let-the-fight-begin" class="headerlink" title="Let the fight begin"></a>Let the fight begin</h1><p>So let’s get ourselves closer to the practice. Here is an overview of what situation we have in our application. </p>
+<p>The user is offline. He passes test. We should:</p>
+<ol>
+<li>React to his actions on mobile and reaggreagate analytics based on his passing result</li>
+<li>Somehow gain the same reaggreagated analytics in our DB on a backend, so we can show it in a completely separate Web part of the application</li>
+</ol>
+<p>The first part of the task is not so much of a problem indeed. Optimistic updates to the rescue. We can fire actions and recalculate analytics in mobile app even in offline mode, because obviously internet connection is not a requirement for Redux to work.</p>
+<p>But how to deal with the second problem? Let’s just save our actions somewhere for now, so we don’t miss what our user did when we was offline.</p>
+<p>We should do this to every event we are interested in outer processing. So I suggest to create a separate action creator file (however this depends on your preferable react project organization) where we describe every action creator for interesting us event like this:</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/* We rely on thunk-middleware to deal with asyncronous actions. </span></span><br><span class="line"><span class="comment">If you are not familiar with the concept, go check it out, </span></span><br><span class="line"><span class="comment">it may help you to undestand our action creator's structure better */</span></span><br><span class="line"><span class="keyword">export</span> <span class="function"><span class="keyword">function</span> <span class="title">createQuestionAnswerEvent</span>(<span class="params">payload</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="function">(<span class="params">dispatch</span>) =&gt;</span> &#123;</span><br><span class="line">        <span class="keyword">const</span> formattedEvent = &#123;</span><br><span class="line">            type: ActionTypes.ANSWER_QUESTION, </span><br><span class="line">            <span class="comment">// It's crucial to have timestamp on every event</span></span><br><span class="line">            timestamp: <span class="keyword">new</span> <span class="built_in">Date</span>().toISOString(),</span><br><span class="line">            payload</span><br><span class="line">        &#125;;</span><br><span class="line"></span><br><span class="line">        <span class="comment">// Dispatch the event itself, so our regular reducers that are responsible for analytics can process it and recalculate the statistics</span></span><br><span class="line">        dispatch(formattedEvent); </span><br><span class="line">        <span class="comment">// Dispatch the action that declares that we want to save this particular event</span></span><br><span class="line">        dispatch(&#123; <span class="attr">type</span>: ActionTypes.SAVE_EVENT, <span class="attr">payload</span>: formattedEvent &#125;); </span><br><span class="line">        <span class="comment">// At some point in time we gonna send all saved events to the backend, but let's get to it later</span></span><br><span class="line">        dispatch(postEventsIfLimitReached()); </span><br><span class="line">    &#125;;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>And here is the corresponding reducer, which takes every action with type <code>SAVE_EVENT</code> and pushes it the branch of our state where we collect all events and which represented by a row array</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> initialState = [];</span><br><span class="line"></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> (state = initialState, action) =&gt; &#123;</span><br><span class="line">    <span class="keyword">switch</span> (action.type) &#123;</span><br><span class="line">        <span class="comment">// Append event to our events log</span></span><br><span class="line">        <span class="keyword">case</span> ActionTypes.SAVE_EVENT:</span><br><span class="line">            <span class="keyword">return</span> state.concat(action.payload);</span><br><span class="line"></span><br><span class="line">        <span class="comment">// After sending events to the backend we can clear them</span></span><br><span class="line">        <span class="keyword">case</span> ActionTypes.POST_EVENTS_SUCCESS: </span><br><span class="line">            <span class="keyword">return</span> [];</span><br><span class="line"></span><br><span class="line">        <span class="comment">/* If user wants to clear the client cache and make sure</span></span><br><span class="line"><span class="comment">        that all analytics is backend based, he can press a button,</span></span><br><span class="line"><span class="comment">        which will fire CLEAR_STORAGE action */</span></span><br><span class="line">        <span class="keyword">case</span> ActionTypes.CLEAR_STORAGE: </span><br><span class="line">            <span class="keyword">return</span> [];</span><br><span class="line"></span><br><span class="line">        <span class="keyword">default</span>:</span><br><span class="line">            <span class="keyword">return</span> state;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<p>Now we have saved all of the actions which user performed while he was offline. The next logical step would be to send these events to the backend, and that’s exatly what <code>postEventsIfLimitReached</code> function you’ve seen before does.</p>
+<p>It’s really crucial to make sure that the user is online, before attempting to post events. Also it’s preferable to send events not one-by-one but in packs, cause if your events logging is intense and user produces several actions in second, you don’t really want to fire HTTP requests so often.</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">export</span> <span class="function"><span class="keyword">function</span> <span class="title">postEventsIfLimitReached</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">async</span> (dispatch, getState) =&gt; &#123;</span><br><span class="line">        <span class="keyword">const</span> events = getState().events;</span><br><span class="line"></span><br><span class="line">        <span class="comment">/* If user is online perform batch events submission */</span> </span><br><span class="line">        <span class="keyword">if</span> (events.length &gt; config.EVENTS_LIMIT &amp;&amp; getState().connection.isConnected) &#123;</span><br><span class="line">            <span class="keyword">try</span> &#123;</span><br><span class="line">                <span class="keyword">await</span> api.events.post(events);</span><br><span class="line"></span><br><span class="line">                dispatch(&#123; <span class="attr">type</span>: ActionTypes.POST_EVENTS_SUCCESS &#125;);</span><br><span class="line">            &#125; <span class="keyword">catch</span> (e) &#123;</span><br><span class="line">                dispatch(&#123; <span class="attr">type</span>: ActionTypes.POST_EVENTS_FAIL &#125;);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>Seems nice. We got optimistic updates on our mobile app and we managed to deliver every action of a user to the backend.</p>
+<h1 id="Switching-to-the-back"><a href="#Switching-to-the-back" class="headerlink" title="Switching to the back"></a>Switching to the back</h1><p>Let’s switch to the backend for now. We have pretty much standard POST route in our NodeJs app, which receives a pack of events and saves them into MongoDB.</p>
+<p>Take a quick look at the event scheme:</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> EventSchema = <span class="keyword">new</span> Schema(&#123;</span><br><span class="line">    employeeId : &#123; <span class="attr">type</span>: <span class="string">'ObjectId'</span>, <span class="attr">required</span>: <span class="literal">true</span> &#125;,</span><br><span class="line">    type       : &#123;</span><br><span class="line">        type     : <span class="built_in">String</span>,</span><br><span class="line">        required : <span class="literal">true</span>,</span><br><span class="line">        enum     : [</span><br><span class="line">            <span class="string">'TRAINING_HEARTBEAT'</span>,</span><br><span class="line">            <span class="string">'ANSWER_QUESTION'</span>,</span><br><span class="line">            <span class="string">'START_DISCUSSION'</span>,</span><br><span class="line">            <span class="string">'MARK_TOPIC_AS_READ'</span>,</span><br><span class="line">            <span class="string">'MARK_COMMENT_AS_READ'</span>,</span><br><span class="line">            <span class="string">'LEAVE_COMMENT'</span>,</span><br><span class="line">            <span class="string">'START_READING_MODE'</span>,</span><br><span class="line">            <span class="string">'FINISH_READING_MODE'</span>,</span><br><span class="line">            <span class="string">'START_QUIZ_MODE'</span>,</span><br><span class="line">            <span class="string">'FINISH_QUIZ_MODE'</span>,</span><br><span class="line">            <span class="string">'OPEN_TRAINING'</span>,</span><br><span class="line">            <span class="string">'CLOSE_APP'</span></span><br><span class="line">        ]</span><br><span class="line">    &#125;,</span><br><span class="line">    timestamp   : &#123; <span class="attr">type</span>: <span class="built_in">Date</span>, <span class="attr">required</span>: <span class="literal">true</span> &#125;,</span><br><span class="line">    isProcessed : &#123; <span class="attr">type</span>: <span class="built_in">Boolean</span>, <span class="attr">required</span>: <span class="literal">true</span>, <span class="attr">default</span>: <span class="literal">false</span> &#125;,</span><br><span class="line">    payload     : &#123; <span class="attr">type</span>: <span class="built_in">Object</span>, <span class="attr">default</span>: &#123;&#125; &#125;</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+<p>I’ll omit the description of the route, because there is really nothing special in that. Let’s move to more interesting things.</p>
+<p>So now, when we have all our events in our DB, we should process them somehow.<br>We decided to create a separate class for this purpose, which is imported in the start file of our application like this:</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> EventsHandler <span class="keyword">from</span> <span class="string">'./lib/EventsHandler'</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> eventsHandler = <span class="keyword">new</span> EventsHandler();</span><br><span class="line"></span><br><span class="line">eventsHandler.start();</span><br></pre></td></tr></table></figure>
+<p>Now let’s take a look at the class itself.</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> <span class="class"><span class="keyword">class</span> <span class="title">EventsHandler</span> </span>&#123;</span><br><span class="line">    <span class="comment">// Initialize an interval</span></span><br><span class="line">    start() &#123;</span><br><span class="line">        <span class="keyword">this</span>.planNewRound();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    stop() &#123;</span><br><span class="line">        clearTimeout(<span class="keyword">this</span>.timeout);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// Fire processing of new events every once in a while</span></span><br><span class="line">    planNewRound() &#123;</span><br><span class="line">        <span class="keyword">this</span>.timeout = setTimeout(<span class="keyword">async</span> () =&gt; &#123;</span><br><span class="line">            <span class="keyword">await</span> <span class="keyword">this</span>.main();</span><br><span class="line"></span><br><span class="line">            <span class="keyword">this</span>.planNewRound();</span><br><span class="line">        &#125;, config.eventsProcessingInterval);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">async</span> main() &#123;</span><br><span class="line">        <span class="keyword">const</span> events = <span class="keyword">await</span> <span class="keyword">this</span>.fetchEvents();</span><br><span class="line"></span><br><span class="line">        <span class="keyword">await</span> <span class="keyword">this</span>.processEvents(events);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">async</span> processEvents(events) &#123;</span><br><span class="line">        <span class="keyword">const</span> metrics = <span class="keyword">await</span> <span class="keyword">this</span>.fetchMetricsForEvents(events);</span><br><span class="line"></span><br><span class="line">        <span class="comment">/* Here we should process events somehow. </span></span><br><span class="line"><span class="comment">        But HOW??? </span></span><br><span class="line"><span class="comment">        We'll get back to it later</span></span><br><span class="line"><span class="comment">        */</span></span><br><span class="line"></span><br><span class="line">        <span class="comment">/* It's critical to mark events as read after processing, </span></span><br><span class="line"><span class="comment">        so we don't fetch and apply the same events every time */</span></span><br><span class="line">        <span class="keyword">await</span> <span class="built_in">Promise</span>.all(events.map(<span class="keyword">this</span>.markEventAsProcessed));</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">async</span> markEventAsProcessed(event) &#123;</span><br><span class="line">        event.set(&#123; <span class="attr">isProcessed</span>: <span class="literal">true</span> &#125;);</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> event.save();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">async</span> fetchMetricsForEvents(events) &#123;</span><br><span class="line">      <span class="comment">/* I removed a lot of domain-related code from this method, for the sake</span></span><br><span class="line"><span class="comment">      of simplicity. What we are doing here is accumulating ids of Metrics related to every event from argument events. </span></span><br><span class="line"><span class="comment">      That's how we got metricsIds  */</span></span><br><span class="line"></span><br><span class="line">      <span class="keyword">return</span> Metric.find(&#123; <span class="attr">_id</span>: &#123; <span class="attr">$in</span>: metricsIds &#125; &#125;);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">async</span> fetchEvents() &#123;</span><br><span class="line">        <span class="keyword">return</span> Event.find(&#123; <span class="attr">isProcessed</span>: <span class="literal">false</span> &#125;).limit(config.eventsFetchingLimit);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>This is a very simplified version of our class but which perfectly reflects the main idea, so you just can take a grasp of it. I removed a lot of methods, checks and domain-related logic, so you can concentrate purely on events processing.</p>
+<p>So what we are doing with this class is: </p>
+<ol>
+<li>fetching an unprocessed events from a DB</li>
+<li>fething all related to events data, that is necessary for processing. In our case it’s mostly Metrics documents, that present an individual (<em>Session Metric</em>) and group (<em>Training Metric</em>) statistics</li>
+<li>process events somehow and change the metrics</li>
+<li>save changed data</li>
+<li>mark events as processed</li>
+</ol>
+<p>It’s not a perfect solution for a several reasons, but it completely mathes or needs. In case you want a more bulletproof solution, consider this points:</p>
+<ul>
+<li>This solution is periodic, which means that in some cases you can pass some events and don’t process them</li>
+<li>We use MongoDB for events storing, but you may prefer more appropriate tool for this (e.g. <a href="http://kafka.apache.org/" target="_blank" rel="noopener">Kafka</a>)</li>
+<li>Our events gain standard Mongo’s <a href="https://docs.mongodb.com/manual/reference/method/ObjectId/" target="_blank" rel="noopener">ObjectId</a>, but it may be more convinient to use an incremental identifier for each event alognside or instead of primary id. That way you would have a more solid grasp of whats going on and what is the correct order of your events</li>
+<li>Prioritizing is missing, but in some cases you would preffer to process some events before others</li>
+</ul>
+<h1 id="Troubles-with-processing"><a href="#Troubles-with-processing" class="headerlink" title="Troubles with processing"></a>Troubles with processing</h1><p>Ok, let’s go on. Events handling structure seems to be ready. But we still have the most intricate qustion to resolve: how we should process the events? </p>
+<p>The huge problem that’s arising is the difference between our optimistic updates on client and the results we got here. And it’s a very nasty bug from a UX point of view - e.g. a user passes a test in offline and sees that he already completed 81% of the test but once he goes online he suddenly discovers that his actual progress is 78% somehow, and he got a lot less time to deal with the test than he was informed during an offline mode. </p>
+<p>So it’s quite a massive problem to keep analytic in sync both on client and on server. And if you finally managed to achive it somehow, than suddenly your QA discovers a bug in a calculations and you should fix it on a client and on a backend separatelly and make sure that the fix produces equal results on both platforms. Or what is even more common - business requirements changed and now you should rewrite processing on both platforms and chances are - you won’t get a mathing results. Again.</p>
+<p align="center"><img src="/images/redux-on-backend/5.jpg" alt="Oh man"></p>
+
+<h1 id="Code-reuse-to-the-rescue"><a href="#Code-reuse-to-the-rescue" class="headerlink" title="Code reuse to the rescue"></a>Code reuse to the rescue</h1><p>This is really frustrating. Why we should do double-work and struggle from inconsistencies? What if we could reuse the processing code. This idea may sound crazy at first, cause on client side for state managing we use what Redux has to offer and nothing similar on backend. But let’s take a more close look on how we do it with Redux.</p>
+<p>Reducers - are just pure functions that get an action and initial state as parameters and returns a whole new state. The main mystified part here, that really simplifies day-to-day life of developers is that Redux calls this reducer function itself, without our direct statement to do it. So we just dispatch an action somewhere and we are sure that Redux will call all declared reducers and provide them with this action and appropriate initial state and will save the new state brach to the corresponding place in state.</p>
+<p>But what if we would reuse reducer function but will do all of the hard work around them on backend themselves, without a Redux?</p>
+<p>Excited? I bet you are, but here are a few things we should keep in mind to not screw everything up:</p>
+<ul>
+<li>Reducers must be pure functions with business logic without any side effects. All side effets should be kept separately (e.g. DB interactions, we have a lot of them in our <code>EventsHandler</code> class itself, but the are forbidden in reducers)</li>
+<li>Never mutate Metrics and events</li>
+</ul>
+<p>Well, here is the full version of a <strong>processEvents</strong> funcion you’ve saw before:</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"> <span class="keyword">async</span> processEvents(events) &#123;</span><br><span class="line">    <span class="keyword">const</span> metrics = <span class="keyword">await</span> <span class="keyword">this</span>.fetchMetricsForEvents(events);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">await</span> <span class="built_in">Promise</span>.all(metrics.map(<span class="keyword">async</span> (metric) =&gt; &#123;</span><br><span class="line">        <span class="comment">/* sessionMetricReducer and trainingMetricReducer are just functions that are imported from a separate repository,</span></span><br><span class="line"><span class="comment">        and are reused on the client */</span></span><br><span class="line">        <span class="keyword">const</span> reducer = metric.type === <span class="string">'SESSION_METRIC'</span> ? sessionMetricReducer : trainingMetricReducer;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            <span class="comment">/* Beatiful, huh? :)</span></span><br><span class="line"><span class="comment">            Just a line which reduces hundreds or thousands of events</span></span><br><span class="line"><span class="comment">            to a one aggregate Metric (say analytical report)</span></span><br><span class="line"><span class="comment">            */</span></span><br><span class="line">            <span class="keyword">const</span> newPayload = events.reduce(reducer, metric.payload);</span><br><span class="line">        </span><br><span class="line">            <span class="comment">/* If an event should not reflect the metric in any ways</span></span><br><span class="line"><span class="comment">            we just return an initial state in our reducers, so we can</span></span><br><span class="line"><span class="comment">            have this convenient comparison by link here  */</span></span><br><span class="line">            <span class="keyword">if</span> (newPayload !== metric.payload) &#123;</span><br><span class="line">                metric.set(&#123; <span class="attr">payload</span>: newPayload &#125;);</span><br><span class="line">        </span><br><span class="line">                <span class="keyword">return</span> metric.save();</span><br><span class="line">            &#125;</span><br><span class="line">        &#125; <span class="keyword">catch</span> (e) &#123;</span><br><span class="line">            <span class="built_in">console</span>.error(<span class="string">'Error during events reducing'</span>, e);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> <span class="built_in">Promise</span>.resolve();</span><br><span class="line">    &#125;));</span><br><span class="line"></span><br><span class="line">    <span class="keyword">await</span> <span class="built_in">Promise</span>.all(events.map(<span class="keyword">this</span>.markEventAsProcessed));</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>Here is a quick explanation of whats going on.</p>
+<p><code>sessionMetricReducer</code> is a function for calculation of individual user’s statistics and <code>trainingMetricReducer</code> is a function for calculation of a group statistics. They both are pure as hell. We keep them in a separate repository, covered with unit tests from head to toe, and import them on a client as well. That is called code reuse :) And we’ll get back to them later.</p>
+<p>I bet you all know how <code>reduce</code> function works in JS, but here is a quick overview of whats going on here <code>const newPayload = events.reduce(reducer, metric.payload)</code>.</p>
+<p>We have an array of <code>events</code>, that’s an analogue of Redux’s actions. Thay have a similar strucure and serve the same purpose (i’ve already showed the structure of event during it’s creation on client in <code>createQuestionAnswerEvent</code> function).</p>
+<p><code>metric.payload</code> is our initial state, and all you have to knowl about it is that it’s a plain javascript object.</p>
+<p>So the <code>reduce</code> function takes our initial state and passes it with a first event to our <code>reducer</code>, which is just a pure function, which calculates new state and returns it. Then <code>reduce</code> takes this new state and the next event and passes them to the <code>reducer</code> again. It does this till every event won’t be applied. At the end we got a completely new Metric payload, which was influenced by every single event! Excellent.</p>
+<p align="center"><img src="/images/redux-on-backend/6.png" alt="Event sourcing"></p>
+
+<h1 id="A-more-bulletproof-notation"><a href="#A-more-bulletproof-notation" class="headerlink" title="A more bulletproof notation"></a>A more bulletproof notation</h1><p>Although notation <code>events.reduce(reducer, metric.payload)</code> is very consize and simple, we may have a pitfall here if one of events would be invalid. In that case we will catch an exception for the whole pack (not only for this inavalid event) and won’t be able to save the result of others valid events.</p>
+<p>If this possibility exists for your type of events it is more preferrable to apply them one by one and save Metric after each applied event, like this:</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span> (<span class="keyword">const</span> event <span class="keyword">of</span> events) &#123;</span><br><span class="line">  <span class="keyword">try</span> &#123;</span><br><span class="line">    <span class="comment">// Pay attention to the params order.</span></span><br><span class="line">    <span class="comment">// This way we should first pass the state and after that the event itself</span></span><br><span class="line">    <span class="keyword">const</span> newPayload = reducer(metric.payload, event);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (newPayload !== metric.payload) &#123;</span><br><span class="line">      metric.set(&#123; <span class="attr">payload</span>: newPayload &#125;);</span><br><span class="line"></span><br><span class="line">      <span class="keyword">await</span> metric.save();</span><br><span class="line">    &#125;</span><br><span class="line">  &#125; <span class="keyword">catch</span> (e) &#123;</span><br><span class="line">    <span class="built_in">console</span>.error(<span class="string">'Error during events reducing'</span>, e);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h1 id="Here-is-a-reducer"><a href="#Here-is-a-reducer" class="headerlink" title="Here is a reducer"></a>Here is a reducer</h1><p>As you may guess, the main chalange here is to keep <strong>Metric.payload</strong> on backend and state’s branch which represents users’ statistics on client in a similar structure. That’s the only way if you want to incorporate code reuse. By the way, events are already the same, cause if you can remember we create them on a frontend and dispatch through client reducers at first and after that we send them to the server. As long as these two conditions are met we can freely reuse the reducers.</p>
+<p>Here is a simplified version of <strong>sessionMetricReducer</strong>, so you can make sure that it is a just a plain function, nothing scary</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> moment <span class="keyword">from</span> <span class="string">'moment'</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">/* All are pure function, that responsible for a separate parts</span></span><br><span class="line"><span class="comment">of Metric indicators (say separate branches of state) */</span></span><br><span class="line"><span class="keyword">import</span> &#123; spentTimeReducer, calculateTimeToFinish &#125; <span class="keyword">from</span> <span class="string">'./shared'</span>;</span><br><span class="line"><span class="keyword">import</span> &#123;</span><br><span class="line">    questionsPassingRatesReducer,</span><br><span class="line">    calculateAdoptionLevel,</span><br><span class="line">    adoptionBurndownReducer,</span><br><span class="line">    visitsReducer</span><br><span class="line">&#125; <span class="keyword">from</span> <span class="string">'./session'</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> initialState = &#123;</span><br><span class="line">    timestampOfLastAppliedEvent : <span class="string">''</span>,</span><br><span class="line">    requiredTimeToFinish        : <span class="number">0</span>,</span><br><span class="line">    adoptionLevel               : <span class="number">0</span>,</span><br><span class="line">    adoptionBurndown            : [],</span><br><span class="line">    visits                      : [],</span><br><span class="line">    spentTime                   : [],</span><br><span class="line">    questionsPassingRates       : []</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> <span class="function"><span class="keyword">function</span> <span class="title">sessionMetricReducer</span>(<span class="params">state = initialState, event</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">const</span> currentEventDate = moment(event.timestamp);</span><br><span class="line">    <span class="keyword">const</span> lastAppliedEventDate = moment(state.timestampOfLastAppliedEvent);</span><br><span class="line"></span><br><span class="line">    <span class="comment">// Pay attention here, we'll discuss this line below</span></span><br><span class="line">    <span class="keyword">if</span> (currentEventDate.isBefore(lastAppliedEventDate)) <span class="keyword">return</span> state;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">switch</span> (event.type) &#123;</span><br><span class="line">        <span class="keyword">case</span> <span class="string">'ANSWER_QUESTION'</span>: &#123;</span><br><span class="line">            <span class="keyword">const</span> questionsPassingRates = questionsPassingRatesReducer(</span><br><span class="line">                state.questionsPassingRates,</span><br><span class="line">                event</span><br><span class="line">            );</span><br><span class="line"></span><br><span class="line">            <span class="keyword">const</span> adoptionLevel = calculateAdoptionLevel(questionsPassingRates);</span><br><span class="line">            <span class="keyword">const</span> adoptionBurndown = adoptionBurndownReducer(state.adoptionBurndown, event, adoptionLevel);</span><br><span class="line">            <span class="keyword">const</span> requiredTimeToFinish = calculateTimeToFinish(state.spentTime, adoptionLevel);</span><br><span class="line"></span><br><span class="line">            <span class="keyword">return</span> &#123;</span><br><span class="line">                ...state,</span><br><span class="line">                adoptionLevel,</span><br><span class="line">                adoptionBurndown,</span><br><span class="line">                requiredTimeToFinish,</span><br><span class="line">                questionsPassingRates,</span><br><span class="line">                timestampOfLastAppliedEvent : event.timestamp</span><br><span class="line">            &#125;;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">case</span> <span class="string">'TRAINING_HEARTBEAT'</span>: &#123;</span><br><span class="line">            <span class="keyword">const</span> spentTime = spentTimeReducer(state.spentTime, event);</span><br><span class="line"></span><br><span class="line">            <span class="keyword">return</span> &#123;</span><br><span class="line">                ...state,</span><br><span class="line">                spentTime,</span><br><span class="line">                timestampOfLastAppliedEvent : event.timestamp</span><br><span class="line">            &#125;;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">case</span> <span class="string">'OPEN_TRAINING'</span>: &#123;</span><br><span class="line">            <span class="keyword">const</span> visits = visitsReducer(state.visits, event);</span><br><span class="line"></span><br><span class="line">            <span class="keyword">return</span> &#123;</span><br><span class="line">                ...state,</span><br><span class="line">                visits,</span><br><span class="line">                timestampOfLastAppliedEvent : event.timestamp</span><br><span class="line">            &#125;;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">default</span>: &#123;</span><br><span class="line">            <span class="keyword">return</span> state;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>Take a look at the check in the beggining of the function. We want make sure that we don’t apply an event to the metric if next events have been applied already. This check helps to igone invalid events, if one happens.</p>
+<p>That’s a good example of principal to always keep your events immutable. If you want to store some additional information you shouldn’t add it to event, better keep it in state somewhere. That way you can rely on events as a sort of source of truth in any point of time. Also you can establish a parallel processing of events on a several machines to reach a better performance.</p>
+<h1 id="Final-overview"><a href="#Final-overview" class="headerlink" title="Final overview"></a>Final overview</h1><p>So here is the final project structure. </p>
+<p align="center"><img src="/images/redux-on-backend/4.png" alt="Structure"></p>
+
+<p>As I mentioned before, we keep our shared reducers in a separate repository and import them to the client and to the server. So here are the real benefits that we achived by reusing the code and storing all of the events:</p>
+<ul>
+<li>Offline work in mobile</li>
+<li>Analytics on mobile, web and backend are always in sync</li>
+<li>Reducers are easy to maintain and extend. You have to fix a bug only in one place. You have to add tests only in one place</li>
+<li>If we find a bug in our calculations we can fix it and recalculate all of the statistics from the beginning of times</li>
+<li>We can easily travel in time in statistic, move several years back and forward</li>
+<li>Whenever business requrements for analytics change we can easily create and calculate new metrics</li>
+<li>Events handling process can be ran in the background, independend of user’s main flow of work with app, which can vastly improve performance and responsiveness of the application</li>
+<li>Availability of all of the events greatly helps to test and dubug the system, cause you can easily replay the events at any time and observe how the system reacts</li>
+<li>We gained more control over analytics calculation. E.g. on mobile we calculate only individual statistics, but on the server alognside with single user statistcs we calculate diverse groups’ statistics and much more important stuff. We don’t bound to real-time user intereaction on client to do this. We can do whatever we want and how we want with this stored events</li>
+<li>Persistend list of events is an endless source to analize users behaviour in our system and to identify main trends and issues that users struggle with every day. We can retrieve a lot of usefull business information from this logs</li>
+<li>Complete history and audit trail out of the box</li>
+</ul>
+<p>By the way, the described approach favours streams in general. If you are not familiar with the concept, in short streams is how we think about data flow in our application. Instead of traditional response-request model we work with an endless queue of events to which we should react somehow. </p>
+<p>And this approach can really make some future issues easier to tackle. E.g. what if we want to update analytics in a web app a in real-time, all we have to do is to <code>subscribe</code> to data changes on the client (the connecion may be established via websockets for example) and whenever data chages on backend we should send a message of a specific type to <code>notify</code> the client.</p>
+<p>This a raw description of a common approach to working with streams of data, which can help us to solve the problem quite effectively.</p>
+<h1 id="Conclusion"><a href="#Conclusion" class="headerlink" title="Conclusion"></a>Conclusion</h1><p>As you may see we obviosly didn’t implement the most canonical example of how to do event sourcing. We also didn’t fully incorporate Redux with all it ecosystem in our NodeJS application. But we didn’t really need any of that. The main purpose was to create a stable offline-first mobile application with a fluid and extending business logic and shared alanytical reports. And that’s what we managed to do in quite unusual and effective way.</p>
+<p>So I hope it was an interesing and usefull reading for you. If you have any questions or observations feel free to left the comment bellow.</p>
+<p>At last here is a quick overview of some quite nasty problems that you may encounter build an offline-first application and the way we dealt with them.</p>
+<h1 id="Comon-issues-with-offline-and-how-we-deal-with-them"><a href="#Comon-issues-with-offline-and-how-we-deal-with-them" class="headerlink" title="Comon issues with offline and how we deal with them"></a>Comon issues with offline and how we deal with them</h1><p><strong>Issue 1.</strong> <em>I’ve fixed a bug in calculations but the client is still using the old cached version of analytics. How to force it to use recalculated metrics from backend?</em></p>
+<p>We incorporated a <code>version</code> propery for each metric (kind of E-TAG for those who familiar with common cache invalidation stratagies). When client fetches a metric from a server we compare client’s version with server’s version and figure out which metric is more relevant. Wins a one with a higher version. So after bug fix all we have to do is to increase <code>version</code> number and the client will know that his metrics is outdated</p>
+<p><strong>Issue 2.</strong> <em>I need to create entities in offline and use their ids for futher corresponding. How to deal with that?</em></p>
+<p>We adopted a simple but not perfect solution of manual creation of id on the client with <a href="https://www.npmjs.com/package/uuid" target="_blank" rel="noopener">uuid</a> and make sure that we save the entity in DB with this id. But keep in mind that it’s always better to control that kind of data on backend, in case you would change the DB or say migrate from uuidV4 to uuidV5. As an option you can use temporary ids on the client and substitute them with real ids after their creation on BE</p>
+<p><strong>Issue 3.</strong> <em>What should I use for data persistance in RN?</em></p>
+<p>We don’t use any external solutions for this purpose, because we needed to provide data security by encrypting it, and it seems like it’s far more easier to implement this by yourself. But we use <a href="https://www.npmjs.com/package/redux-async-initial-state" target="_blank" rel="noopener">redux-async-initial-state</a> for asyncronous loading of initial app state.</p>
+<p>Here is how we create Redux store:</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> &#123; createStore, applyMiddleware, combineReducers, compose &#125; <span class="keyword">from</span> <span class="string">'redux'</span>;</span><br><span class="line"><span class="keyword">import</span> thunkMiddleware <span class="keyword">from</span> <span class="string">'redux-thunk'</span>;</span><br><span class="line"><span class="keyword">import</span> * <span class="keyword">as</span> asyncInitialState <span class="keyword">from</span> <span class="string">'redux-async-initial-state'</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> &#123; setAutoPersistingOfState, getPersistedState &#125; <span class="keyword">from</span> <span class="string">'../utils/offlineWorkUtils'</span>;</span><br><span class="line"><span class="keyword">import</span> rootReducer <span class="keyword">from</span> <span class="string">'../reducers'</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> reducer = asyncInitialState.outerReducer(combineReducers(&#123;</span><br><span class="line">    ...rootReducer,</span><br><span class="line">    asyncInitialState: asyncInitialState.innerReducer</span><br><span class="line">&#125;));</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> store = createStore(</span><br><span class="line">    reducer,</span><br><span class="line">    compose(applyMiddleware(thunkMiddleware, asyncInitialState.middleware(getPersistedState)))</span><br><span class="line">);</span><br><span class="line"></span><br><span class="line">setTimeout(<span class="function"><span class="params">()</span> =&gt;</span> &#123;</span><br><span class="line">    setAutoPersistingOfState(store);</span><br><span class="line">&#125;, config.stateRehydrationTime);</span><br><span class="line"></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> store;</span><br></pre></td></tr></table></figure>
+<p>And here are main utils from <strong>offlineWorkUtils</strong>:</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">export</span> <span class="function"><span class="keyword">function</span> <span class="title">getPersistedState</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">new</span> <span class="built_in">Promise</span>(<span class="keyword">async</span> (resolve) =&gt; &#123;</span><br><span class="line">        <span class="comment">// A wrapping function around AsyncStorage.getItem()</span></span><br><span class="line">        <span class="keyword">const</span> encodedState = <span class="keyword">await</span> getFromAsyncStorage(config.persistedStateKey);</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> (!encodedState) resolve(<span class="literal">undefined</span>);</span><br><span class="line"></span><br><span class="line">        <span class="comment">// A wrapping function around CryptoJS.AES.decrypt()</span></span><br><span class="line">        <span class="keyword">const</span> decodedState = decryptAesData(encodedState);</span><br><span class="line"></span><br><span class="line">        resolve(decodedState);</span><br><span class="line">    &#125;);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">async</span> <span class="function"><span class="keyword">function</span> <span class="title">setAutoPersistingOfState</span>(<span class="params">store</span>) </span>&#123;</span><br><span class="line">    setInterval(<span class="keyword">async</span> () =&gt; &#123;</span><br><span class="line">        <span class="keyword">const</span> state = store.getState();</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> (!state || !<span class="built_in">Object</span>.keys(state).length) <span class="keyword">return</span>;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            <span class="comment">// A wrapping function around CryptoJS.AES.encrypt()</span></span><br><span class="line">            <span class="keyword">const</span> encryptedStateInfo = encryptDataWithAes(state).toString();</span><br><span class="line"></span><br><span class="line">            <span class="comment">// A wrapping function around AsyncStorage.setItem()</span></span><br><span class="line">            <span class="keyword">await</span> saveToAsyncStorage(config.persistedStateKey, encryptedStateInfo);</span><br><span class="line">        &#125; <span class="keyword">catch</span> (e) &#123;</span><br><span class="line">            <span class="built_in">console</span>.error(<span class="string">'Error during state encryption'</span>, e);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;, config.statePersistingDebounceTime);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>For large blobs (images, audio etc) we use <a href="https://github.com/itinance/react-native-fs" target="_blank" rel="noopener">react-native-fs</a>.</p>
+
+
+                
+                    <!-- Go to www.addthis.com/dashboard to customize your tools -->
+                    <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-58f3c2d3d790e137"></script>
+
+                    <!-- Go to www.addthis.com/dashboard to customize your tools -->
+                    <div class="addthis_sharing_toolbox"></div>
+                
+            </div>
+        </div>
+
+        <div class="row">
+            <!-- LEELOO -->
+            <div class="center col-lg-12 col-md-12 col-sm-12">
+                <!-- Leeloo form start --> 
+<script>
+    window.LEELOO_LEADGENTOOLS = (window.LEELOO_LEADGENTOOLS || []).concat('vfgnh4');
+</script>
+    
+<div class="wepster-hash-vfgnh4"></div>
+<!-- Leeloo form end -->
+            </div>
+        </div>
+
+        <div class="row">
+            <!-- Comments -->
+            
+                <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                    
+    <hr />
+    <h3>Comments:</h3>
+    <div id="disqus_thread">
+        <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+    </div>
+
+
+
+                </div>
+            
+        </div>
+    </div>
+</article>
+
+
+    <!-- Footer -->
+    <hr />
+
+<!-- Footer -->
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <ul class="list-inline text-center">
+                    
+                        <li>
+                            <div class="twitter-footer">
+                                
+                                    <span class="action-footer">Follow us on twitter to become a better software development expert</span>
+                                
+                                <a href="https://twitter.com/webbylab" target="_blank">
+                                    <span class="fa-stack fa-lg">
+                                        <i class="fa fa-circle fa-stack-2x"></i>
+                                        <i class="fa fa-twitter fa-stack-1x fa-inverse"></i>
+                                    </span>
+                                </a>
+                            </div>
+                        </li>
+                    
+
+                    
+
+                    
+
+                    
+
+                    
+
+                    
+                </ul>
+                <p class="copyright text-muted">&copy; 2019 WebbyLab<br></p>
+                <!-- <p class="copyright text-muted">Original Theme <a target="_blank" href="http://startbootstrap.com/template-overviews/clean-blog/">Clean Blog</a> from <a href="http://startbootstrap.com/" target="_blank">Start Bootstrap</a></p>
+                <p class="copyright text-muted">Adapted for <a target="_blank" href="https://hexo.io/">Hexo</a> by <a href="http://www.codeblocq.com/" target="_blank">Jonathan Klughertz</a></p> -->
+            </div>
+        </div>
+    </div>
+</footer>
+
+
+    <!-- After footer scripts -->
+    
+<!-- jQuery -->
+<script src="//code.jquery.com/jquery-2.1.4.min.js"></script>
+
+<!-- Bootstrap -->
+<script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+
+<!-- Gallery -->
+<script src="//cdnjs.cloudflare.com/ajax/libs/featherlight/1.3.5/featherlight.min.js" type="text/javascript" charset="utf-8"></script>
+
+<!-- Disqus Comments -->
+
+<script type="text/javascript">
+    var disqus_shortname = 'blog-webbylab-com';
+
+    (function(){
+        var dsq = document.createElement('script');
+        dsq.type = 'text/javascript';
+        dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
+
+
+</body>
+
+</html>
