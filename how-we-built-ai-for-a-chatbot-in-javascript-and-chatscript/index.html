@@ -1,0 +1,511 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<!-- Head tag -->
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!--Description-->
+    
+        <meta name="description" content="This article aims to share experience on building a chatbot using ChatScript and JavaScript as well as approaches we used to tackle certain problems in development.">
+    
+
+    <!--Author-->
+    
+        <meta name="author" content="WebbyLab">
+    
+
+    <!--Open Graph Title-->
+    
+        <meta property="og:title" content="How we built AI Chatbot Using JavaScript and ChatScript"/>
+    
+
+    <!--Open Graph Description-->
+    
+        <meta property="og:description" content="This article aims to share experience on building a chatbot using ChatScript and JavaScript as well as approaches we used to tackle certain problems in development." />
+    
+
+    <!--Open Graph Site Name-->
+    <meta property="og:site_name" content="Agile developer"/>
+
+    <!--Type page-->
+    
+        <meta property="og:type" content="article" />
+    
+
+    <!--Page Cover-->
+    
+
+        <meta name="twitter:card" content="summary" />
+    
+
+    <!-- Title -->
+    
+    <title>How we built AI Chatbot Using JavaScript and ChatScript - Agile developer</title>
+
+    <!-- Bootstrap Core CSS -->
+    <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet"/>
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/style.css">
+
+    <!-- Custom Fonts -->
+    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+    <link href="//fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic" rel="stylesheet" type="text/css">
+    <link href="//fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800" rel="stylesheet" type="text/css">
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+    <script src="//oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+    <script src="//oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+    <!-- Gallery -->
+    <link href="//cdnjs.cloudflare.com/ajax/libs/featherlight/1.3.5/featherlight.min.css" type="text/css" rel="stylesheet" />
+
+    <!-- Google Analytics -->
+    
+    <script>
+        (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+                    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+                m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+        })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+        ga('create', 'UA-9638621-10', 'auto');
+        ga('send', 'pageview');
+
+    </script>
+
+
+
+    <!-- LEELOO Init -->
+    <!-- leeloo init code -->
+<script>
+window.LEELOO = function(){
+    window.LEELOO_INIT = { id: "59049996ac641a00190cb1b4" };
+    var js = document.createElement('script');
+    js.src = 'https://app.leeloo.ai/init.js';
+    document.getElementsByTagName('head')[0].appendChild(js);
+}; LEELOO();
+</script>
+<!-- leeloo init code end -->
+
+
+    <!-- favicon -->
+    
+    <link rel="icon" href="/img/favicon.ico">
+    
+	
+</head>
+
+
+<body>
+    <!-- Menu -->
+    <!-- Navigation -->
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">WebbyLab's Engineering Blog</a>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+            <ul class="nav navbar-nav navbar-right">
+                
+                    <li>
+                        <a target="_blank" href="https://webbylab.com">
+                            
+                                Main Company Site
+                            
+                        </a>
+                    </li>
+                
+                    <li>
+                        <a target="_blank" href="https://react.webbylab.com">
+                            
+                                React/Mobile/Nodejs Department
+                            
+                        </a>
+                    </li>
+                
+            </ul>
+        </div>
+        <!-- /.navbar-collapse -->
+    </div>
+    <!-- /.container -->
+</nav>
+
+
+    <!-- Main Content -->
+    <!-- LEELOO POPUP -->
+<!-- Leeloo popup start -->
+<script>
+    window.LEELOO_LEADGENTOOLS = (window.LEELOO_LEADGENTOOLS || []).concat('3nqz71');
+</script>
+<!-- Leeloo popup start -->
+
+
+<!-- Page Header -->
+<!-- Set your background image for this header in your post front-matter: cover -->
+
+<header class="intro-header" style="background-image: url('/images/chatbot/chatbot.jpg')">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <div class="post-heading">
+                    <h1>How we built AI Chatbot Using JavaScript and ChatScript</h1>
+                    
+                    <span class="meta">
+                        <!-- Date and Author -->
+                        
+                            Posted by Yurii Vlasiuk (Developer) on
+                        
+                        2017-11-24
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+<!-- Post Content -->
+<article>
+    <div class="container">
+        <div class="row">
+
+            <!-- Tags and categories -->
+           
+                <div class="col-lg-4 col-lg-offset-2 col-md-5 col-md-offset-1 post-tags">
+                    
+                        
+
+
+<a href="/tags/javascript-team/">#JavaScript Team</a> <a href="/tags/tutorial/">#Tutorial</a> <a href="/tags/nodejs/">#NodeJS</a> <a href="/tags/chatbot/">#Chatbot</a> <a href="/tags/chatscript/">#ChatScript</a>
+
+
+                    
+                </div>
+                <div class="col-lg-4 col-md-5 post-categories">
+                    
+                </div>
+            
+
+            <!-- Gallery -->
+            
+
+            <!-- Post Main Content -->
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <p>This article is based on the experience of using ChatScript (CS) in one of the recent WebbyLab’s projects. I am glad to share what we’ve learnt, the difficulties we’ve met, and the approaches we’ve used to defeat them on the way of chatbot programming.</p>
+<p>The main task was to implement engine for natural language recognition to develop artificial intelligence (AI) for conversational chatbot to be used by the insurance company in the US. By the time we started our work, the customer had already had UI represented by the button menu inside the Facebook chat. We needed to extend this part with possibility for a bot to understand the user’s message and to get information from input depending on the phrase. As a solution, we decided to divide all possible phrases in this topic by possible user’s intents and implement a mechanism of this intents recognition from the set of phrases. Some of the intents could also have different parameters (e.g. house area, date, car model) that needed to be recognized by the chatbot.</p>
+<p>For a start, let’s look closer at ChatScript. CS is chatbot engine that won the Loebner’s 4 times. It was created by Sue and Bruce Wilcox. It is rule-based, and it might resemble a declarative programming approach similar to writing a configuration file or grammar for an interpreter. Yet, CS is more imperative since you should also use commands to tell how to react to this or that message. It is written in C++ and has binary builds for Windows, Linux, and MacOS platforms.</p>
+<h2 id="Bulding-a-basic-bot-example-from-scratch"><a href="#Bulding-a-basic-bot-example-from-scratch" class="headerlink" title="Bulding a basic bot example from scratch"></a>Bulding a basic bot example from scratch</h2><p>The best way to understand how to work with a tool is to try it in practice by writing something small and easy to understand. To start with CS, I suggest reading an article on <a href="https://medium.freecodecamp.com/chatscript-for-beginners-chatbots-developers-c58bb591da8" target="_blank" rel="noopener">how to build your first chatbot using ChatScript</a> or trying a <a href="https://github.com/bwilcox-1234/ChatScript/blob/master/WIKI/OVERVIEWS-AND-TUTORIALS/ChatScript-Tutorial.md" target="_blank" rel="noopener">CS tutorial</a>.</p>
+<p>First of all to make coding on CS more comfortable, I suggest install highlinting CS language. Here you can find plugins for <a href="https://packagecontrol.io/packages/ChatScript%20Syntax" target="_blank" rel="noopener">Sublime Text 3</a>, <a href="https://marketplace.visualstudio.com/items?itemName=kuzyn.chatscript-language" target="_blank" rel="noopener">Visual Studio Code</a> and <a href="https://atom.io/packages/language-chatscript" target="_blank" rel="noopener">Atom</a>. I was using first one, because it was needed to open huge files from time to time and Sublime was fast in this cases, but you can use any editor you like.</p>
+<p>To clarify the basic moments, I will go through all the steps needed to have a chatbot up and running. For my example, I’ve used Ubuntu 16.04 and CS 7.4, but you can run it on any of the supported platforms. The steps of the process:</p>
+<ol>
+<li><p>Clone CS repository from GitHub:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git clone https://github.com/bwilcox-1234/ChatScript.git</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>Go to CS directory and create a folder for your chatbot with a file for the main topic, and filesfood.txt describing a list of topics to be included:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">bash</span><br><span class="line"></span><br><span class="line">cd ChatScript/RAWDATA</span><br><span class="line"></span><br><span class="line">mkdir FOOD</span><br><span class="line"></span><br><span class="line">touch FOOD/food.top</span><br><span class="line"></span><br><span class="line">touch filesfood.txt</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>Copy the topic simplecontrol.top from RAWDATA/HARRY into the FOOD folder (This is a necessary script to interact with our bot. Optionally you can change in simplecontrol.top in 9th line value of <code>$botprompt</code> variable to string you want show before each bot message. But you can leave it as it is already set to <code>HARRY:</code> this part will not change behaviour at all. In my example I’ve used next one prompt <code>$botprompt = ^&quot;fastfood&gt; &quot;</code>):</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">bash</span><br><span class="line"></span><br><span class="line">cp HARRY/simplecontrol.top FOOD/simplecontrol.top</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>Add this code to the file food.top:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">topic: ~fastfood keep repeat []</span><br><span class="line"></span><br><span class="line">t: Hello in our online fastfood. Please make your order.</span><br><span class="line"></span><br><span class="line">u: BURGER (I [want need take] _[burger potato ice-cream])</span><br><span class="line"></span><br><span class="line">  $order = _0</span><br><span class="line"></span><br><span class="line">  Okay, you want $order . Something else?</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>Add the list of files you want to filesfood.txt to build your bot:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">RAWDATA/FOOD/simplecontrol.top</span><br><span class="line"></span><br><span class="line">RAWDATA/FOOD/food.top</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>Finally, build and run your bot. Run command from ChatScript directory:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">./BINARIES/ChatScript local</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>Prompt any username you like. Now when you are in CS console, run two commands (first build 0 layer of chatbot, then comes your chatbot for fastfood):</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">:build 0</span><br><span class="line"></span><br><span class="line">:build food</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<p>When it’s all done with this ChatScript tutorial, you have a working chatbot. For now, it can handle a few phrases only (I need a burger, I want ice-cream, …), but you can extend them adding new rules and topics. After any change made to food.top, you should run <code>:build food</code> command again. Later on, we are going to discuss more details about the syntax and constructs used in this example.</p>
+<h2 id="Main-ChatScript-constructs"><a href="#Main-ChatScript-constructs" class="headerlink" title="Main ChatScript constructs"></a>Main ChatScript constructs</h2><p>Now you are ready to start coding in CS. First, I suggest learning a bit more about <a href="https://github.com/bwilcox-1234/ChatScript/blob/master/WIKI/ChatScript-Basic-User-Manual.md" target="_blank" rel="noopener">main CS constructs</a> from the official documentation. In this article, I am presenting my personal notes on the topic.</p>
+<h3 id="Topics"><a href="#Topics" class="headerlink" title="Topics"></a>Topics</h3><p>Topic is a collection of rules which you want to use together. If you tell a system to execute the exact topic, only rules from it will be acting as long as you are staying in this topic. Declare the topic using a keyword (<code>topic:</code>), the name starting with “~” (<code>~fastfood</code>) and a list of functions (<code>keep repeat</code>) to be used for all rules inside of it (<code>keep</code> and <code>repeat</code> are needed to return to this topic after firing each rule inside of it) and <code>[ ]</code> :</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">topic: ~fastfood keep repeat []</span><br></pre></td></tr></table></figure>
+<p>Each topic usually includes a bunch of rules related to it. Switching between topics or, in other words, calling one topic from another is performed by <code>^respond</code> method (more details will follow in the next section).</p>
+<h3 id="Rules"><a href="#Rules" class="headerlink" title="Rules"></a>Rules</h3><p>Rule is an action firing when a pattern inside it matches the input sent to chatbot. It should be placed after topic declaration.</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">u: BURGER (I want ari-burger) Okay, your order is hamburger</span><br></pre></td></tr></table></figure>
+<p>Rules usually include type (<code>u:</code>), label (<code>BURGER</code> - it is optional but useful for debugging and self-documenting your code), pattern (everything inside parenthesis), and output (everything after parenthesis). Rule can also be split into multiple lines to make code more readable - CS doesn’t care about new lines, it simply looks for declaration of a new rule or topic and only that is signal that this rule is ended. Rule can move us to another topic using CS function <code>^respond</code>:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">u: BURGER (I want ari-burger)</span><br><span class="line"></span><br><span class="line">   ^respond(~answers)</span><br></pre></td></tr></table></figure>
+<p>In this case, the input will be handled by the rules from the topic passed to <code>^respond</code> function. This approach can give as an opportunity to divide your CS script into separate parts or, for instance, move formatting answer for phrases to a separate topic.</p>
+<h3 id="Memory"><a href="#Memory" class="headerlink" title="Memory"></a>Memory</h3><p>Variables are a mechanism to store information from users input. There are match variables (or short-term memory - clears values after exiting from patterns), and user variables (or long-term memory - store value till you reset it). Here is an example of our rule extended with memorization:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">u: ORDER (I want _)</span><br><span class="line"></span><br><span class="line">   $order = _0</span><br><span class="line"></span><br><span class="line">   Okay, your order is $order</span><br></pre></td></tr></table></figure>
+<p>Underscore <code>_</code> is a match variable ( you can specify how many words you want to remember using wildcard <code>_*</code> for all words or <code>_*2</code> for two words and so on). As a result, the word in input after “I want” will be stored in short-term memory. To access this value, <code>_0</code> is used in the second line, so the pattern could include as many match variables as needed (actually up to 20, but it’s really enough), while getting values from them is performed via using underscore and the order number of match inside the pattern. In this example, <code>$order</code> is a user variable and will store what was inside <code>_0</code>.</p>
+<h3 id="Patterns"><a href="#Patterns" class="headerlink" title="Patterns"></a>Patterns</h3><p>Patterns mean described order and sets of words which are expected in an input. The most powerful thing for me: there is no need in CS to add all forms of each word to your pattern. It is already an inbuilt feature allowing for all forms of the word to be found if the pattern includes only one of them.</p>
+<p>For example, if we take a verb “be”, adding it to the pattern will also include matches of this word in all its forms: am, is, are, was, were, been. However, for input with auxiliary verb (will, have, do, …), you should still add them - CS only cares about forms of a separate word. For this purpose, I suggest using another pattern feature - optional word in curly brackets :</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">u: BURGER (I &#123;will&#125; take _burger)</span><br></pre></td></tr></table></figure>
+<p>The same with nouns and pronouns - it’s enough to add nominative singular form of it, then finding match for all other word variations CS will perform under the hood. In pattern, you can also extend variation of phrases that match using sets of words on some position in pattern. Extending our example, we can add something like this:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">u: BURGER (I &#123;will&#125; [want need take] [_burger hamburger potato ice-cream])</span><br><span class="line"></span><br><span class="line">   $order = _0</span><br><span class="line"></span><br><span class="line">   Okay, your order is $order</span><br></pre></td></tr></table></figure>
+<p>This rule will match all inputs with combinations of these words (e.g. “I want a hamburger”, “I will take a potato”, “I need ice-cream”, …). Another important issue with memorization, which I haven’t found in the official CS docs, is how match variables work in sets (correct me if you find this in their manual). Actually, in this case, it will store in short-term memory any matched word from this set in <code>_0</code> . <code>$order</code> will have value in any case when the matching pattern fires.</p>
+<p>You can also control the beginning and ending of input using <code>&lt;</code> and <code>&gt;</code> respectively:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">u: BURGER (&lt; I &#123;will&#125; [want need take] [_burger hamburger potato ice-cream] &gt;)</span><br></pre></td></tr></table></figure>
+<p>You can do even more cool features inside the patterns - check values to match some criteria. If you want only numbers inside the specified range:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">u: OLD_ENOUGH (I be _~number _0&gt;21 _0&lt;120)</span><br><span class="line"></span><br><span class="line">   You are old enough for this.</span><br><span class="line"></span><br><span class="line">u: TOO_YOUNG (I be _~number _0&lt;21)</span><br><span class="line"></span><br><span class="line">   $missed_age = 21 - _0</span><br><span class="line"></span><br><span class="line">   You are too young for this, come after $missed_age years.</span><br></pre></td></tr></table></figure>
+<h3 id="Concepts"><a href="#Concepts" class="headerlink" title="Concepts"></a>Concepts</h3><p>Concept is a set of words or word combinations bound to one keyword (concept name). Declaration is similar to the topic and should be outside of it. List all the words related to this concept in square brackets.</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">concept: ~food_type [burger potato salad ice-cream]</span><br></pre></td></tr></table></figure>
+<p>After declaring concept, it could be used as alias in rules like this (now our pattern will match inputs that include only the specified words in concept ~food_type):</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">u: BURGER (I want _~food_type)</span><br><span class="line"></span><br><span class="line"> $order = _0</span><br><span class="line"></span><br><span class="line"> Okay, your order is $order</span><br></pre></td></tr></table></figure>
+<p>And even more, you can nest one concept within another to create additional abstraction level grouping different sets of words in one parent concept:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">concept: ~dessert [ice-cream sweets cookie]</span><br><span class="line"></span><br><span class="line">concept: ~burger [burger hamburger cheeseburger vegeterainburger]</span><br><span class="line"></span><br><span class="line">concept: ~food_type [~burger ~dessert potato salad]</span><br></pre></td></tr></table></figure>
+<p>If you want to find out to which concept the matched value belongs, you can use <code>pattern</code> construct. In the example below, the value stored in <code>$drink</code> variable checks if it meets the concept <code>~alcohol</code>. For this purpose, we use <code>pattern</code> and <code>?</code> in if-condition keyword between value and target for search concept (yes, CS supports if-else statements):</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">concept: ~drink_type [~alcohol ~non_alcohol]</span><br><span class="line"></span><br><span class="line">concept: ~alcohol [rum gean wiskey vodka]</span><br><span class="line"></span><br><span class="line">concept: ~non_alcohol [cola juice milk water]</span><br><span class="line"></span><br><span class="line">u: DRINK (^want(_~drink_type))</span><br><span class="line"></span><br><span class="line">   $drink = _0</span><br><span class="line"></span><br><span class="line">   if (pattern $drink?~alcohol) &#123;</span><br><span class="line"></span><br><span class="line">       ^respond(~age_checker)</span><br><span class="line"></span><br><span class="line">   &#125; else &#123;</span><br><span class="line"></span><br><span class="line">       Ok, take and drink your $drink .</span><br><span class="line"></span><br><span class="line">   &#125;</span><br></pre></td></tr></table></figure>
+<p>If you want to match not only single words, but also word combinations you can also add them to concept, putting them in quotes or using underscores among separate words in one phrase (this approach is also used when you need match phrase some punctuation signs):</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">concept: ~vegburger [&quot;vegeterian burger&quot; &quot;vegeterian’s burger&quot; vegan_burger vegan_’s_burger]</span><br></pre></td></tr></table></figure>
+<p>These approaches are similar but I prefer to use quotes, since they make it easier to read the code.</p>
+<p>Another cool CS feature is engine-defined concepts. It provides you with already prepared sets for most commonly used in natural language phrases and single words with the same or similar meanings. There are concepts <code>~yes</code> and <code>~no</code>, which include such kind of answers that could be interpreted in live language as confirmation or rejection. For example, words and phrases yes, yeah, ok, okay, sure, of_course, alright and many others (183 different phrases for <code>~yes</code> and 138 for <code>~no</code> are included in these concepts) are already there. Other concepts I found useful for our project are:</p>
+<ul>
+<li><p><code>~number</code> (helps match any number)</p>
+</li>
+<li><p><code>~yearnumber</code> (subset of ~number containing only values between 999 and 10000)</p>
+</li>
+<li><p><code>~dateinfo</code> (matches any date using date format with slashes mm_dd_yy or mm_dd_yyyy - thу matched value will be returned as string “mm / dd / yy” or “mm / dd / yyyy”)</p>
+</li>
+<li><p><code>~timeword</code> (will match full date like “1 July 2017” as well as “July 1 2017” will return “July 1 2017” in both cases. This concept also contains a huge set of time-related words e.g. second, yesterday, already, etc.)</p>
+</li>
+</ul>
+<p>Find all inbuilt concepts <a href="https://github.com/bwilcox-1234/ChatScript/blob/master/WIKI/ChatScript-System-Variables-and-Engine-defined-Concepts.md" target="_blank" rel="noopener">here</a>.</p>
+<p>If for some reason you want to extend the existing engine-defined concept, you may add records in LIVEDATA_ENGLISH_SUBSTITUTES/interjections.txt</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;roger_that&gt; ~yes</span><br></pre></td></tr></table></figure>
+<p>and simply restart chatscript engine - this will add phrase “roger that” to ~yes, brackets mean that it will match only these two words in input and nothing else.</p>
+<p>Additionally, the existing concepts can be extended in another way - you can add new values to an already existing one using <code>MORE</code>:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">concept: ~food [burger potato]</span><br><span class="line"></span><br><span class="line">concept: ~food MORE [ice-cream]</span><br></pre></td></tr></table></figure>
+<h3 id="Macros"><a href="#Macros" class="headerlink" title="Macros"></a>Macros</h3><p>To make reusing the code possible, CS has macros - custom functions called to generate output or reuse them in your patterns. In our project, we worked with JSON, so the output should be formatted in the proper way to be further parsed in JS class-wrapper. For this purpose, I decided to prepare a string which could be easily parsed in JavaScript. Each time having an output, I formed it as a JSON string. CS, however, have methods to work with JSON. If connect this with using <code>outputmacro</code>, we can get an elegant way to format output for api on the application backend:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">outputmacro: ^formated_in_json(^param_from_rule)</span><br><span class="line"></span><br><span class="line">&#123;</span><br><span class="line"></span><br><span class="line">   $_result = ^jsoncreate(object)</span><br><span class="line"></span><br><span class="line">   $_result.first_level_param = ^param_from_rule</span><br><span class="line"></span><br><span class="line">   $_result.nested_object = ^jsoncreate(object)</span><br><span class="line"></span><br><span class="line">   ^jsonwrite($_result)</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>Then, using macro in rule is the same as in the case with CS native <code>^respond</code> function:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">u: FOOD (I want _~food_type)</span><br><span class="line"></span><br><span class="line">   ^formated_in_json(_0)</span><br></pre></td></tr></table></figure>
+<p>As you can write macro for formatting multiple outputs depending on the parameter, you are also able to create it for patterns with similar constructs for a bunch of rules using <code>patternmacro</code>:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">patternmacro: ^want(^appendix)</span><br><span class="line"></span><br><span class="line">   [i we] * [want need take] ^appendix</span><br></pre></td></tr></table></figure>
+<p>A part of the pattern returning by macro can be reused in multiple patterns, making your script less tangled:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">u: FOOD (^want(_~food_type))</span><br><span class="line"></span><br><span class="line">   If you want _0, you should get \_0 .</span><br><span class="line"></span><br><span class="line">u: DRINK (^want(_~drink_type))</span><br><span class="line"></span><br><span class="line">   Ok, take and drink your _0 .</span><br></pre></td></tr></table></figure>
+<h3 id="ChatBot-schema"><a href="#ChatBot-schema" class="headerlink" title="ChatBot schema"></a>ChatBot schema</h3><p>To illustrate usage and place each of the described above CS constructs, you can look at this schema.</p>
+<p align="center"><img src="/images/chatbot/chatbot_schema.svg" alt="ChatBot schema"><br>   <em>Figure 1 - ChatBot schema</em></p>
+
+<p>As you can see, topics, concepts and macros should be declared on the top layer of Chatbot. Then rules are nested inside the topics. Each rule have pattern as an entry point, and some kind of responder or body of rule, which executes only when the current pattern fires. Concepts and pattern macros declared outside the topic then are used inside the rule with short-term memory variables to save values needed for response. At the same time, output macro can be called in responder. Long-term memory variables are used to pass values from short-term to another topics in case the responder just calls <code>^respond(~another_topic)</code>. It means that for output to user will take care rules in the outer topic.</p>
+<h2 id="ChatScript-environment"><a href="#ChatScript-environment" class="headerlink" title="ChatScript environment"></a>ChatScript environment</h2><h3 id="ChatScript-CLI"><a href="#ChatScript-CLI" class="headerlink" title="ChatScript CLI"></a>ChatScript CLI</h3><p>CS provides CLI which helps in development and needed to build new chatbot versions. First commands you will need are of course <code>:build</code>, and first it requires building 0 layer to use system predefined concepts (e.g. ~yes, ~timeinfo, ~number) and then your custom bot specifying the same name, you’ve used for <code>fileXXX.txt</code> (where <code>XXX</code> is the name) with the list of topics used in the script.</p>
+<p>Another useful command is <code>:reset</code> - it returns the bot to initial state and also erases all long-term variables (these values are stored even after build).</p>
+<p>Using <code>:trace</code> can show full stack trace of rules and topics fired during evaluating the latest input.</p>
+<p>Another useful command <code>:why</code> shows rules causing most recent output.</p>
+<p>For switching between users, there is <code>:user</code> command which takes username as a parameter.</p>
+<p><code>:quit</code> will stop CS process.</p>
+<p>While you add new rules, it can be very useful to check if it’s not breaking patterns you have made before. For this purpose, CS gives us a handy <code>:verify</code> command. What is needed from developer is to add before each pattern set of phrases which must be fired with it. Syntax for this verification is set as such:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">#! I want burger</span><br><span class="line"></span><br><span class="line">#! I will take salad</span><br><span class="line"></span><br><span class="line">#! I need icecream</span><br><span class="line"></span><br><span class="line">u: BURGER (I &#123;will&#125; [want need take] ~food_type)</span><br></pre></td></tr></table></figure>
+<p>Execution of the command will give us a detailed info about the number of inputs that have passed and which ones have failed:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">fastfood&gt; :verify fastfood</span><br><span class="line"></span><br><span class="line">VERIFYING ~fastfood ......</span><br><span class="line"></span><br><span class="line">Pattern failed to match 1 ~fastfood.1.0:  I need icecream =&gt; u: FOOD ( ^want ( _~food_type ) )</span><br><span class="line"></span><br><span class="line">   Adjusted Input: I need ice_cream</span><br><span class="line"></span><br><span class="line">   Canonical Input: I need ice_cream</span><br><span class="line"></span><br><span class="line">1 verify findings of 3 trials.</span><br></pre></td></tr></table></figure>
+<h3 id="Performance"><a href="#Performance" class="headerlink" title="Performance"></a>Performance</h3><p>CS is a light-weight process, so it is possible to run a few instances of it on one machine. More than that, such operations as pattern comparison and concept search are well optimized, work really fast and can handle multiple connections. To check if this is really true, we made our own small benchmark to test how CS will act in high load situation. Our custom JS class-wrapper sent a collection of 10K inputs and measured the time needed for engine to respond to them. View the test results below:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line">Total messages count:  10000</span><br><span class="line"></span><br><span class="line">Chunks count:  100</span><br><span class="line"></span><br><span class="line">Chunks size:  100</span><br><span class="line"></span><br><span class="line">Percentage of the requests served within a certain time (ms)</span><br><span class="line"></span><br><span class="line">10%:  10</span><br><span class="line"></span><br><span class="line">20%:  13</span><br><span class="line"></span><br><span class="line">30%:  15</span><br><span class="line"></span><br><span class="line">40%:  17</span><br><span class="line"></span><br><span class="line">50%:  19</span><br><span class="line"></span><br><span class="line">60%:  21</span><br><span class="line"></span><br><span class="line">70%:  23</span><br><span class="line"></span><br><span class="line">80%:  25</span><br><span class="line"></span><br><span class="line">90%:  27</span><br><span class="line"></span><br><span class="line">100%:  29</span><br><span class="line"></span><br><span class="line">Time taken for tests:  19.972  seconds.</span><br><span class="line"></span><br><span class="line">Requests per second:  500.70098137392347 [#/sec]</span><br><span class="line"></span><br><span class="line">Time per request:  1.9972 [ms]</span><br></pre></td></tr></table></figure>
+<p>The request per second is less than the time for each one of them. This happened because the test chunks of messages were sent asynchronously resolving portions of 100 promises with sending messages - that’s why the summary time is smaller than sum of times for each message.</p>
+<h3 id="CI-in-CS"><a href="#CI-in-CS" class="headerlink" title="CI in CS"></a>CI in CS</h3><p>When you extend bot implementation, it’s good to be sure that anything written before did not get broken due to the last updates (which actually occurs frequently, especially when the patterns you write are too general and can match not only inputs you’ve expected). For this purpose, CS has mechanisms to perform regression during development. To prepare dataset for this, you should do the following:</p>
+<ol>
+<li>Make a fresh build with stable version of your chatbot. In CS CLI:</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">./BINARIES/ChatScript local debug=&quot;:build 0&quot; &gt; /dev/null</span><br><span class="line"></span><br><span class="line">./BINARIES/ChatScript local debug=&quot;:build food&quot; &gt; /dev/null</span><br></pre></td></tr></table></figure>
+<ol>
+<li>Create a file with the list of all phrases you want to check during regression. You can place it anywhere you want, but I prefer to store them in REGRESS directory of the ChatScript project. This list should start with setting a user to be used for regress and made reset to clear state if something has been already set to long-term memory. For our fastfood chatbot from example, it may look like this:</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">:user test</span><br><span class="line"></span><br><span class="line">:reset</span><br><span class="line"></span><br><span class="line">I want burger</span><br><span class="line"></span><br><span class="line">I will take salad</span><br><span class="line"></span><br><span class="line">I need ice-cream</span><br><span class="line"></span><br><span class="line">:reset</span><br></pre></td></tr></table></figure>
+<ol>
+<li>Add the outputs from regress dataset to the user log. It will take your inputs and generate outputs sending them one by one to chatbot. Command must include the specified username for the user who will perform regress and the location of snapshot output. Again, you can place it anywhere you want, but I suggest to keep this sample output in RAWDATA_YOURBOT directory. You can create a separate folder for this purpose, in our case we’ll have RAWDATA_FOOD/TEST. Generating output can be performed with the following command :</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">./BINARIES/ChatScript local login=test_user source=REGRESS/food.txt &gt; /dev/null</span><br></pre></td></tr></table></figure>
+<ol>
+<li>Initialize the regress file (type <code>:quit</code> in CS console after it finishes):</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">./BINARIES/ChatScript local login=test_user debug=&quot;:regress init test_user RAWDATA/FOOD/TEST/food.txt</span><br></pre></td></tr></table></figure>
+<ol>
+<li>Check your regress test (whether it’s passed or not):</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">./BINARIES/ChatScript local login=test_user debug=&quot;:regress RAWDATA/TEST/food.txt&quot;</span><br></pre></td></tr></table></figure>
+<h2 id="My-approaches-and-suggestions"><a href="#My-approaches-and-suggestions" class="headerlink" title="My approaches and suggestions"></a>My approaches and suggestions</h2><h3 id="Resolving-collisions-in-concepts"><a href="#Resolving-collisions-in-concepts" class="headerlink" title="Resolving collisions in concepts"></a>Resolving collisions in concepts</h3><p>Writing a bot to handle inputs related to one theme, you must create custom concepts. It is a good practice to group the related by meaning words and phrases only - it helps to reuse concepts in different patterns and you’ll always know what terms in the concept mean. In the ideal world, if all words are different the mechanism works great. Yet, when you work with big lists of terms, same words might appear in different concepts. It’s okay not to use these concepts in one pattern. Well, I was not so lucky and actually I had to match and get values from concepts which have collisions in one kind of phrases. The main problem was that we actually didn’t know anything about the order of terms from the concept in a phrase. That is why I have to use <code>&lt;&lt; … &gt;&gt;</code>  construct in the pattern to match words in any order:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">u: ANY_ORDER_MATCH (I want &lt;&lt; &#123;_~concept _A&#125; &#123;_~concept_B&#125; &gt;&gt;)</span><br></pre></td></tr></table></figure>
+<p>This pattern works in such a way: after CS engine finds the first value in <code>~concept_A</code> of concepts then it won’t search for it in <code>~concept_B</code>. This brings us to <em>type I errors</em> or <em>false positive match</em>. Since we did not want to lose correct values that did not matched because of collision, I found how resolve this issue in three ways.</p>
+<p>First approach is to exclude values that are in collision between <code>~concept_A</code> and <code>~concept_B</code>. This will not be suitable if you need extra accurate results since you’ll lose a set of values.</p>
+<p>Second option is to suggest the user to use parameters in the same order they are mentioned in your pattern. This can be used only if you have the defined workflow of chatting with the user and know beforehand when he will type a certain phrase.</p>
+<p align="center"><img src="/images/chatbot/concept_collision.jpg" alt="Concepts collision"><br><br>   <em>Figure 2 - Concepts collision</em></p>
+
+<p>Finally, the third way is to organize the sets of terms moving all collision values to a separate concept (fig. 1), then adding the additional concept with all collisions to the pattern will give matches if values are in collision and not:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">u: ANY_ORDER_MATCH (I want &lt;&lt; &#123;_~concept_A&#125; &#123;_~concept_B&#125; &#123;_~concept_A_collision&#125; &gt;&gt;)</span><br></pre></td></tr></table></figure>
+<h2 id="Multiple-themes-in-one-chatbot-vs-multiple-themes-in-multiple-chatbots"><a href="#Multiple-themes-in-one-chatbot-vs-multiple-themes-in-multiple-chatbots" class="headerlink" title="Multiple themes in one chatbot vs multiple themes in multiple chatbots"></a>Multiple themes in one chatbot vs multiple themes in multiple chatbots</h2><p>In our project, I faced the challenge to implement the chatbot for a few different themes. Each of them could have the same input messages, but they must be handled with another input depending on which theme you are talking about. To solve this issue, I found two approaches. First option lies in the message layer. We could specify an additional prefix that will be related to a separate theme and add it to each message which should be processed in the context of this theme. For example, we have vegetarian fast food, and a common one. In this case, the question “which salads do you have?” should have different answers. With this approach, the rules will look like this:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">u: (&lt; vegetarian fastfood what salads)</span><br><span class="line"></span><br><span class="line">   We have $list_of_vegeterain_salads</span><br><span class="line"></span><br><span class="line">u: (&lt; common fastfood what salads)</span><br><span class="line"></span><br><span class="line">   We have $list_of_salads_with_meat</span><br></pre></td></tr></table></figure>
+<p>As we can see, the phrases “vegetarian fastfood” and “common fastfood” will be added to the message before sending to CS. The main benefit of such an approach is that we have only one instance of chatbot that will handle all possible themes. But at the same time, it adds more difficulties to the development process because the script becomes bigger, harder to extend and maintain in the future, it could also create additional collisions between different themes at some stage.</p>
+<p>Another approach that could be used in such a situation is to move themes with the same inputs to different separate chatbots. In this case, before starting a bot on the server, each of them needs to have folders for storing CS builds and users data. Each bot will be running independently on a different port. Before starting each instance, you need to specify the location of its folders with build, users state, and port number as additional parameters for CS binary (e.g. <code>./BINARIES/ChatScript topic=./TOPIC_VEGETARIAN users=./USERS_VEGETARIAN port=1045</code>)</p>
+<p>Such an approach makes it easier to extend each chatbot when they are split in several instances. Negative side is that this will create additional load on your server.</p>
+<p>Creator of chatcript assert that actually you don’t need to put your different bots on different ports and he is right. Bots can reside all together in a single build. In my business logic I’ve used different ports approach due to make separation of instances and make possible to disable if needed part of chatscript logic easier (e.g. some customers will not need whole support of every theme for each I’ve implemented bot&lt; but only few of them). So different ports for each chatbot is optional, but still can be used in such situation I faced with.</p>
+<h3 id="Handling-misspells"><a href="#Handling-misspells" class="headerlink" title="Handling misspells"></a>Handling misspells</h3><p>Mechanism for handling mistyped words is already built in CS engine. Usually long words can be matched even if you make a typo. However, it could happen that a frequent typo is not recognized by the engine. There are a few ways how handle this in CS.</p>
+<p>First approach is to describe the word inside the pattern using a wildcard for the part where a misspell can appear:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">u: TYPO_PATTERN (I [want need will] use first app*ach)</span><br></pre></td></tr></table></figure>
+<p>This pattern will match words starting with “app” and ending with “ach” no matter how many and which characters are among them. So both valid and invalid variants will pass the rule.</p>
+<p>Second way is creating a concept for a word with frequently happening typos and include all of them in it. Then you are able to use this concept in patterns instead of a word:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">concept: ~frequency IGNORESPELLING [frequency ferquency freuqency]</span><br><span class="line"></span><br><span class="line">topic: ~topic_with_typos keep repeat []</span><br><span class="line"></span><br><span class="line">u: TYPO_CONCEPT (I know ~frequency of typo)</span><br></pre></td></tr></table></figure>
+<p>Note that I’ve added <code>IGNORESPELLING</code> flag - it helps omit warnings about mistakes in the concept during the build process.</p>
+<p>Third variant seems the best for me. You can extend the existing spell fix base of engine. To achieve that, the file ChatScript_LIVEDATA_ENGLISH_SUBSTITUTES_spellfix.txt must contain the line with a word and the list typos for it:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">misspell mispell</span><br></pre></td></tr></table></figure>
+<p>After this, you should merely restart the engine.</p>
+<h3 id="Connecting-ChatScript-with-JavaScript"><a href="#Connecting-ChatScript-with-JavaScript" class="headerlink" title="Connecting ChatScript with JavaScript"></a>Connecting ChatScript with JavaScript</h3><p>Implementing the logic for handling phrases and learning information about the user is easy in CS, but anyway if you want to use it in the WEB, you need to establish a connection with your back-end somehow. Unfortunately, CS doesn’t provide the possibility to send requests via http. Still, you can use tcp sockets for this purpose. To establish a connection with NodeJS, you require <code>&#39;net&#39;</code> package and to form a special kind of string before sending it to CS. First of all, you must add prefix and postfix to you message. Prefix consists of a username and name of outputmacro used in your control script with special division characters among them. In our example, we used simplecontrol.top from Harry chatbot, and macro is named “harry” there. To have the connection held, the bot must be running without the “local” parameter (by default it is on 1024 port, but can be changed specifying in command port=PORT_NUMBER, e.g. <code>./BINARIES/ChatScript port=1055</code>)</p>
+<p>Basically, all connections with chatbot from JS will look like this:</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> net    = <span class="built_in">require</span>(<span class="string">'net'</span>);</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> prefix = <span class="string">'username\x00harry\x00'</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> post   = <span class="string">'\x00'</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> client = <span class="keyword">new</span> net.Socket();</span><br><span class="line"></span><br><span class="line">client.connect(<span class="number">1024</span>, <span class="string">'127.0.0.1'</span>, (err) =&gt; &#123;</span><br><span class="line"></span><br><span class="line">   client.write(prefix + ‘some message’ + post);</span><br><span class="line"></span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line">client.on(<span class="string">'data'</span>, (data) =&gt; response.toString());</span><br></pre></td></tr></table></figure>
+<p>For additional abstraction using Socket object methods you can write JS wrapper Class to speak with CS. It’s enough to have the asynchronous send method and the constructor to set server host and port before starting interaction with chatbot engine. As an additional parameter, you may pass username - CS will know how to answer to different users, because it is stateful and keeps all information about the user learned and written to long-term memory.</p>
+<h3 id="Architecture-of-integrating-CS-with-JS"><a href="#Architecture-of-integrating-CS-with-JS" class="headerlink" title="Architecture of integrating CS with JS"></a>Architecture of integrating CS with JS</h3><p>To clearly understand how to integrate ChatScript with JavaScript, and the architecture in JavaScript web applications that will use ChatScript as an engine for human speech recognition, have a look at the diagram below.</p>
+<p align="center"><img src="/images/chatbot/chatbot_application_architecture.svg" alt="Chatbot application architecture"><br><br>   <em>Figure 3 - Chatbot application architecture</em><br></p>
+
+<p>As you can see, the workflow begins in UI. This part depends on the technologies you prefer to use implementing the chat interface for communication of the user with a bot. Then comes the layer of REST API (in our case, it was NodeJS BE). Back-end is directly using JS class-wrapper for CS described in the previous chapter. This part will actually send the user’s messages using tcp sockets in one direction and handle recognized and unrecognized responses from the chatbot in another. The next component is CS implementation that actually performs user input recognition. It could be a huge topic with all the rules in one or the logic separated into multiple chunks - again, it all depends on the approach you choose. For performing this part of functionality, the ChatBot will use CS Engine to make the matching patterns and search in knowledge base and dictionaries. You can also add an additional feature: the custom concepts with the terms related to business logic of your application to make possible giving definitions and answers to FAQ.</p>
+<h3 id="Debug"><a href="#Debug" class="headerlink" title="Debug"></a>Debug</h3><p>When you created a lot of rules in your script it could be a bit hard to find out which exact rule fired the current input in the situation when two patterns are crossing. In this case, the creator of CS <a href="https://github.com/bwilcox-1234/ChatScript/blob/master/WIKI/ChatScript-Finalizing-A-Bot.md#verification-verify" target="_blank" rel="noopener">suggested using</a> <code>:verify blocking</code> which will show if any topics are crossing. There was another handy approach for me. I decided to create a variable which will store the same name as it was in the label. Then I just attached this variable to all the outputs - this will give an opportunity to find out immediately which exact pattern creates conflict with the current input. In code, it can look like this:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">u: BURGER (I &#123;will&#125; [want need take] _~burger)</span><br><span class="line"></span><br><span class="line">   $rule = BURGER</span><br><span class="line"></span><br><span class="line">   $order = _0</span><br><span class="line"></span><br><span class="line">   ^respond(~make_order)</span><br><span class="line"></span><br><span class="line">u: DRINKS (I &#123;will&#125; [want need take] _~drink_type)</span><br><span class="line"></span><br><span class="line">   $rule = DRINKS</span><br><span class="line"></span><br><span class="line">   $order = _0</span><br><span class="line"></span><br><span class="line">   ^respond(~make_order)</span><br><span class="line"></span><br><span class="line">topic: ~make_order keep repeat nostay []</span><br><span class="line"></span><br><span class="line">u: ()</span><br><span class="line"></span><br><span class="line">   Okay, you can take your $order. (Catched in rule $rule)</span><br></pre></td></tr></table></figure>
+<h3 id="Project-structure"><a href="#Project-structure" class="headerlink" title="Project structure"></a>Project structure</h3><p>In our small example, all code was in one file. But when it gets bigger it will make sense to split the script into parts. That’s why I decided to create directories for concepts, responds, and tests:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">- FOOD</span><br><span class="line"></span><br><span class="line">   - CONCEPTS</span><br><span class="line"></span><br><span class="line">   - RESPONDERS</span><br><span class="line"></span><br><span class="line">   - TESTS</span><br><span class="line"></span><br><span class="line">   - food.top</span><br><span class="line"></span><br><span class="line">   - simplecontroll.top</span><br></pre></td></tr></table></figure>
+<p>The main script that has rules related to one respond can be replaced with the empty pattern rule and <code>^respond</code> method to call topic from another file (this another topic should have the flag <code>nostay</code>, because we want to return to the main one after handling response):</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"># main topic in file RAWDATA/FOOD/food.top</span><br><span class="line"></span><br><span class="line">topic: ~food keep repeat []</span><br><span class="line"></span><br><span class="line">u: DRINKS ()</span><br><span class="line"></span><br><span class="line">   ^respond(~drinks)</span><br><span class="line"></span><br><span class="line">u: MEALS ()</span><br><span class="line"></span><br><span class="line">   ^respond(~meals)</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"># topic in file RAWDATA/FOOD/RESPONDERS/drinks.top</span><br><span class="line"></span><br><span class="line">topic: ~drinks keep repeat nostay []</span><br><span class="line"></span><br><span class="line">u: DRINK (^want(_~drink_type))</span><br><span class="line"></span><br><span class="line">   Ok, take and drink your _0 .</span><br></pre></td></tr></table></figure>
+<p>If concepts include a huge amount of terms they can be declared in separate files too. It will make the project easier to maintain and extend in future.</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"># concepts in file RAWDATA/FOOD/CONCEPTS/food_concepts.top</span><br><span class="line"></span><br><span class="line">concept: ~food_type [burger potato salad ice-cream vegan_&apos;s_burger]</span><br><span class="line"></span><br><span class="line">concept: ~drink_type [~alcohol ~non_alcohol]</span><br><span class="line"></span><br><span class="line">concept: ~non_alcohol [cola juice milk water]</span><br><span class="line"></span><br><span class="line">concept: ~alcohol [rum gean wiskey vodka]</span><br></pre></td></tr></table></figure>
+<h2 id="Useful-information-sources"><a href="#Useful-information-sources" class="headerlink" title="Useful information sources"></a>Useful information sources</h2><ul>
+<li><p><a href="https://github.com/bwilcox-1234/ChatScript" target="_blank" rel="noopener">ChatScript repo on github</a></p>
+</li>
+<li><p><a href="https://github.com/bwilcox-1234/ChatScript/blob/master/WIKI/README.md" target="_blank" rel="noopener">All ChatScript documentation</a></p>
+</li>
+<li><p>For basic understanding what is happening here at the beginning go through this <a href="https://github.com/bwilcox-1234/ChatScript/blob/master/WIKI/OVERVIEWS-AND-TUTORIALS/ChatScript-Tutorial.md" target="_blank" rel="noopener">tutorial</a> step by step.</p>
+</li>
+</ul>
+<p>I strongly recommend to start from this part of documentation:</p>
+<ul>
+<li><p><a href="https://github.com/bwilcox-1234/ChatScript/blob/master/WIKI/ChatScript-Basic-User-Manual.md" target="_blank" rel="noopener">ChatScript Basic User Manual</a></p>
+</li>
+<li><p><a href="https://github.com/bwilcox-1234/ChatScript/blob/master/WIKI/ChatScript-Advanced-User-Manual.md" target="_blank" rel="noopener">ChatScript Advanced User Manual</a></p>
+</li>
+<li><p>Take a look at <a href="https://www.chatbots.org/ai_zone/viewforum/44/" target="_blank" rel="noopener">CS forum</a> where sometimes you can find answers or even ask your own questions.</p>
+</li>
+</ul>
+
+
+                
+                    <!-- Go to www.addthis.com/dashboard to customize your tools -->
+                    <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-58f3c2d3d790e137"></script>
+
+                    <!-- Go to www.addthis.com/dashboard to customize your tools -->
+                    <div class="addthis_sharing_toolbox"></div>
+                
+            </div>
+        </div>
+
+        <div class="row">
+            <!-- LEELOO -->
+            <div class="center col-lg-12 col-md-12 col-sm-12">
+                <!-- Leeloo form start --> 
+<script>
+    window.LEELOO_LEADGENTOOLS = (window.LEELOO_LEADGENTOOLS || []).concat('vfgnh4');
+</script>
+    
+<div class="wepster-hash-vfgnh4"></div>
+<!-- Leeloo form end -->
+            </div>
+        </div>
+
+        <div class="row">
+            <!-- Comments -->
+            
+                <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                    
+    <hr />
+    <h3>Comments:</h3>
+    <div id="disqus_thread">
+        <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+    </div>
+
+
+
+                </div>
+            
+        </div>
+    </div>
+</article>
+
+
+    <!-- Footer -->
+    <hr />
+
+<!-- Footer -->
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <ul class="list-inline text-center">
+                    
+                        <li>
+                            <div class="twitter-footer">
+                                
+                                    <span class="action-footer">Follow us on twitter to become a better software development expert</span>
+                                
+                                <a href="https://twitter.com/webbylab" target="_blank">
+                                    <span class="fa-stack fa-lg">
+                                        <i class="fa fa-circle fa-stack-2x"></i>
+                                        <i class="fa fa-twitter fa-stack-1x fa-inverse"></i>
+                                    </span>
+                                </a>
+                            </div>
+                        </li>
+                    
+
+                    
+
+                    
+
+                    
+
+                    
+
+                    
+                </ul>
+                <p class="copyright text-muted">&copy; 2020 WebbyLab<br></p>
+                <!-- <p class="copyright text-muted">Original Theme <a target="_blank" href="http://startbootstrap.com/template-overviews/clean-blog/">Clean Blog</a> from <a href="http://startbootstrap.com/" target="_blank">Start Bootstrap</a></p>
+                <p class="copyright text-muted">Adapted for <a target="_blank" href="https://hexo.io/">Hexo</a> by <a href="http://www.codeblocq.com/" target="_blank">Jonathan Klughertz</a></p> -->
+            </div>
+        </div>
+    </div>
+</footer>
+
+
+    <!-- After footer scripts -->
+    
+<!-- jQuery -->
+<script src="//code.jquery.com/jquery-2.1.4.min.js"></script>
+
+<!-- Bootstrap -->
+<script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+
+<!-- Gallery -->
+<script src="//cdnjs.cloudflare.com/ajax/libs/featherlight/1.3.5/featherlight.min.js" type="text/javascript" charset="utf-8"></script>
+
+<!-- Disqus Comments -->
+
+<script type="text/javascript">
+    var disqus_shortname = 'blog-webbylab-com';
+
+    (function(){
+        var dsq = document.createElement('script');
+        dsq.type = 'text/javascript';
+        dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
+
+
+</body>
+
+</html>

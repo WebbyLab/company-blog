@@ -1,0 +1,477 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<!-- Head tag -->
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!--Description-->
+    
+        <meta name="description" content="80% percent of NodeJS developers do the same mistake - they assume that their application will work as a single process. You can say that you application is one service but if you use pm2 in cluster mode then you have multiple processes already. This article shares our experience of implementing notificator for multi-tenant application using RabbitMQ and NodeJS.">
+    
+
+    <!--Author-->
+    
+        <meta name="author" content="WebbyLab">
+    
+
+    <!--Open Graph Title-->
+    
+        <meta property="og:title" content="How to build notificator service for scalable multi-tenant application using RabbitMQ and NodeJS"/>
+    
+
+    <!--Open Graph Description-->
+    
+        <meta property="og:description" content="80% percent of NodeJS developers do the same mistake - they assume that their application will work as a single process. You can say that you application is one service but if you use pm2 in cluster mode then you have multiple processes already. This article shares our experience of implementing notificator for multi-tenant application using RabbitMQ and NodeJS." />
+    
+
+    <!--Open Graph Site Name-->
+    <meta property="og:site_name" content="Agile developer"/>
+
+    <!--Type page-->
+    
+        <meta property="og:type" content="article" />
+    
+
+    <!--Page Cover-->
+    
+
+        <meta name="twitter:card" content="summary" />
+    
+
+    <!-- Title -->
+    
+    <title>How to build notificator service for scalable multi-tenant application using RabbitMQ and NodeJS - Agile developer</title>
+
+    <!-- Bootstrap Core CSS -->
+    <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet"/>
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/style.css">
+
+    <!-- Custom Fonts -->
+    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+    <link href="//fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic" rel="stylesheet" type="text/css">
+    <link href="//fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800" rel="stylesheet" type="text/css">
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+    <script src="//oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+    <script src="//oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+    <!-- Gallery -->
+    <link href="//cdnjs.cloudflare.com/ajax/libs/featherlight/1.3.5/featherlight.min.css" type="text/css" rel="stylesheet" />
+
+    <!-- Google Analytics -->
+    
+    <script>
+        (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+                    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+                m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+        })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+        ga('create', 'UA-9638621-10', 'auto');
+        ga('send', 'pageview');
+
+    </script>
+
+
+
+    <!-- LEELOO Init -->
+    <!-- leeloo init code -->
+<script>
+window.LEELOO = function(){
+    window.LEELOO_INIT = { id: "59049996ac641a00190cb1b4" };
+    var js = document.createElement('script');
+    js.src = 'https://app.leeloo.ai/init.js';
+    document.getElementsByTagName('head')[0].appendChild(js);
+}; LEELOO();
+</script>
+<!-- leeloo init code end -->
+
+
+    <!-- favicon -->
+    
+    <link rel="icon" href="/img/favicon.ico">
+    
+	
+</head>
+
+
+<body>
+    <!-- Menu -->
+    <!-- Navigation -->
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">WebbyLab's Engineering Blog</a>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+            <ul class="nav navbar-nav navbar-right">
+                
+                    <li>
+                        <a target="_blank" href="https://webbylab.com">
+                            
+                                Main Company Site
+                            
+                        </a>
+                    </li>
+                
+                    <li>
+                        <a target="_blank" href="https://react.webbylab.com">
+                            
+                                React/Mobile/Nodejs Department
+                            
+                        </a>
+                    </li>
+                
+            </ul>
+        </div>
+        <!-- /.navbar-collapse -->
+    </div>
+    <!-- /.container -->
+</nav>
+
+
+    <!-- Main Content -->
+    <!-- LEELOO POPUP -->
+<!-- Leeloo popup start -->
+<script>
+    window.LEELOO_LEADGENTOOLS = (window.LEELOO_LEADGENTOOLS || []).concat('f2mnds');
+</script>
+<!-- Leeloo popup start -->
+
+
+<!-- Page Header -->
+<!-- Set your background image for this header in your post front-matter: cover -->
+
+<header class="intro-header" style="background-image: url('/images/word2vec/back.jpg')">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <div class="post-heading">
+                    <h1>How to build notificator service for scalable multi-tenant application using RabbitMQ and NodeJS</h1>
+                    
+                    <span class="meta">
+                        <!-- Date and Author -->
+                        
+                            Posted by Yurii Vlasiuk (Developer) on
+                        
+                        2020-09-04
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+<!-- Post Content -->
+<article>
+    <div class="container">
+        <div class="row">
+
+            <!-- Tags and categories -->
+           
+                <div class="col-lg-4 col-lg-offset-2 col-md-5 col-md-offset-1 post-tags">
+                    
+                        
+
+
+<a href="/tags/javascript-team/">#JavaScript Team</a> <a href="/tags/tutorial/">#Tutorial</a> <a href="/tags/nodejs/">#NodeJS</a> <a href="/tags/rabbitmq/">#RabbitMQ</a>
+
+
+                    
+                </div>
+                <div class="col-lg-4 col-md-5 post-categories">
+                    
+                </div>
+            
+
+            <!-- Gallery -->
+            
+
+            <!-- Post Main Content -->
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <h2 id="Introduction"><a href="#Introduction" class="headerlink" title="Introduction"></a>Introduction</h2><p>I want to explain the usage of this post in common use cases:</p>
+<ul>
+<li>case 1: web application which can send pop-up messages about something that happen in the system (e.g. your order was completed)</li>
+<li>case 2: realtime chat between multiple users (e.g. chat room to which often connect and disconnect new clients)</li>
+<li>case 3: an event-based system where one event sent from the source could trigger other modules to process them (e.g. image editor after compressing image upload it to temporary storage and user will start downloading automatically)</li>
+</ul>
+<p>Of course in all of these cases, the task is more complex. It may seem, on first sight, that we will connect to our backend which will send notifications from one clients to others. But if we have few processes of NodeJS (e.g. pm2 cluster or docker swarm), different users will be connected to different processes hidden behind load balancer.</p>
+<h2 id="The-problem"><a href="#The-problem" class="headerlink" title="The problem"></a>The problem</h2><p><strong>80% percent of NodeJS developers do the same mistake - they assume that their application will work as a single process. You can say that you application is one service but if you use pm2 in cluster mode then you have multiple processes already.</strong></p>
+<p>Imagine that you create orders in one instance of the application, process them in another instance and send via WebSocket info to the client in third place. Creating and changing orders statuses should trigger client notification on the web interface. Also OrderProcessor is subscribed for receiving events about order creation to start processing when new order is created.</p>
+<p><img src="../images/notificator/schema1.png" alt="Schema_1"></p>
+<p>This was not an issue till you were performing all of this in one process, because you can insert notify call in every place you need. But in the current situation, we have distributed processing between multiple nodes. This means that you need to have some tools to exchange events between these independently running processes. </p>
+<blockquote>
+<p>A good practice is to avoid keeping any state in the process to let it run independently.</p>
+</blockquote>
+<p>Usually, developers assume their application will be running in a single process. They start to keep some state in process memory (e.g. changes of order status, identifiers etc.). As a result, this leads to issues when the application needs to be scaled (multiple nodes will not have a shared state which changed in one of them). A good practice is to avoid keeping any state in the process to let it run independently. All needed changes can be sent to every node as an event, as well as emitted by this node if it becomes a source of changes. Notificator itself is a way to make backend stateless and delegate notifications to an independent process.</p>
+<h2 id="Tools-to-tackle-it"><a href="#Tools-to-tackle-it" class="headerlink" title="Tools to tackle it"></a>Tools to tackle it</h2><p>Currently, we have such event-based multi-tenant project with similar requirements. And we built a specific service for sending notifications between independent processes. We used NodeJS and RabbitMQ as a transport. Also we use a docker to develop and deploy to production. RabbitMQ server is running as a docker container as well. So minimal stack for this solution is:</p>
+<ul>
+<li>NodeJS v12</li>
+<li>RabbitMQ v3.8.4</li>
+<li>Docker</li>
+</ul>
+<p>And I want to describe and analyze the approaches and patterns which we used during the implementation. Here we go.</p>
+<h2 id="Architectural-background"><a href="#Architectural-background" class="headerlink" title="Architectural background"></a>Architectural background</h2><p>To begin with the design that we used, we often try to keep the Layers Architecture pattern in our projects. This means that our application has multiple zones of responsibility, which should be kept only inside separate parts, they should not leak from the lower level layer to the upper one. You can find the REST backend using this approach on our <a href="https://github.com/WebbyLab/webbylab-starter-app-for-nodejs" target="_blank" rel="noopener">Starter app for NodeJS</a> which is open-sourced now.</p>
+<p>We also try keep in mind the <a href="www.objectmentor.com/resources/articles/dip.pdf">Dependency Inversion Principle</a>: </p>
+<blockquote>
+<p>High-level modules should not depend on low-level modules. Both should depend on abstractions.<br>Abstractions should not depend upon details. Details should depend upon abstractions.</p>
+</blockquote>
+<p>In our case this means that connecting to RabbitMQ or other PubSub should not be implemented directly in the application, but it should be hidden behind an abstraction. You can save yourself from the pain in the future by using this approach in case when you may need to replace RabbitMQ with Redis at some point. If you have an abstraction that will not change, you will need to implement the same interface methods that were previously implemented using another driver for RabbitMQ.</p>
+<h2 id="Creating-abstraction-layers"><a href="#Creating-abstraction-layers" class="headerlink" title="Creating abstraction layers"></a>Creating abstraction layers</h2><p>So we used the same approach when built our Notificator module. First of all we defined the layers:</p>
+<ul>
+<li><strong>Notifcator</strong> - High-level class used on Service Layer of backend which allows to <code>notify</code> about events and <code>receive</code> them.</li>
+<li><strong>PubSub</strong> - Class used by Notificator to <code>publish</code> and <code>subscribe</code> to events.</li>
+<li><strong>PubSubDriverInterface</strong> - Interface defines methods needed to implement for PubSub.</li>
+<li><strong>RabbitDriver</strong> - Actual implementation for connecting to RabbitMQ and using it as a transport for events</li>
+</ul>
+<p><img src="../images/notificator/schema2.png" alt="Schema_2"></p>
+<p>Also we decided to use <a href="https://martinfowler.com/articles/injection.html" target="_blank" rel="noopener">Dependency Injection</a>: each lower-layer will be injected in a constructor of upper-layer class.</p>
+<p>Of course these all are not the application layers. Notificator itself was used on Service layer of our backend.<br>Let’s have a look how we can implement this layers of a notificator module one by one.</p>
+<h3 id="Notificator"><a href="#Notificator" class="headerlink" title="Notificator"></a>Notificator</h3><p>First of all let’s define the Notificator class. It will be used to notify about some events which happen as well as give possibility to receive this event in other node of application. I defined such requirements for this class:</p>
+<ul>
+<li>use some <code>pubsub</code> for performing events exchange which should be injected (Dependency Injection)</li>
+<li>have <code>initial entry</code> point which allows establishing a connection to the PubSub server and also creates a channel for notifications</li>
+<li>have <code>notify</code> method for publishing messages</li>
+<li>have <code>receive</code> method for subscribing to messages</li>
+</ul>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Notificator.js</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Notificator</span> </span>&#123;</span><br><span class="line">    <span class="keyword">constructor</span>(args) &#123;</span><br><span class="line">        <span class="keyword">if</span> (!args.pubsub) <span class="keyword">throw</span> <span class="keyword">new</span> <span class="built_in">Error</span>(<span class="string">'"pubsub" is required'</span>);</span><br><span class="line">        <span class="keyword">this</span>.pubsub = args.pubsub;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">async</span> init() &#123;</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            <span class="keyword">await</span> <span class="keyword">this</span>.pubsub.connect();</span><br><span class="line">            <span class="keyword">await</span> <span class="keyword">this</span>.pubsub.createChannel(<span class="string">'notifications'</span>);</span><br><span class="line">        &#125; <span class="keyword">catch</span> (error) &#123;</span><br><span class="line">            <span class="built_in">console</span>.error(<span class="string">'Notificator initialization failed.'</span>);</span><br><span class="line">            <span class="built_in">console</span>.error(error);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    notify(message) &#123;</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            <span class="keyword">this</span>.pubsub.publish(<span class="string">'notifications'</span>, message);</span><br><span class="line">        &#125; <span class="keyword">catch</span> (error) &#123;</span><br><span class="line">            <span class="built_in">console</span>.error(<span class="string">'Failed to notify'</span>);</span><br><span class="line">            <span class="built_in">console</span>.error(error);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    receive(messageHandler) &#123;</span><br><span class="line">        <span class="keyword">this</span>.pubsub.subscribe(<span class="string">'notifications'</span>, messageHandler);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>As a result we have a simple class which keep only required logic. Next step will be defining an abstraction.</p>
+<h3 id="PubSub"><a href="#PubSub" class="headerlink" title="PubSub"></a>PubSub</h3><p>To define an abstraction for the pubsub provider we should create a class that will call methods directly from a driver. This driver will give the implementation of the interaction with the infrastructural part – RabbitMQ in our case. So, this class has the following requirements:</p>
+<ul>
+<li>use <code>driver</code> for interacting with pubsub provider</li>
+<li>check that pubsub <code>driver</code> implements correct interface</li>
+<li>have <code>connect</code> method for connecting to the pubsub process</li>
+<li>have <code>createChannel</code> method for creating a channel for the messages exchange</li>
+<li>have <code>publish</code> method for publishing message to the channel</li>
+<li>have <code>subscribe</code> method for subscribing to the channel</li>
+<li>have possibility in the <code>subscribe</code> method to pass a custom messageHandler to process messages</li>
+</ul>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// PubSub.js</span></span><br><span class="line"><span class="keyword">const</span> PubSubDriverInterface = <span class="built_in">require</span>(<span class="string">'./drivers/PubSubDriverInterface'</span>);</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">PubSub</span> </span>&#123;</span><br><span class="line">    <span class="keyword">constructor</span>(args) &#123;</span><br><span class="line">        <span class="keyword">if</span> (!args.driver) <span class="keyword">throw</span> <span class="keyword">new</span> <span class="built_in">Error</span>(<span class="string">'"driver" is required'</span>);</span><br><span class="line">        <span class="keyword">if</span> (!(args.driver <span class="keyword">instanceof</span> PubSubDriverInterface)) &#123;</span><br><span class="line">            <span class="keyword">throw</span> <span class="keyword">new</span> <span class="built_in">Error</span>(<span class="string">'Driver does not implement interface of "PubSubDriverInterface"'</span>);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">this</span>.driver = args.driver;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">async</span> connect() &#123;</span><br><span class="line">        <span class="keyword">this</span>.connection = <span class="keyword">await</span> <span class="keyword">this</span>.driver.connect();</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">this</span>.connection;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">async</span> createChannel(channel) &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">this</span>.driver.createChannel(channel);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    publish(channel, message) &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">this</span>.driver.publish(channel, message);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    subscribe(channel, messageHandler) &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">this</span>.driver.subscribe(channel, messageHandler);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="PubSubDriverInterface"><a href="#PubSubDriverInterface" class="headerlink" title="PubSubDriverInterface"></a>PubSubDriverInterface</h3><p>The main role of this interface is just to enumerate methods and their signatures. They will become sort of “contract” between our application and pubsub service. This means that you will need to implemente them in a case when you decided to replace the current pubsub with another. In this case other application code will not be affected by this change at all. Basically, the requirements for driver are the following:</p>
+<ul>
+<li>constructor should set empty objects to class context for keeping <code>channels</code> and <code>handlers</code></li>
+<li>have <code>connect</code> method throwing error if not implemented</li>
+<li>have <code>createChannel</code> method throwing error if not implemented</li>
+<li>have <code>publish</code> method throwing error if not implemented</li>
+<li>have <code>subscribe</code> method throwing error if not implemented</li>
+<li>signature of <code>createChannel</code> method should accept name of a channel to create</li>
+<li>signature of <code>publish</code> method should accept name of a channel and message to publish</li>
+<li>signature of <code>subscribe</code> method should accept name of a channel to subscribe and handler</li>
+</ul>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// PubSubDriverInterface.js</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">PubSubDriverInterface</span> </span>&#123;</span><br><span class="line">    <span class="keyword">constructor</span>(args) &#123;</span><br><span class="line">        <span class="keyword">this</span>.channels = &#123;&#125;;</span><br><span class="line">        <span class="keyword">this</span>.handlers = &#123;&#125;;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">async</span> connect() &#123;</span><br><span class="line">        <span class="keyword">throw</span> <span class="keyword">new</span> <span class="built_in">Error</span>(<span class="string">'"connect" method not implemented'</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">async</span> createChannel(channel) &#123;</span><br><span class="line">        <span class="keyword">throw</span> <span class="keyword">new</span> <span class="built_in">Error</span>(<span class="string">'"createChannel" method not implemented'</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    publish(channel, message) &#123;</span><br><span class="line">        <span class="keyword">throw</span> <span class="keyword">new</span> <span class="built_in">Error</span>(<span class="string">'"publish" method not implemented'</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    subscribe(channel, handler) &#123;</span><br><span class="line">        <span class="keyword">throw</span> <span class="keyword">new</span> <span class="built_in">Error</span>(<span class="string">'"subscribe" method not implemented'</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>Now when abstractions are described, we can go towards the implementation of an exact driver.</p>
+<h3 id="RabbitDriver"><a href="#RabbitDriver" class="headerlink" title="RabbitDriver"></a>RabbitDriver</h3><p>For the interaction with RabbitMQ there are quite a few packages on NPM. Actually, I tried to use some of them, but finally I chose <a href="https://www.npmjs.com/package/amqplib" target="_blank" rel="noopener">amqplib</a>. It seems to be stable, has many installs on NPM, 100% test coverage, well written <a href="http://www.squaremobius.net/amqp.node/channel_api.html" target="_blank" rel="noopener">documentation</a> and it was also used in the examples of <a href="https://www.rabbitmq.com/tutorials/tutorial-one-javascript.html" target="_blank" rel="noopener">Official RabbitMQ manual for JavaScript</a>. As you may guess, most of the code of this part is taken from these examples. I changed some methods a bit to make them promisified.</p>
+<p>Also, the logic was wrapped in a class methods for <code>RabbitDriver</code> so I will explain each of them. This class implements methods of <code>PubSubDriverInterface</code> that we previuosly described.</p>
+<h4 id="constructor-NaN"><a href="#constructor-NaN" class="headerlink" title="constructor"></a>constructor</h4><p>Constructor of RabbitDriver will have specific for interaction with RabbitMQ process options. Here is main re</p>
+<ul>
+<li>should accept <code>arguments</code> object</li>
+<li>arguments should have <code>endpoint</code> entry to define where pubsub process is running</li>
+<li>arguments should have <code>login</code> entry to define login credential to the pubsub process</li>
+<li>arguments should have <code>password</code> entry to define the password credential to the pubsub process</li>
+</ul>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Rabbit.js</span></span><br><span class="line"><span class="keyword">const</span> amqp                  = <span class="built_in">require</span>(<span class="string">'amqplib/callback_api'</span>);</span><br><span class="line"><span class="keyword">const</span> PubSubDriverInterface = <span class="built_in">require</span>(<span class="string">'./PubSubDriverInterface'</span>);</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">RabbitDriver</span> <span class="keyword">extends</span> <span class="title">PubSubDriverInterface</span> </span>&#123;</span><br><span class="line">    <span class="keyword">constructor</span>(args) &#123;</span><br><span class="line">        <span class="keyword">super</span>(args);</span><br><span class="line">        <span class="keyword">if</span> (!args.endpoint) <span class="keyword">throw</span> <span class="keyword">new</span> <span class="built_in">Error</span>(<span class="string">'"endpoint" is required'</span>);</span><br><span class="line">        <span class="keyword">if</span> (!args.login) <span class="keyword">throw</span> <span class="keyword">new</span> <span class="built_in">Error</span>(<span class="string">'"login" is required'</span>);</span><br><span class="line">        <span class="keyword">if</span> (!args.password) <span class="keyword">throw</span> <span class="keyword">new</span> <span class="built_in">Error</span>(<span class="string">'"password" is required'</span>);</span><br><span class="line">        <span class="keyword">this</span>.endpoint = args.endpoint;</span><br><span class="line">        <span class="keyword">this</span>.login    = args.login;</span><br><span class="line">        <span class="keyword">this</span>.password = args.password;</span><br><span class="line">    &#125;</span><br><span class="line">    ...</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="connect"><a href="#connect" class="headerlink" title="connect"></a>connect</h4><p>The <code>amqp.connect()</code> is used inside to perform the connection to the RabbitMQ server. I decided to prepare a connection string. But you can use object with multiple params instead of concatenated URL as a first argument. Second optional argument is a callback which can get an error and connection. As a result of a successful connection I save it to <code>this</code> for next usage in other methods.</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Rabbit.js</span></span><br><span class="line"><span class="keyword">const</span> amqp                  = <span class="built_in">require</span>(<span class="string">'amqplib/callback_api'</span>);</span><br><span class="line"><span class="keyword">const</span> PubSubDriverInterface = <span class="built_in">require</span>(<span class="string">'./PubSubDriverInterface'</span>);</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">RabbitDriver</span> <span class="keyword">extends</span> <span class="title">PubSubDriverInterface</span> </span>&#123;</span><br><span class="line">...</span><br><span class="line">    <span class="keyword">async</span> connect() &#123;</span><br><span class="line">        <span class="keyword">const</span> connectString = <span class="string">`amqp://<span class="subst">$&#123;<span class="keyword">this</span>.login&#125;</span>:<span class="subst">$&#123;<span class="keyword">this</span>.password&#125;</span>@<span class="subst">$&#123;<span class="keyword">this</span>.endpoint&#125;</span>`</span>;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> <span class="built_in">Promise</span>(<span class="function">(<span class="params">res, rej</span>) =&gt;</span> &#123;</span><br><span class="line">            amqp.connect(connectString, (error, connection) =&gt; &#123;</span><br><span class="line">                <span class="keyword">if</span> (error) &#123;</span><br><span class="line">                    <span class="built_in">console</span>.error(<span class="string">`Failed to connect to <span class="subst">$&#123;<span class="keyword">this</span>.endpoint&#125;</span>`</span>);</span><br><span class="line"></span><br><span class="line">                    <span class="keyword">return</span> rej(error);</span><br><span class="line">                &#125;</span><br><span class="line"></span><br><span class="line">                <span class="built_in">console</span>.info(<span class="string">`Connected to RabbitMQ on <span class="subst">$&#123;<span class="keyword">this</span>.endpoint&#125;</span>`</span>);</span><br><span class="line">                <span class="keyword">this</span>.connection = connection;</span><br><span class="line">                res(connection);</span><br><span class="line">            &#125;);</span><br><span class="line">        &#125;);</span><br><span class="line">    &#125;</span><br><span class="line">...</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="createChannel"><a href="#createChannel" class="headerlink" title="createChannel"></a>createChannel</h4><p>The next thing we need is to create a channel. The connection method <code>connection.createChannel()</code> is used for this. It also has a callback which gives an <code>error</code> and a <code>channel</code>. The channel will be saved to the class context object using <code>channelName</code> mapping. This can help us if we need to support multiple channels. A single channel that we called <code>notifications</code> was enough for the current Notificator.</p>
+<p>Also we need to call <code>channel.assertExchange()</code> to make RabbitMQ work in pubsub mode. The first argument accepts <code>channelName</code>. Second argument defines exchange type. There are a few exchange types available: <code>direct</code>, <code>topic</code>, <code>headers</code> and <code>fanout</code>. We’ll focus on the last one - the <code>fanout</code>. The <code>fanout</code> exchange just broadcasts all the messages it receives to all the queues it knows.</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Rabbit.js</span></span><br><span class="line"><span class="keyword">const</span> amqp                  = <span class="built_in">require</span>(<span class="string">'amqplib/callback_api'</span>);</span><br><span class="line"><span class="keyword">const</span> PubSubDriverInterface = <span class="built_in">require</span>(<span class="string">'./PubSubDriverInterface'</span>);</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">RabbitDriver</span> <span class="keyword">extends</span> <span class="title">PubSubDriverInterface</span> </span>&#123;</span><br><span class="line">...</span><br><span class="line">    <span class="keyword">async</span> createChannel(channelName) &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> <span class="built_in">Promise</span>(<span class="function">(<span class="params">res, rej</span>) =&gt;</span> &#123;</span><br><span class="line">            <span class="keyword">this</span>.connection.createChannel(<span class="function">(<span class="params">error, channel</span>) =&gt;</span> &#123;</span><br><span class="line">                <span class="keyword">if</span> (error) &#123;</span><br><span class="line">                    <span class="built_in">console</span>.error(<span class="string">`Failed to create channel "<span class="subst">$&#123;channelName&#125;</span>"`</span>);</span><br><span class="line"></span><br><span class="line">                    <span class="keyword">return</span> rej(error);</span><br><span class="line">                &#125;</span><br><span class="line"></span><br><span class="line">                channel.assertExchange(channelName, <span class="string">'fanout'</span>, &#123; <span class="attr">durable</span>: <span class="literal">false</span> &#125;);</span><br><span class="line">                <span class="keyword">this</span>.channels[channelName] = channel;</span><br><span class="line"></span><br><span class="line">                <span class="built_in">console</span>.info(<span class="string">`Created channel "<span class="subst">$&#123;channelName&#125;</span>"`</span>);</span><br><span class="line">                res(channel);</span><br><span class="line">            &#125;);</span><br><span class="line">        &#125;);</span><br><span class="line">    &#125;</span><br><span class="line">...</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="publish"><a href="#publish" class="headerlink" title="publish"></a>publish</h4><p>The <code>channel.publish()</code> method is used for publishing. It accepts <code>channel</code>, <code>routingKey</code> and <code>message</code> args that should be buffered. Routing key is left as an empty string, because we use only one topic in the notificator. Also we have small <code>formatMessage</code> utility function to format message to string, because e.g. we want provide an API that can accept not only strings, but also objects.</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Rabbit.js</span></span><br><span class="line"><span class="keyword">const</span> amqp                  = <span class="built_in">require</span>(<span class="string">'amqplib/callback_api'</span>);</span><br><span class="line"><span class="keyword">const</span> PubSubDriverInterface = <span class="built_in">require</span>(<span class="string">'./PubSubDriverInterface'</span>);</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">RabbitDriver</span> <span class="keyword">extends</span> <span class="title">PubSubDriverInterface</span> </span>&#123;</span><br><span class="line">...</span><br><span class="line">    publish(channel, message) &#123;</span><br><span class="line">        <span class="built_in">console</span>.info(<span class="string">`Publishing message "<span class="subst">$&#123;message&#125;</span>" to channel "<span class="subst">$&#123;channel&#125;</span>"`</span>);</span><br><span class="line">        <span class="keyword">if</span> (!<span class="keyword">this</span>.channels[channel]) <span class="keyword">throw</span> <span class="built_in">Error</span>(<span class="string">`Channel for exchange <span class="subst">$&#123;channel&#125;</span> not exists`</span>);</span><br><span class="line"></span><br><span class="line">        <span class="keyword">this</span>.channels[channel].publish(channel, <span class="string">''</span>, Buffer.from(formatMessage(message)));</span><br><span class="line">    &#125;</span><br><span class="line">...</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">formatMessage</span>(<span class="params">message</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">let</span> messageStr;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (<span class="keyword">typeof</span> message === <span class="string">'string'</span>) &#123;</span><br><span class="line">        messageStr = message;</span><br><span class="line">    &#125; <span class="keyword">else</span> <span class="keyword">if</span> (<span class="keyword">typeof</span> message === <span class="string">'object'</span>) &#123;</span><br><span class="line">        messageStr = <span class="built_in">JSON</span>.stringify(message);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> messageStr;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="subscribe"><a href="#subscribe" class="headerlink" title="subscribe"></a>subscribe</h4><p>In fact it has no topics as regular pubsub services like MQTT. This option will make Rabbit create multiple queues (for each subscriber separate) under the hood, but if they are binded to one exchange, all of them will receive everything published to this channel, like messages are broadcasting. In regular RabbitMQ mode you have <code>sendToQueue</code> and <code>consume</code>, and only one of multiple consumers will get message, which is okay for job manager e.g. but not suitable for our case.</p>
+<p>To subscribe for messages in the channel we need receive a queue that will be receving messages. We can get it by using the <code>channel.assertQueue()</code> method. When we get it, it should be bound to the channel using <code>channel.bindQueue</code> and passed to <code>channel.consume</code> where the actual <code>messageHandler</code> can be set. Also in this case we don’t need acknowledgement for our messages <code>{ noAck: true }</code>.</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Rabbit.js</span></span><br><span class="line"><span class="keyword">const</span> amqp                  = <span class="built_in">require</span>(<span class="string">'amqplib/callback_api'</span>);</span><br><span class="line"><span class="keyword">const</span> PubSubDriverInterface = <span class="built_in">require</span>(<span class="string">'./PubSubDriverInterface'</span>);</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">RabbitDriver</span> <span class="keyword">extends</span> <span class="title">PubSubDriverInterface</span> </span>&#123;</span><br><span class="line">...</span><br><span class="line">    subscribe(channel, messageHandler) &#123;</span><br><span class="line">        <span class="keyword">if</span> (!<span class="keyword">this</span>.channels[channel]) <span class="keyword">throw</span> <span class="built_in">Error</span>(<span class="string">`Channel for queue <span class="subst">$&#123;channel&#125;</span> not exists`</span>);</span><br><span class="line"></span><br><span class="line">        <span class="keyword">this</span>.channels[channel].assertQueue(<span class="string">''</span>, &#123; <span class="attr">exclusive</span>: <span class="literal">true</span> &#125;, (error, q) =&gt; &#123;</span><br><span class="line">            <span class="keyword">if</span> (error) <span class="keyword">throw</span> error;</span><br><span class="line"></span><br><span class="line">            <span class="built_in">console</span>.info(<span class="string">` [*] Waiting for messages for <span class="subst">$&#123;channel&#125;</span>. To exit press CTRL+C`</span>);</span><br><span class="line">            <span class="keyword">this</span>.channels[channel].bindQueue(q.queue, channel, <span class="string">''</span>);</span><br><span class="line"></span><br><span class="line">            <span class="keyword">this</span>.channels[channel].consume(q.queue, (message) =&gt; &#123;</span><br><span class="line">                <span class="keyword">this</span>._messageHandler(&#123; channel, message &#125;, messageHandler);</span><br><span class="line">            &#125;, &#123; <span class="attr">noAck</span>: <span class="literal">true</span> &#125;);</span><br><span class="line">        &#125;);</span><br><span class="line">    &#125;</span><br><span class="line">    ...</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="messageHandler"><a href="#messageHandler" class="headerlink" title="_messageHandler"></a>_messageHandler</h4><p>Defines the default message handler. It will be called in any case and will also pass a message to a custom handler passed in subscribe. The <code>parseMessage</code> util we implemented can be used as a simple parsing function for getting objects from strings in order to make our Driver API accept Objects as well as returning them.</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Rabbit.js</span></span><br><span class="line"><span class="keyword">const</span> amqp                  = <span class="built_in">require</span>(<span class="string">'amqplib/callback_api'</span>);</span><br><span class="line"><span class="keyword">const</span> PubSubDriverInterface = <span class="built_in">require</span>(<span class="string">'./PubSubDriverInterface'</span>);</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">RabbitDriver</span> <span class="keyword">extends</span> <span class="title">PubSubDriverInterface</span> </span>&#123;</span><br><span class="line">...</span><br><span class="line">    _messageHandler(&#123; queue, message, noAck = <span class="literal">false</span> &#125;, messageHandler) &#123;</span><br><span class="line">        <span class="keyword">const</span> messageString = message.content.toString();</span><br><span class="line"></span><br><span class="line">        <span class="built_in">console</span>.info(<span class="string">` [x] Received "<span class="subst">$&#123;messageString&#125;</span>"`</span>);</span><br><span class="line">        <span class="keyword">if</span> (<span class="keyword">typeof</span> messageHandler === <span class="string">'function'</span>) messageHandler(parseMessage(messageString));</span><br><span class="line">    &#125;</span><br><span class="line">...</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">parseMessage</span>(<span class="params">message</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">try</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="built_in">JSON</span>.parse(message);</span><br><span class="line">    &#125; <span class="keyword">catch</span> (error) &#123;</span><br><span class="line">        <span class="built_in">console</span>.warn(<span class="string">`message <span class="subst">$&#123;message&#125;</span> an not be parsed as JSON`</span>);</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> message;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="Usage"><a href="#Usage" class="headerlink" title="Usage"></a>Usage</h2><p>In order to use this code we need to:</p>
+<ul>
+<li>create an instance of a <code>RabbitDriver</code> with credentials for pubsub </li>
+<li>create an instance of a <code>PubSub</code> injecting an instance of the driver </li>
+<li>create an instance of a <code>Notificator</code> injecting an instance of the pubsub</li>
+<li><code>init</code> a notificator instance</li>
+<li>call when you need <code>receive</code> or <code>notify</code></li>
+</ul>
+<p>This can be done as a singleton:</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// notificatorSingleton.js</span></span><br><span class="line"><span class="keyword">const</span> &#123; pubsub &#125;   = <span class="built_in">require</span>(<span class="string">'./etc/config'</span>);</span><br><span class="line"><span class="keyword">const</span> PubSub       = <span class="built_in">require</span>(<span class="string">'./PubSub'</span>);</span><br><span class="line"><span class="keyword">const</span> Notificator  = <span class="built_in">require</span>(<span class="string">'./Notificator'</span>);</span><br><span class="line"><span class="keyword">const</span> RabbitDriver = <span class="built_in">require</span>(<span class="string">'./drivers/Rabbit'</span>);</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> rabbitDriver = <span class="keyword">new</span> RabbitDriver(&#123;</span><br><span class="line">    endpoint : pubsub.endpoint,</span><br><span class="line">    login    : pubsub.login,</span><br><span class="line">    password : pubsub.password</span><br><span class="line">&#125;);</span><br><span class="line"><span class="keyword">const</span> notificator = <span class="keyword">new</span> Notificator(&#123;</span><br><span class="line">    pubsub : <span class="keyword">new</span> PubSub(&#123;</span><br><span class="line">        driver : rabbitDriver</span><br><span class="line">    &#125;)</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line"><span class="built_in">module</span>.exports = notificator;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>Usually it’s not required to call a singleton class in such way, enough to have a name starting with small letter. But <code>notificatorSingleton</code> can save us from filename conflicts in case-insensitive OS.</p>
+</blockquote>
+<p>And finally notify/receive scripts:</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// notify.js</span></span><br><span class="line"><span class="keyword">const</span> notificator = <span class="built_in">require</span>(<span class="string">'./notificatorSingleton'</span>);</span><br><span class="line"></span><br><span class="line"><span class="keyword">async</span> <span class="function"><span class="keyword">function</span> <span class="title">main</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="keyword">let</span> iterator = <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line">    setInterval(<span class="function"><span class="params">()</span> =&gt;</span> &#123;</span><br><span class="line">        notificator.notify(&#123; <span class="attr">text</span>: <span class="string">`iteration <span class="subst">$&#123;iterator&#125;</span>`</span> &#125;);</span><br><span class="line">        ++iterator;</span><br><span class="line">    &#125;, <span class="number">5000</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">main();</span><br></pre></td></tr></table></figure>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// receive.js</span></span><br><span class="line"><span class="keyword">const</span> notificator = <span class="built_in">require</span>(<span class="string">'./notificatorSingleton'</span>);</span><br><span class="line"></span><br><span class="line"><span class="keyword">async</span> <span class="function"><span class="keyword">function</span> <span class="title">main</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="keyword">await</span> notificator.init();</span><br><span class="line"></span><br><span class="line">    notificator.receive(customMessageHandler);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">customMessageHandler</span>(<span class="params">message</span>) </span>&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">`Via notificator received <span class="subst">$&#123;<span class="built_in">JSON</span>.stringify(message)&#125;</span>`</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">main();</span><br></pre></td></tr></table></figure>
+<p>When we start these scripts as separate processes, the messages are sent from multiple notifiers to multiple receivers:</p>
+<p><img src="../images/notificator/demo.gif" alt="Demo"></p>
+<h2 id="Auto-Reconnecting-optional"><a href="#Auto-Reconnecting-optional" class="headerlink" title="Auto-Reconnecting (optional)"></a>Auto-Reconnecting (optional)</h2><p>When we started to use the current notificator implementation, we mentioned that this library did not provide auto reconnecting out of the box. That’s why we needed to add additional logic to avoid crushing ar losing the connection when RabbitMQ was down. Also we needed to return to the working state when the RabbitMQ became available again. We slightly changed the Notificator and RabbitDriver to make this work.</p>
+<p>In first one we added a check in <code>init()</code>  that it successfully connected or not (in case if you try to initialize the notificator, but RabbitMQ is not available) and flag <code>isInited</code> which turned to <code>true</code> when <code>init()</code> passed without errors. Also we added checks in  the <code>notify</code> and <code>receive</code> in the beginning of this methods to avoid calling not initialized notificator:</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Notificator.js</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Notificator</span> </span>&#123;</span><br><span class="line">    <span class="keyword">constructor</span>(args) &#123;</span><br><span class="line">        <span class="keyword">this</span>.pubsub = args.pubsub;</span><br><span class="line">        <span class="keyword">this</span>.isInited = <span class="literal">false</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">async</span> init() &#123;</span><br><span class="line">        <span class="keyword">if</span> (<span class="keyword">this</span>.isInited) <span class="keyword">return</span>;</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            <span class="built_in">console</span>.info(<span class="string">'Notificator initialization started...'</span>);</span><br><span class="line">            <span class="keyword">await</span> <span class="keyword">this</span>.pubsub.connect();</span><br><span class="line">            <span class="keyword">await</span> <span class="keyword">this</span>.pubsub.createChannel(<span class="string">'notifications'</span>);</span><br><span class="line">            <span class="keyword">this</span>.isInited = <span class="literal">true</span>;</span><br><span class="line">        &#125; <span class="keyword">catch</span> (error) &#123;</span><br><span class="line">            <span class="built_in">console</span>.error(error);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    notify(message) &#123;</span><br><span class="line">        <span class="keyword">if</span> (!<span class="keyword">this</span>.isInited) &#123;</span><br><span class="line">            <span class="built_in">console</span>.warn(<span class="string">'Can not notify. Notificator not inited'</span>);</span><br><span class="line"></span><br><span class="line">            <span class="keyword">return</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        ...</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    receive(messageHandler) &#123;</span><br><span class="line">        <span class="keyword">if</span> (!<span class="keyword">this</span>.isInited) &#123;</span><br><span class="line">            <span class="built_in">console</span>.warn(<span class="string">'Can not receive. Notificator not inited'</span>);</span><br><span class="line"></span><br><span class="line">            <span class="keyword">return</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        ...</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p> We need to change a bit more in the RabbitMQ driver. First of all we need to handle the lost connection and then call <code>connect</code> after some timeout. We added two handlers on <code>error</code> and on <code>close</code> events for connection. Both of them were calling <code>connect()</code> method after a timeout and set the <code>isReconnecting</code> flag to <code>true</code>:</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Rabbit.js</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Rabbit</span> <span class="keyword">extends</span> <span class="title">PubSubDriverInterface</span> </span>&#123;</span><br><span class="line">    ...</span><br><span class="line">    <span class="keyword">async</span> connect() &#123;</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            <span class="keyword">this</span>.connection = <span class="keyword">await</span> <span class="keyword">new</span> <span class="built_in">Promise</span>(<span class="function">(<span class="params">res, rej</span>) =&gt;</span> &#123;</span><br><span class="line">                amqp.connect(connectString, (error, connection) =&gt; &#123;</span><br><span class="line">                    <span class="keyword">if</span> (error) <span class="keyword">return</span> rej(error);</span><br><span class="line"></span><br><span class="line">                    <span class="built_in">console</span>.info(<span class="string">`Connected to RabbitMQ on <span class="subst">$&#123;connectString&#125;</span>`</span>);</span><br><span class="line">                    res(connection);</span><br><span class="line">                &#125;);</span><br><span class="line">            &#125;);</span><br><span class="line">        &#125; <span class="keyword">catch</span> (error) &#123;</span><br><span class="line">            <span class="built_in">console</span>.error(<span class="string">`Failed to connect to <span class="subst">$&#123;connectString&#125;</span>`</span>);</span><br><span class="line">            <span class="keyword">await</span> <span class="keyword">new</span> <span class="built_in">Promise</span>(<span class="function"><span class="params">res</span> =&gt;</span> setTimeout(<span class="function"><span class="params">()</span> =&gt;</span> res(), <span class="number">5000</span>));</span><br><span class="line">            <span class="built_in">console</span>.info(<span class="string">'Trying to reconnect...'</span>);</span><br><span class="line"></span><br><span class="line">            <span class="keyword">return</span> <span class="keyword">this</span>.connect();</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">this</span>.connection.on(<span class="string">'error'</span>, (error) =&gt; &#123;</span><br><span class="line">            <span class="keyword">if</span> (error.message !== <span class="string">'Connection closing'</span>) &#123;</span><br><span class="line">                <span class="built_in">console</span>.error(<span class="string">'[AMQP] conn error'</span>);</span><br><span class="line">                <span class="built_in">console</span>.error(error);</span><br><span class="line">                <span class="keyword">this</span>.isReconnecting = <span class="literal">true</span>;</span><br><span class="line"></span><br><span class="line">                <span class="keyword">return</span> setTimeout(<span class="keyword">this</span>.connect.bind(<span class="keyword">this</span>), <span class="number">5000</span>);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;);</span><br><span class="line">        <span class="keyword">this</span>.connection.on(<span class="string">'close'</span>, () =&gt; &#123;</span><br><span class="line">            <span class="built_in">console</span>.warn(<span class="string">'[AMQP] reconnecting started'</span>);</span><br><span class="line">            <span class="keyword">this</span>.isReconnecting = <span class="literal">true</span>;</span><br><span class="line"></span><br><span class="line">            <span class="keyword">return</span> setTimeout(<span class="keyword">this</span>.connect.bind(<span class="keyword">this</span>), <span class="number">5000</span>);</span><br><span class="line">        &#125;);</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">this</span>.connection;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+<p>Now connection will be established again. But we will lose all handlers bound to subscriptions and channels which that we had. To solve this we decided to:</p>
+<ul>
+<li>save the channel in a context</li>
+<li>save the channel handlers in a context</li>
+<li>recreate all previous channels in the class instance</li>
+<li>bind to them handlers we saved</li>
+<li>call recreating methods in case if reconnect happens</li>
+</ul>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Rabbit.js</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Rabbit</span> <span class="keyword">extends</span> <span class="title">PubSubDriverInterface</span> </span>&#123;</span><br><span class="line">    ...</span><br><span class="line">    <span class="keyword">async</span> connect() &#123;</span><br><span class="line">        ...</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> (<span class="keyword">this</span>.isReconnecting) &#123;</span><br><span class="line">            <span class="keyword">await</span> <span class="keyword">this</span>._recreateChannels();</span><br><span class="line">            <span class="keyword">await</span> <span class="keyword">this</span>._reassignHandlers();</span><br><span class="line">            logger.info(<span class="string">'Reconnected successfully.'</span>);</span><br><span class="line">            <span class="keyword">this</span>.isReconnecting = <span class="literal">false</span>;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">this</span>.connection;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">async</span> _recreateChannels() &#123;</span><br><span class="line">        <span class="built_in">console</span>.log(<span class="string">'Recreating channels...'</span>);</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">const</span> channelName <span class="keyword">in</span> <span class="keyword">this</span>.channels) &#123;</span><br><span class="line">            <span class="keyword">if</span> (!<span class="keyword">this</span>.channels[channelName]) <span class="keyword">continue</span>;</span><br><span class="line">            <span class="keyword">await</span> <span class="keyword">this</span>.createChannel(channelName);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="built_in">console</span>.log(<span class="string">'Recreating channels completed.'</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    _reassignHandlers() &#123;</span><br><span class="line">        <span class="built_in">console</span>.log(<span class="string">'Reassigning handlers...'</span>);</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">const</span> channelName <span class="keyword">in</span> <span class="keyword">this</span>.handlers) &#123;</span><br><span class="line">            <span class="keyword">if</span> (!<span class="keyword">this</span>.handlers[channelName]) <span class="keyword">continue</span>;</span><br><span class="line"></span><br><span class="line">            <span class="keyword">for</span> (<span class="keyword">const</span> handler <span class="keyword">of</span> <span class="keyword">this</span>.handlers[channelName]) &#123;</span><br><span class="line">                <span class="keyword">this</span>.subscribe(channelName, handler, <span class="literal">true</span>);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="built_in">console</span>.log(<span class="string">'Reassign handlers completed.'</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">async</span> createChannel(channelName, pubsubMode = <span class="literal">true</span>) &#123;</span><br><span class="line">        ...</span><br><span class="line">        <span class="keyword">if</span> (!<span class="keyword">this</span>.handlers[channelName]) <span class="keyword">this</span>.handlers[channelName] = [];</span><br><span class="line">        ...</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    subscribe(exchange, messageHandler, isReconnecting = <span class="literal">false</span>) &#123;</span><br><span class="line">        ...</span><br><span class="line">        <span class="keyword">if</span> (!isReconnecting) <span class="keyword">this</span>.handlers[exchange].push(messageHandler);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><img src="../images/notificator/reconnect.gif" alt="Tests"></p>
+<p>Unfortunately I did not find a nice way how to test the reconnects by restarting the RabbitMQ server automatically in the CI process. This was tested manually with different scenarios:</p>
+<ul>
+<li>the notificator starts with a stopped RabbitMQ and then RabbitMQ is restarted.</li>
+<li>the notificator starts with a running RabbitMQ and then RabbitMQ is restarted.</li>
+<li><p>the notificator starts with a running RabbitMQ and then RabbitMQ is stopped and started after few minutes</p>
+<p>In all three cases all connections were reestablished and the handlers continued to receive new messages as well as notifications continued to be sent. We achieved the goal that we can reconnect without restaring the process as we expected.</p>
+</li>
+</ul>
+<h2 id="Tests"><a href="#Tests" class="headerlink" title="Tests"></a>Tests</h2><p>There are different approaches how you can test the interaction of your application with RabbitMQ. Some people use AQMP mocks for this purpose. There few such mocks available on NPM.</p>
+<p>We usually use Gitlab-CI for running tests, which is able to run docker-in-docker containers. This allows us to start real RabbitMQ process for running unit/functional tests. That’s why I used this approach, which relies on a real running RabbitMQ process. E.g. using this approach you cen test that <code>receive()</code> handler will get messages from <code>notify()</code> call. For this enough to require notificatorSingleton, and send message after a small timeout, which turns the notificator in initialized state (also I used Jest test framework for this examples):</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Notificator.test.js</span></span><br><span class="line"><span class="keyword">const</span> notificator = <span class="built_in">require</span>(<span class="string">'../lib/notificatorSingleton'</span>);</span><br><span class="line"></span><br><span class="line">describe(<span class="string">'Notificator tests'</span>, () =&gt; &#123;</span><br><span class="line">    test(<span class="string">'positive: can notify/receive messages'</span>, <span class="keyword">async</span> () =&gt; &#123;</span><br><span class="line">        <span class="keyword">await</span> notificator.init();</span><br><span class="line">        setTimeout(<span class="function"><span class="params">()</span> =&gt;</span> &#123;</span><br><span class="line">            notificator.notify(&#123; <span class="attr">test</span>: <span class="number">1</span> &#125;);</span><br><span class="line">        &#125;, <span class="number">100</span>);</span><br><span class="line">        <span class="keyword">const</span> result = <span class="keyword">await</span> <span class="keyword">new</span> <span class="built_in">Promise</span>(<span class="function"><span class="params">res</span> =&gt;</span> notificator.receive(<span class="function">(<span class="params">msg</span>) =&gt;</span> res(msg)));</span><br><span class="line"></span><br><span class="line">        expect(result.test).toBe(<span class="number">1</span>);</span><br><span class="line">    &#125;);</span><br><span class="line">)</span><br></pre></td></tr></table></figure>
+<p>Another test we can make is to check that we receive notifications that are sent from one notificator to another:</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Notificator.test.js</span></span><br><span class="line">describe(<span class="string">'Notificator tests'</span>, () =&gt; &#123;</span><br><span class="line">    ...</span><br><span class="line">    test(<span class="string">'positive: can notify/receive messages between different nodes'</span>, <span class="keyword">async</span> () =&gt; &#123;</span><br><span class="line">        <span class="keyword">const</span> notificatorOne = createNotificator();</span><br><span class="line">        <span class="keyword">const</span> notificatorTwo = createNotificator();</span><br><span class="line"></span><br><span class="line">        <span class="keyword">await</span> notificatorOne.init();</span><br><span class="line">        <span class="keyword">await</span> notificatorTwo.init();</span><br><span class="line"></span><br><span class="line">        setTimeout(<span class="function"><span class="params">()</span> =&gt;</span> &#123;</span><br><span class="line">            notificatorOne.notify(&#123; <span class="attr">test</span>: <span class="number">1</span> &#125;);</span><br><span class="line">        &#125;, <span class="number">100</span>);</span><br><span class="line">        <span class="keyword">const</span> result = <span class="keyword">await</span> <span class="keyword">new</span> <span class="built_in">Promise</span>(<span class="function"><span class="params">res</span> =&gt;</span> notificatorTwo.receive(<span class="function">(<span class="params">msg</span>) =&gt;</span> res(msg)));</span><br><span class="line"></span><br><span class="line">        expect(result.test).toBe(<span class="number">1</span>);</span><br><span class="line">    &#125;);</span><br></pre></td></tr></table></figure>
+<p>For the last test we could not require notificatorSingleton twice, because it will be the same instance. So we use a simple <code>createNotificator()</code> function which instantiates a notificator for us in same way as it’s done in singleton:</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> Notificator  = <span class="built_in">require</span>(<span class="string">'../lib/Notificator'</span>);</span><br><span class="line"><span class="keyword">const</span> notificator  = <span class="built_in">require</span>(<span class="string">'../lib/notificatorSingleton'</span>);</span><br><span class="line"><span class="keyword">const</span> PubSub       = <span class="built_in">require</span>(<span class="string">'../lib/PubSub'</span>);</span><br><span class="line"><span class="keyword">const</span> RabbitDriver = <span class="built_in">require</span>(<span class="string">'../lib/drivers/Rabbit'</span>);</span><br><span class="line"></span><br><span class="line">...</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">createNotificator</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="keyword">const</span> rabbitDriver = <span class="keyword">new</span> RabbitDriver(&#123;</span><br><span class="line">        endpoint : pubsub.endpoint,</span><br><span class="line">        login    : pubsub.login,</span><br><span class="line">        password : pubsub.password</span><br><span class="line">    &#125;);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">const</span> notificator = <span class="keyword">new</span> Notificator(&#123;</span><br><span class="line">        pubsub : <span class="keyword">new</span> PubSub(&#123;</span><br><span class="line">            driver : rabbitDriver</span><br><span class="line">        &#125;)</span><br><span class="line">    &#125;);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> notificator;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><img src="../images/notificator/tests.png" alt="Tests"></p>
+<h2 id="Conclusion"><a href="#Conclusion" class="headerlink" title="Conclusion"></a>Conclusion</h2><p>Hope this example will be useful for you. Actually this approach solves a real life issue when you need to communicate between nodes of a multi-tenant application. Check out the complete working sources on my <a href="https://github.com/unsigned6/notificator" target="_blank" rel="noopener">GitHub</a>. Even with some tests 😉. Thanks for reading!</p>
+<h2 id="Useful-links"><a href="#Useful-links" class="headerlink" title="Useful links"></a>Useful links</h2><ol>
+<li><a href="www.objectmentor.com/resources/articles/dip.pdf">Dependency Inversion Principle</a></li>
+<li><a href="https://martinfowler.com/articles/injection.html" target="_blank" rel="noopener">Dependency Injection</a></li>
+<li><a href="https://www.npmjs.com/package/amqplib" target="_blank" rel="noopener">amqplib</a></li>
+<li><a href="http://www.squaremobius.net/amqp.node/channel_api.html" target="_blank" rel="noopener">amqplib documentation</a></li>
+<li><a href="https://www.rabbitmq.com/tutorials/tutorial-one-javascript.html" target="_blank" rel="noopener">Official RabbitMQ manual for JavaScript</a></li>
+<li><a href="https://github.com/unsigned6/notificator" target="_blank" rel="noopener">My repo on github with example</a></li>
+</ol>
+
+
+                
+                    <!-- Go to www.addthis.com/dashboard to customize your tools -->
+                    <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-58f3c2d3d790e137"></script>
+
+                    <!-- Go to www.addthis.com/dashboard to customize your tools -->
+                    <div class="addthis_sharing_toolbox"></div>
+                
+            </div>
+        </div>
+
+        <div class="row">
+            <!-- LEELOO -->
+            <div class="center col-lg-12 col-md-12 col-sm-12">
+                <!-- Leeloo form start --> 
+<script>
+    window.LEELOO_LEADGENTOOLS = (window.LEELOO_LEADGENTOOLS || []).concat('dfepmc');
+</script>
+    
+<div class="wepster-hash-dfepmc"></div>
+<!-- Leeloo form end -->
+            </div>
+        </div>
+
+        <div class="row">
+            <!-- Comments -->
+            
+                <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                    
+    <hr />
+    <h3>Comments:</h3>
+    <div id="disqus_thread">
+        <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+    </div>
+
+
+
+                </div>
+            
+        </div>
+    </div>
+</article>
+
+
+    <!-- Footer -->
+    <hr />
+
+<!-- Footer -->
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <ul class="list-inline text-center">
+                    
+                        <li>
+                            <div class="twitter-footer">
+                                
+                                    <span class="action-footer">Follow us on twitter to become a better software development expert</span>
+                                
+                                <a href="https://twitter.com/webbylab" target="_blank">
+                                    <span class="fa-stack fa-lg">
+                                        <i class="fa fa-circle fa-stack-2x"></i>
+                                        <i class="fa fa-twitter fa-stack-1x fa-inverse"></i>
+                                    </span>
+                                </a>
+                            </div>
+                        </li>
+                    
+
+                    
+
+                    
+
+                    
+
+                    
+
+                    
+                </ul>
+                <p class="copyright text-muted">&copy; 2020 WebbyLab<br></p>
+                <!-- <p class="copyright text-muted">Original Theme <a target="_blank" href="http://startbootstrap.com/template-overviews/clean-blog/">Clean Blog</a> from <a href="http://startbootstrap.com/" target="_blank">Start Bootstrap</a></p>
+                <p class="copyright text-muted">Adapted for <a target="_blank" href="https://hexo.io/">Hexo</a> by <a href="http://www.codeblocq.com/" target="_blank">Jonathan Klughertz</a></p> -->
+            </div>
+        </div>
+    </div>
+</footer>
+
+
+    <!-- After footer scripts -->
+    
+<!-- jQuery -->
+<script src="//code.jquery.com/jquery-2.1.4.min.js"></script>
+
+<!-- Bootstrap -->
+<script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+
+<!-- Gallery -->
+<script src="//cdnjs.cloudflare.com/ajax/libs/featherlight/1.3.5/featherlight.min.js" type="text/javascript" charset="utf-8"></script>
+
+<!-- Disqus Comments -->
+
+<script type="text/javascript">
+    var disqus_shortname = 'blog-webbylab-com';
+
+    (function(){
+        var dsq = document.createElement('script');
+        dsq.type = 'text/javascript';
+        dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
+
+
+</body>
+
+</html>

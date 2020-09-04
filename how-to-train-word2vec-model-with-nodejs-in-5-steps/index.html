@@ -1,0 +1,395 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<!-- Head tag -->
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!--Description-->
+    
+        <meta name="description" content="This article shares our experience of using word2vec ML model to perform intellectual search.">
+    
+
+    <!--Author-->
+    
+        <meta name="author" content="WebbyLab">
+    
+
+    <!--Open Graph Title-->
+    
+        <meta property="og:title" content="How to train word2vec model with NodeJS in 5 steps"/>
+    
+
+    <!--Open Graph Description-->
+    
+        <meta property="og:description" content="This article shares our experience of using word2vec ML model to perform intellectual search." />
+    
+
+    <!--Open Graph Site Name-->
+    <meta property="og:site_name" content="Agile developer"/>
+
+    <!--Type page-->
+    
+        <meta property="og:type" content="article" />
+    
+
+    <!--Page Cover-->
+    
+
+        <meta name="twitter:card" content="summary" />
+    
+
+    <!-- Title -->
+    
+    <title>How to train word2vec model with NodeJS in 5 steps - Agile developer</title>
+
+    <!-- Bootstrap Core CSS -->
+    <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet"/>
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/style.css">
+
+    <!-- Custom Fonts -->
+    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+    <link href="//fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic" rel="stylesheet" type="text/css">
+    <link href="//fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800" rel="stylesheet" type="text/css">
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+    <script src="//oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+    <script src="//oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+    <!-- Gallery -->
+    <link href="//cdnjs.cloudflare.com/ajax/libs/featherlight/1.3.5/featherlight.min.css" type="text/css" rel="stylesheet" />
+
+    <!-- Google Analytics -->
+    
+    <script>
+        (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+                    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+                m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+        })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+        ga('create', 'UA-9638621-10', 'auto');
+        ga('send', 'pageview');
+
+    </script>
+
+
+
+    <!-- LEELOO Init -->
+    <!-- leeloo init code -->
+<script>
+window.LEELOO = function(){
+    window.LEELOO_INIT = { id: "59049996ac641a00190cb1b4" };
+    var js = document.createElement('script');
+    js.src = 'https://app.leeloo.ai/init.js';
+    document.getElementsByTagName('head')[0].appendChild(js);
+}; LEELOO();
+</script>
+<!-- leeloo init code end -->
+
+
+    <!-- favicon -->
+    
+    <link rel="icon" href="/img/favicon.ico">
+    
+	
+</head>
+
+
+<body>
+    <!-- Menu -->
+    <!-- Navigation -->
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">WebbyLab's Engineering Blog</a>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+            <ul class="nav navbar-nav navbar-right">
+                
+                    <li>
+                        <a target="_blank" href="https://webbylab.com">
+                            
+                                Main Company Site
+                            
+                        </a>
+                    </li>
+                
+                    <li>
+                        <a target="_blank" href="https://react.webbylab.com">
+                            
+                                React/Mobile/Nodejs Department
+                            
+                        </a>
+                    </li>
+                
+            </ul>
+        </div>
+        <!-- /.navbar-collapse -->
+    </div>
+    <!-- /.container -->
+</nav>
+
+
+    <!-- Main Content -->
+    <!-- LEELOO POPUP -->
+<!-- Leeloo popup start -->
+<script>
+    window.LEELOO_LEADGENTOOLS = (window.LEELOO_LEADGENTOOLS || []).concat('f2mnds');
+</script>
+<!-- Leeloo popup start -->
+
+
+<!-- Page Header -->
+<!-- Set your background image for this header in your post front-matter: cover -->
+
+<header class="intro-header" style="background-image: url('/images/word2vec/back.jpg')">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <div class="post-heading">
+                    <h1>How to train word2vec model with NodeJS in 5 steps</h1>
+                    
+                    <span class="meta">
+                        <!-- Date and Author -->
+                        
+                            Posted by Yurii Vlasiuk (Developer) on
+                        
+                        2019-02-28
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+<!-- Post Content -->
+<article>
+    <div class="container">
+        <div class="row">
+
+            <!-- Tags and categories -->
+           
+                <div class="col-lg-4 col-lg-offset-2 col-md-5 col-md-offset-1 post-tags">
+                    
+                        
+
+
+<a href="/tags/javascript-team/">#JavaScript Team</a> <a href="/tags/tutorial/">#Tutorial</a> <a href="/tags/word2vec/">#Word2Vec</a> <a href="/tags/nlp/">#NLP</a> <a href="/tags/machine-learning/">#Machine Learning</a>
+
+
+                    
+                </div>
+                <div class="col-lg-4 col-md-5 post-categories">
+                    
+                </div>
+            
+
+            <!-- Gallery -->
+            
+
+            <!-- Post Main Content -->
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <h2 id="Introduction"><a href="#Introduction" class="headerlink" title="Introduction"></a>Introduction</h2><p>This will be really short reading about how to get a working word2vec model using NodeJS.</p>
+<p>In one of the projects, I’ve made in WebbyLab, we had a deal with ML and NLP processing. The main goal was to implement intellectual searches in medical articles. This means not just a simple text match but words similar by meaning. For example, we enter “cancer” and receive “melanoma”, “tumor” etc. Or also perform the search with relations, e.g. we have “cancer” to “treatment” and we search what is in the same relation for “melanoma” - the result should be treatments for it.</p>
+<h2 id="Our-approach-to-solve"><a href="#Our-approach-to-solve" class="headerlink" title="Our approach to solve"></a>Our approach to solve</h2><p>For such a case, we have decided to use neural network for word2vec model based on the worldwide available base of scientific medical articles and their abstracts. Dataset had volume approx 100GB of raw XML, which was parsed and normalized to 15GB of plain text. Based on it we have trained word2vec model.</p>
+<h3 id="What-is-word2vec"><a href="#What-is-word2vec" class="headerlink" title="What is word2vec"></a>What is word2vec</h3><p>First of all, let’s have a look briefly what this model stands for. Word vectors (or another called word embeddings) are based on a large number of texts (so-called corpus). Each embedding represents the context in which the word appears most frequently. And these vectors are usually many dimensional (commonly used embeddings are 100 or 300 dimensional but you can use our own custom length). To calculate these embeddings you need to define so-called “window” which is set before the start of the training. This size means how many words are taken before and after the current word. For example, let’s take a sentence like “I would rather watch youtube than read this article”. In this case, for the word “youtube” words “rather”, “watch”, “than” and “read” will belong to this word window. Using cosine distance formula you can find similar words (by meaning) which gives us the opportunity to perform intellectual searches and not only simple text matching.</p>
+<p>Word2vec supports two different algorithms to train vectors: CBOW and skip-gram. In the case of CBOW (Continuous Bag of Words) the algorithm tries to predict current word based on its context. On the other hand, Skip-gram uses a current word to predict context. Actually, we experimented with both cbow and skip-gram algorithms and the first one sometimes gave more accurate results in similarity searches.</p>
+<p>I will not dive deep how exactly this training part is calculated using one hot vector because there are already multiple materials on this topic really well written and explained. If you wish a better understanding of the model please check this few posts with detailed explanations about the model. For example, this article provides a really good vision of what is going on with a rather simple explanation and descriptive step by step <a href="https://towardsdatascience.com/learn-word2vec-by-implementing-it-in-tensorflow-45641adaf2ac" target="_blank" rel="noopener">manual</a>. My post is more about a practical side - I mean how to get it work.</p>
+<p>In the beginning, I was trying to run it using tensorflow framework and python (of course, today we have tensorflow.js but a year ago we didn’t). On official site, you can find even a docker container with all installed dependencies needed to run tensorflow. But with it, I’ve faced with performance limitations. After a few tries and fails we found another option: on npm there was an out of the box solution which gave us what was needed. It was a package called <a href="https://www.npmjs.com/package/word2vec" target="_blank" rel="noopener">word2vec</a> which is Node.js interface to the <a href="https://code.google.com/p/word2vec/" target="_blank" rel="noopener">Google word2vec tool</a>. It’s not so popular (I suppose because not so many people were doing ML on JavaScript). But at the same time, it is well documented and (what is more important) has very good performance as it uses under the hood binary for training and searching. So let’s have a look at what is needed to have it running.</p>
+<h2 id="Train-your-AI-on-“Game-of-The-Thrones”"><a href="#Train-your-AI-on-“Game-of-The-Thrones”" class="headerlink" title="Train your AI on “Game of The Thrones” :)"></a>Train your AI on “Game of The Thrones” :)</h2><p>Just for fun as an example I took widely known book by George R. R. Martin “Game of The Thrones” and used it as a training corpus for our word2vec model.</p>
+<h3 id="Step-1-Prepare-the-corpus"><a href="#Step-1-Prepare-the-corpus" class="headerlink" title="Step 1 - Prepare the corpus"></a>Step 1 - Prepare the corpus</h3><p>To start you need clear your text from any punctuation symbols to leave only words and spaces, also lowercasing all of them. Just simple example of how this function could look like:</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">clearText</span>(<span class="params">text</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">return</span> text</span><br><span class="line">    .toLowerCase()</span><br><span class="line">    .replace(<span class="regexp">/[^A-Za-zА-Яа-яЁёЇїІіҐґЄє0-9\-]|\s]/g</span>, <span class="string">" "</span>)</span><br><span class="line">    .replace(<span class="regexp">/\s&#123;2,&#125;/g</span>, <span class="string">" "</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>Of course, if you will have a bigger amount of training data you will need to cut you text into parts and preprocess them one after another. For this example, reading the whole file and passing it though <code>clearText</code> will work, because all 5 parts of “Game of The thrones” was only about 9.4MB, so I had enough memory to preprocess it as one string. In real examples preparing the dataset for training could be the most time-consuming part. After clearing just write it to another file (in my case cleared file was 8.8M):</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> fs = <span class="built_in">require</span>(<span class="string">"fs-extra"</span>);</span><br><span class="line"><span class="keyword">async</span> <span class="function"><span class="keyword">function</span> <span class="title">clear</span>(<span class="params">filePath</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">const</span> contentRaw = <span class="keyword">await</span> fs.readFile(filePath);</span><br><span class="line">  <span class="keyword">const</span> content = clearText(contentRaw.toString());</span><br><span class="line">  <span class="keyword">return</span> fs.writeFile(<span class="string">`cleared_<span class="subst">$&#123;filePath&#125;</span>`</span>, content);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="Step-2-Train-model"><a href="#Step-2-Train-model" class="headerlink" title="Step 2 - Train model"></a>Step 2 - Train model</h3><p>Here we start using ‘word2vec’ package. All is needed to provide - corpus file and name of the output file with vectors. As options you can set multiple parameters, for example:</p>
+<ul>
+<li>size - length of vectors, by default 100</li>
+<li>binary - format of output (binary or text), text by default</li>
+<li>window - sets maximal skip length between words, 5 by default</li>
+<li>cbow - use the continuous bag of words model instead of skip-gram</li>
+</ul>
+<p>Full list of available parameters and their values you can find in package <a href="https://www.npmjs.com/package/word2vec#word2vec-input-output-params-callback-" target="_blank" rel="noopener">readme</a>.</p>
+<p>In my example, I will use all defaults, but size changed to 300.</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> w2v = <span class="built_in">require</span>(<span class="string">"word2vec"</span>);</span><br><span class="line">w2v.word2vec(corpusFilePath, <span class="string">"vectors.txt"</span>, &#123; <span class="attr">size</span>: <span class="number">300</span> &#125;, () =&gt; &#123;</span><br><span class="line">  <span class="built_in">console</span>.log(<span class="string">"DONE"</span>);</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+<p>After running this code you will receive output with instantly changing progress. When it goes to the end you will get a total count of words in your corpus, vocabulary size and time, wasted to preprocess it. Something like this:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">Starting training using file ../../../cleared_gott</span><br><span class="line">Vocab size: 11989</span><br><span class="line">Words in train file: 1784921</span><br><span class="line">Alpha: 0.000034  Progress: 100.05%  Words/thread/sec: 298.05k</span><br><span class="line">Child process exited with code: 0</span><br><span class="line">DONE</span><br></pre></td></tr></table></figure>
+<p>On my small corpus, it took about 17-18 seconds and resulted vectors took a size of 33MB. When we were training 15GB corpus it took us 3-4 hours on a powerful laptop. But time, in this case, grew linearly and current binary did not load in memory all vectors but preprocessed them in a stream. So if you have enough patience and time you will be able to train even on a rather large corpus using this package.</p>
+<p>Resulted vectors you can see inside of text version of vectors.txt. Each new line represents a separate word like this:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">joffrey -0.673878 0.260606 -0.190740 -0.601523 0.524115 -1.763072 -0.216822 1.766594 0.041193 -1.383080 -0.285360 -0.729452 1.045642 1.291448 -0.958435 -0.421781 1.224068 -1.683642 -0.313034 0.368856 -1.119896 0.415265 0.354537 0.821285 -1.517862 -0.902541 0.350438 1.335956 0.113734 1.471298 -0.026777 0.466735 -0.382051 -0.519875 -1.511173 0.885191 -1.398844 -1.309841 -0.069286 0.602594 0.141637 0.950240 -0.110582 0.769823 0.902708 -0.361941 0.082268 -0.684544 -1.230442 -0.815433 0.159231 -0.371037 -1.541870 -1.275767 -0.688914 2.623781 0.893087 2.314510 -0.992226 0.490096 -0.766676 0.282250 -0.047960 1.640508 -0.001268 -0.171625 0.268665 -0.263515 2.620399 -0.070542 -1.564726 1.392068 -1.210320 0.601992 -0.545116 -0.096718 -0.158352 -2.162523 0.369280 1.563137 -0.418755 1.041626 -1.146523 0.543365 1.066911 0.730880 -0.659213 -0.255023 0.766151 1.012811 -0.293468 1.045799 -0.928053 1.099540 -0.765643 -1.383006 1.094115 -1.467040 2.423854 2.373523</span><br></pre></td></tr></table></figure>
+<h3 id="Step-3-Similarity-search"><a href="#Step-3-Similarity-search" class="headerlink" title="Step 3 - Similarity search"></a>Step 3 - Similarity search</h3><p>Now when we trained model it’s time to try it. To use it you have to load the trained file with vectors using <code>w2v.loadModel</code>. Then call <code>model.mostSimilar(word, n)</code> passing word for similarity search and number of neighbours.<br>Good news: you will have to load it only once on init of your process if you wish to build service for word2vec search. Then you will have the whole model loaded into memory and work with it each time you perform <code>mostSimilar</code> call.<br>Bad news: it could be rather resource-consuming with big vectors file. For the model which we trained on large 15GB corpus, it was needed to order droplet on DigitalOcean with 12GB of RAM to host it there. As for our example, your laptop/PC RAM will be enough for sure.</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">w2v.loadModel(<span class="string">"vectors.txt"</span>, (error, model) =&gt; &#123;</span><br><span class="line">  <span class="built_in">console</span>.log(<span class="string">"SIZE: "</span>, model.size);</span><br><span class="line">  <span class="built_in">console</span>.log(<span class="string">"WORDS: "</span>, model.words);</span><br><span class="line">  <span class="built_in">console</span>.log(model.mostSimilar(word, <span class="number">20</span>));</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+<p>This similarity search is based on cosine distance formula. The less this distance is - the closer are the words by meaning.</p>
+<p align="center"><img src="/images/word2vec/0.svg" alt="Proportion"></p>
+
+<p>As you remember I was using “Game of The Thrones” books to train our model. Of course, I realize that we will not get so accurate results as with real training corpus which has gigabytes of training data texts. But we are doing this now just for fun.</p>
+<p>So let’s search some heroes from the book. For example lets find out <strong>who is related to Arya</strong>, because it is one of my favorite characters in the book :). I’ve got next result:</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">SIZE:  <span class="number">300</span></span><br><span class="line">WORDS:  <span class="number">11989</span></span><br><span class="line">[ &#123; <span class="attr">word</span>: <span class="string">'sansa'</span>, <span class="attr">dist</span>: <span class="number">0.781668383548474</span> &#125;,</span><br><span class="line">  &#123; <span class="attr">word</span>: <span class="string">'gendry'</span>, <span class="attr">dist</span>: <span class="number">0.737167704429394</span> &#125;,</span><br><span class="line">  &#123; <span class="attr">word</span>: <span class="string">'brienne'</span>, <span class="attr">dist</span>: <span class="number">0.7182368467922468</span> &#125;,</span><br><span class="line">  &#123; <span class="attr">word</span>: <span class="string">'she'</span>, <span class="attr">dist</span>: <span class="number">0.6711484810172651</span> &#125;,</span><br><span class="line">  &#123; <span class="attr">word</span>: <span class="string">'lommy'</span>, <span class="attr">dist</span>: <span class="number">0.669659822452691</span> &#125;,</span><br><span class="line">  &#123; <span class="attr">word</span>: <span class="string">'catelyn'</span>, <span class="attr">dist</span>: <span class="number">0.666142417969042</span> &#125;,</span><br><span class="line">  &#123; <span class="attr">word</span>: <span class="string">'weese'</span>, <span class="attr">dist</span>: <span class="number">0.6499461653869454</span> &#125;,</span><br><span class="line">  &#123; <span class="attr">word</span>: <span class="string">'bran'</span>, <span class="attr">dist</span>: <span class="number">0.6023471771137994</span> &#125;,</span><br><span class="line">  &#123; <span class="attr">word</span>: <span class="string">'marillion'</span>, <span class="attr">dist</span>: <span class="number">0.5956860635408704</span> &#125;,</span><br><span class="line">  &#123; <span class="attr">word</span>: <span class="string">'meera'</span>, <span class="attr">dist</span>: <span class="number">0.5951512777787846</span> &#125;,</span><br><span class="line">  &#123; <span class="attr">word</span>: <span class="string">'yoren'</span>, <span class="attr">dist</span>: <span class="number">0.5865599953739745</span> &#125;,</span><br><span class="line">  &#123; <span class="attr">word</span>: <span class="string">'ned'</span>, <span class="attr">dist</span>: <span class="number">0.5684256398716606</span> &#125;,</span><br><span class="line">  &#123; <span class="attr">word</span>: <span class="string">'syrio'</span>, <span class="attr">dist</span>: <span class="number">0.546967108760509</span> &#125;,</span><br><span class="line">  &#123; <span class="attr">word</span>: <span class="string">'nymeria'</span>, <span class="attr">dist</span>: <span class="number">0.5362355970052659</span> &#125;,</span><br><span class="line">  &#123; <span class="attr">word</span>: <span class="string">'hound'</span>, <span class="attr">dist</span>: <span class="number">0.5351945898500484</span> &#125;,</span><br><span class="line">  &#123; <span class="attr">word</span>: <span class="string">'jaqen'</span>, <span class="attr">dist</span>: <span class="number">0.5232370057066597</span> &#125;,</span><br><span class="line">  &#123; <span class="attr">word</span>: <span class="string">'merrett'</span>, <span class="attr">dist</span>: <span class="number">0.5202446700772042</span> &#125;,</span><br><span class="line">  &#123; <span class="attr">word</span>: <span class="string">'alayne'</span>, <span class="attr">dist</span>: <span class="number">0.519844006762477</span> &#125;,</span><br><span class="line">  &#123; <span class="attr">word</span>: <span class="string">'harwin'</span>, <span class="attr">dist</span>: <span class="number">0.5119117420242999</span> &#125;,</span><br><span class="line">  &#123; <span class="attr">word</span>: <span class="string">'chett'</span>, <span class="attr">dist</span>: <span class="number">0.5111303477704315</span> &#125; ]</span><br><span class="line">mostSimilar: <span class="number">57.397</span> ms</span><br></pre></td></tr></table></figure>
+<p>First three neighbours are <strong>sansa</strong>, <strong>gendry</strong> and <strong>brienne</strong> - actually all of them were related to Arya in books and HBO TV show (series and books became a bit different after the second season). Even in few next results we have <strong>catelyn</strong> - her mother, <strong>bran</strong> - brother and <strong>ned</strong> - father as well as “dancing teacher” <strong>syrio</strong> and direwolf <strong>nymeria</strong>. Not so bad results. Don’t you think so? And all of this we have just after statically analyzing texts.</p>
+<p>If we take e.g. four main characters and build graph with relations to them, it will look something like this (I’ve made it for four characters from my choice):</p>
+<p align="center"><img src="/images/word2vec/gott.svg" alt="Proportion"></p>
+
+<h3 id="Step-4-Analogy-search"><a href="#Step-4-Analogy-search" class="headerlink" title="Step 4 - Analogy search"></a>Step 4 - Analogy search</h3><p>Another useful feature which can be used from word2vec model is analogy. For example, if you take a pair Germany - Berlin, the analogy to France should be Paris. Usage of analogy is similar as in the previous example, but you also need to provide a pair as an array of two words:</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">w2v.loadModel(<span class="string">"vectors.txt"</span>, (error, model) =&gt; &#123;</span><br><span class="line">  <span class="built_in">console</span>.log(model.analogy(word, pair, number_neighbors));</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+<p>And let’s search in this case about <strong>Daynerys</strong>. For pair I will choose [ <strong>“cercei”</strong>, <strong>“queen”</strong> ].<br>It means that we ask: <strong>If Cercei is queen. Who is Daynerys?</strong><br>Here is what we’ve got:</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">SIZE:  <span class="number">300</span></span><br><span class="line">WORDS:  <span class="number">11989</span></span><br><span class="line">[ &#123; <span class="attr">word</span>: <span class="string">'stormborn'</span>, <span class="attr">dist</span>: <span class="number">0.5799330675526199</span> &#125;,</span><br><span class="line">  &#123; <span class="attr">word</span>: <span class="string">'targaryen'</span>, <span class="attr">dist</span>: <span class="number">0.4941936686684888</span> &#125;,</span><br><span class="line">  &#123; <span class="attr">word</span>: <span class="string">'princess'</span>, <span class="attr">dist</span>: <span class="number">0.4779063651857622</span> &#125;,</span><br><span class="line">  &#123; <span class="attr">word</span>: <span class="string">'dothraki'</span>, <span class="attr">dist</span>: <span class="number">0.4502321492125602</span> &#125;,</span><br><span class="line">  &#123; <span class="attr">word</span>: <span class="string">'unburnt'</span>, <span class="attr">dist</span>: <span class="number">0.4481458863939428</span> &#125;,</span><br><span class="line">  &#123; <span class="attr">word</span>: <span class="string">'dragons'</span>, <span class="attr">dist</span>: <span class="number">0.4440118053690112</span> &#125;,</span><br><span class="line">  &#123; <span class="attr">word</span>: <span class="string">'prayers'</span>, <span class="attr">dist</span>: <span class="number">0.4395081706703408</span> &#125;,</span><br><span class="line">  &#123; <span class="attr">word</span>: <span class="string">'reznak'</span>, <span class="attr">dist</span>: <span class="number">0.4341239056398452</span> &#125;,</span><br><span class="line">  &#123; <span class="attr">word</span>: <span class="string">'hizdahr'</span>, <span class="attr">dist</span>: <span class="number">0.4315267930721137</span> &#125;,</span><br><span class="line">  &#123; <span class="attr">word</span>: <span class="string">'consort'</span>, <span class="attr">dist</span>: <span class="number">0.4292356744802856</span> &#125;,</span><br><span class="line">  &#123; <span class="attr">word</span>: <span class="string">'khal'</span>, <span class="attr">dist</span>: <span class="number">0.4263676101583961</span> &#125;,</span><br><span class="line">  &#123; <span class="attr">word</span>: <span class="string">'khaleesi'</span>, <span class="attr">dist</span>: <span class="number">0.4249533891408852</span> &#125;,</span><br><span class="line">  &#123; <span class="attr">word</span>: <span class="string">'dorne'</span>, <span class="attr">dist</span>: <span class="number">0.42484948207531814</span> &#125;,</span><br><span class="line">  &#123; <span class="attr">word</span>: <span class="string">'khalasar'</span>, <span class="attr">dist</span>: <span class="number">0.42451425128794007</span> &#125;,</span><br><span class="line">  &#123; <span class="attr">word</span>: <span class="string">'undying'</span>, <span class="attr">dist</span>: <span class="number">0.4242787392542182</span> &#125;,</span><br><span class="line">  &#123; <span class="attr">word</span>: <span class="string">'dosh'</span>, <span class="attr">dist</span>: <span class="number">0.4227618240591942</span> &#125;,</span><br><span class="line">  &#123; <span class="attr">word</span>: <span class="string">'elia'</span>, <span class="attr">dist</span>: <span class="number">0.42275478728735005</span> &#125;,</span><br><span class="line">  &#123; <span class="attr">word</span>: <span class="string">'whispers'</span>, <span class="attr">dist</span>: <span class="number">0.4203214834266695</span> &#125;,</span><br><span class="line">  &#123; <span class="attr">word</span>: <span class="string">'wisdom'</span>, <span class="attr">dist</span>: <span class="number">0.4188186695290921</span> &#125;,</span><br><span class="line">  &#123; <span class="attr">word</span>: <span class="string">'shavepate'</span>, <span class="attr">dist</span>: <span class="number">0.416145580616505</span> &#125; ]</span><br><span class="line">mostSimilar: <span class="number">72.110</span> ms</span><br></pre></td></tr></table></figure>
+<p>So maybe it is not such an accurate result, but at least in the first four entries, we have <strong>her different titles</strong>: “stormborn”, “targaryen”, “princess” and “unburnt”. Even commonly used in series and books term “khaleesi” and of course “dragons” is somewhere among the nearest results.</p>
+<h3 id="Step-5-Visualize-Optional"><a href="#Step-5-Visualize-Optional" class="headerlink" title="Step 5 - Visualize (Optional)"></a>Step 5 - Visualize (Optional)</h3><p>I was searching for a tool for visualization which will be easy-to-use. But I found only a rather old one <a href="https://github.com/dominiek/word2vec-explorer" target="_blank" rel="noopener">https://github.com/dominiek/word2vec-explorer</a> and author stopped update it 3 years ago. It will also require to build a model in binary format and install python dependencies:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">gensim</span><br><span class="line">numpy</span><br><span class="line">tsne</span><br><span class="line">scikit-learn</span><br><span class="line">CherryPy</span><br><span class="line">Cython</span><br></pre></td></tr></table></figure>
+<p>But it made everything that I needed: at least it gives you a user interface for querying similarity and making 2D plots which give us some imagination how this model looks like in space. Here are displayed only 1000 words from 11K vocabulary which we have in <strong>Game of The Thrones</strong>:</p>
+<p align="center"><img src="/images/word2vec/1.png" alt="CRUD"></p>
+
+<p>View full size image <a href="https://raw.githubusercontent.com/unsigned6/word2vec_example/master/cluster.png" target="_blank" rel="noopener">here</a>.<br>Even some dependencies between characters can be seen:</p>
+<p align="center"><img src="/images/word2vec/2.png" alt="CRUD"></p>
+
+<p>And the second interesting mode is ‘compare’ where you can build plot based on 2 words on different axes. Here for example we have Lannisters vs Starks corporation:</p>
+<p align="center"><img src="/images/word2vec/3.png" alt="CRUD"></p>
+
+<p>As you see “Lannister pays debts”, ‘cause this phrase meet us frequently during the whole novel 🙂.</p>
+<h2 id="What-next-Try-it"><a href="#What-next-Try-it" class="headerlink" title="What next? Try it."></a>What next? Try it.</h2><p>Feel free to use my code with all examples we have here for NodeJS part. I’ve made for this simple <a href="https://github.com/unsigned6/word2vec_example" target="_blank" rel="noopener">CLI tool</a> which lets you clear, train, search similarity and analogies. Here is a description how to use it:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">Usage: node cli.js &lt;option&gt; &lt;params&gt;</span><br><span class="line">     option 1: clear &lt;filename&gt;</span><br><span class="line">     option 2: train &lt;cleared_filename&gt; &lt;vector_length&gt;</span><br><span class="line">         &lt;cleared_filename&gt; from step 1</span><br><span class="line">         &lt;vector_length&gt;     optional, by default will be used 100</span><br><span class="line">     option 3: similarity &lt;word&gt; &lt;number_neighbors&gt;</span><br><span class="line">         &lt;word&gt;             for which want find nearest neighbors</span><br><span class="line">         &lt;number_neighbors&gt; optional, amount of neighbors to show</span><br><span class="line">     option 4: analogy &lt;word&gt; &lt;pair_word_1&gt; &lt;pair_word_2&gt; &lt;number_analogies&gt;</span><br><span class="line">         &lt;word&gt;             for which want find analogies</span><br><span class="line">         &lt;pair_word_1&gt;      first word of the analogy pair</span><br><span class="line">         &lt;pair_word_2&gt;      second word of the analogy pair</span><br><span class="line">         &lt;number_analogies&gt; optional, amount of analogies to show</span><br></pre></td></tr></table></figure>
+<p>And everything what we were doing in this post with commands for this CLI (also examples include already trained vectors from my examples so you will be able to use it even without training):</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">node cli.js clear gott</span><br><span class="line">node cli.js train cleared_gott</span><br><span class="line">node cli.js similarity arya</span><br><span class="line">node cli.js analogy daenerys cersei queen</span><br></pre></td></tr></table></figure>
+<h2 id="Conclusion"><a href="#Conclusion" class="headerlink" title="Conclusion"></a>Conclusion</h2><p>Hope you will enjoy word2vec and will try to use it with your own datasets. Also, you can download already pretrained vectors from <a href="https://nlp.stanford.edu/projects/glove/" target="_blank" rel="noopener">Glove project</a> - they give pretty accurate results and have a few different sizes which you can choose. What is also good about word2vec is that it really doesn’t depend on language as it just counts vectors based on context. So you can train even using books with Cyrillic languages. I’ve tried the same code with Lev’s Tolstoy “Anna Karenina” as well and managed to get also interesting results even despite the fact that this book is not so large as 5 parts of Game of The Thrones. Have fun with word2vec and pay your debts 😉.</p>
+<h2 id="Useful-links"><a href="#Useful-links" class="headerlink" title="Useful links"></a>Useful links</h2><ol>
+<li>Word2vec NodeJS package on npm: <a href="https://www.npmjs.com/package/word2vec" target="_blank" rel="noopener">https://www.npmjs.com/package/word2vec</a></li>
+<li>Manual about how word2vec works: <a href="https://towardsdatascience.com/learn-word2vec-by-implementing-it-in-tensorflow-45641adaf2ac" target="_blank" rel="noopener">https://towardsdatascience.com/learn-word2vec-by-implementing-it-in-tensorflow-45641adaf2ac</a></li>
+<li>Vectors from Glove project <a href="https://nlp.stanford.edu/projects/glove/" target="_blank" rel="noopener">https://nlp.stanford.edu/projects/glove/</a></li>
+<li>Other pre-trained vectors: <a href="https://github.com/3Top/word2vec-api#where-to-get-a-pretrained-model" target="_blank" rel="noopener">https://github.com/3Top/word2vec-api#where-to-get-a-pretrained-model</a></li>
+<li>My custom word2vec CLI for running examples from the post <a href="https://github.com/unsigned6/word2vec_example" target="_blank" rel="noopener">https://github.com/unsigned6/word2vec_example</a></li>
+<li>Similar tool from Facebook for training word embeddings <a href="https://fasttext.cc/" target="_blank" rel="noopener">https://fasttext.cc/</a> and ready-made set of vectors based on Wikipedia - <a href="https://fasttext.cc/docs/en/english-vectors.html" target="_blank" rel="noopener">https://fasttext.cc/docs/en/english-vectors.html</a></li>
+</ol>
+
+
+                
+                    <!-- Go to www.addthis.com/dashboard to customize your tools -->
+                    <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-58f3c2d3d790e137"></script>
+
+                    <!-- Go to www.addthis.com/dashboard to customize your tools -->
+                    <div class="addthis_sharing_toolbox"></div>
+                
+            </div>
+        </div>
+
+        <div class="row">
+            <!-- LEELOO -->
+            <div class="center col-lg-12 col-md-12 col-sm-12">
+                <!-- Leeloo form start --> 
+<script>
+    window.LEELOO_LEADGENTOOLS = (window.LEELOO_LEADGENTOOLS || []).concat('dfepmc');
+</script>
+    
+<div class="wepster-hash-dfepmc"></div>
+<!-- Leeloo form end -->
+            </div>
+        </div>
+
+        <div class="row">
+            <!-- Comments -->
+            
+                <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                    
+    <hr />
+    <h3>Comments:</h3>
+    <div id="disqus_thread">
+        <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+    </div>
+
+
+
+                </div>
+            
+        </div>
+    </div>
+</article>
+
+
+    <!-- Footer -->
+    <hr />
+
+<!-- Footer -->
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <ul class="list-inline text-center">
+                    
+                        <li>
+                            <div class="twitter-footer">
+                                
+                                    <span class="action-footer">Follow us on twitter to become a better software development expert</span>
+                                
+                                <a href="https://twitter.com/webbylab" target="_blank">
+                                    <span class="fa-stack fa-lg">
+                                        <i class="fa fa-circle fa-stack-2x"></i>
+                                        <i class="fa fa-twitter fa-stack-1x fa-inverse"></i>
+                                    </span>
+                                </a>
+                            </div>
+                        </li>
+                    
+
+                    
+
+                    
+
+                    
+
+                    
+
+                    
+                </ul>
+                <p class="copyright text-muted">&copy; 2020 WebbyLab<br></p>
+                <!-- <p class="copyright text-muted">Original Theme <a target="_blank" href="http://startbootstrap.com/template-overviews/clean-blog/">Clean Blog</a> from <a href="http://startbootstrap.com/" target="_blank">Start Bootstrap</a></p>
+                <p class="copyright text-muted">Adapted for <a target="_blank" href="https://hexo.io/">Hexo</a> by <a href="http://www.codeblocq.com/" target="_blank">Jonathan Klughertz</a></p> -->
+            </div>
+        </div>
+    </div>
+</footer>
+
+
+    <!-- After footer scripts -->
+    
+<!-- jQuery -->
+<script src="//code.jquery.com/jquery-2.1.4.min.js"></script>
+
+<!-- Bootstrap -->
+<script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+
+<!-- Gallery -->
+<script src="//cdnjs.cloudflare.com/ajax/libs/featherlight/1.3.5/featherlight.min.js" type="text/javascript" charset="utf-8"></script>
+
+<!-- Disqus Comments -->
+
+<script type="text/javascript">
+    var disqus_shortname = 'blog-webbylab-com';
+
+    (function(){
+        var dsq = document.createElement('script');
+        dsq.type = 'text/javascript';
+        dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
+
+
+</body>
+
+</html>

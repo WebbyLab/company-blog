@@ -1,0 +1,386 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<!-- Head tag -->
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!--Description-->
+    
+        <meta name="description" content="This article shares our experience of using opencv4nodejs to faces detection and anonymization.">
+    
+
+    <!--Author-->
+    
+        <meta name="author" content="WebbyLab">
+    
+
+    <!--Open Graph Title-->
+    
+        <meta property="og:title" content="Face blurring with NodeJS and OpenCV once upon a time in... Hollywood"/>
+    
+
+    <!--Open Graph Description-->
+    
+        <meta property="og:description" content="This article shares our experience of using opencv4nodejs to faces detection and anonymization." />
+    
+
+    <!--Open Graph Site Name-->
+    <meta property="og:site_name" content="Agile developer"/>
+
+    <!--Type page-->
+    
+        <meta property="og:type" content="article" />
+    
+
+    <!--Page Cover-->
+    
+
+        <meta name="twitter:card" content="summary" />
+    
+
+    <!-- Title -->
+    
+    <title>Face blurring with NodeJS and OpenCV once upon a time in... Hollywood - Agile developer</title>
+
+    <!-- Bootstrap Core CSS -->
+    <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet"/>
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/style.css">
+
+    <!-- Custom Fonts -->
+    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+    <link href="//fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic" rel="stylesheet" type="text/css">
+    <link href="//fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800" rel="stylesheet" type="text/css">
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+    <script src="//oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+    <script src="//oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+    <!-- Gallery -->
+    <link href="//cdnjs.cloudflare.com/ajax/libs/featherlight/1.3.5/featherlight.min.css" type="text/css" rel="stylesheet" />
+
+    <!-- Google Analytics -->
+    
+    <script>
+        (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+                    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+                m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+        })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+        ga('create', 'UA-9638621-10', 'auto');
+        ga('send', 'pageview');
+
+    </script>
+
+
+
+    <!-- LEELOO Init -->
+    <!-- leeloo init code -->
+<script>
+window.LEELOO = function(){
+    window.LEELOO_INIT = { id: "59049996ac641a00190cb1b4" };
+    var js = document.createElement('script');
+    js.src = 'https://app.leeloo.ai/init.js';
+    document.getElementsByTagName('head')[0].appendChild(js);
+}; LEELOO();
+</script>
+<!-- leeloo init code end -->
+
+
+    <!-- favicon -->
+    
+    <link rel="icon" href="/img/favicon.ico">
+    
+	
+</head>
+
+
+<body>
+    <!-- Menu -->
+    <!-- Navigation -->
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">WebbyLab's Engineering Blog</a>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+            <ul class="nav navbar-nav navbar-right">
+                
+                    <li>
+                        <a target="_blank" href="https://webbylab.com">
+                            
+                                Main Company Site
+                            
+                        </a>
+                    </li>
+                
+                    <li>
+                        <a target="_blank" href="https://react.webbylab.com">
+                            
+                                React/Mobile/Nodejs Department
+                            
+                        </a>
+                    </li>
+                
+            </ul>
+        </div>
+        <!-- /.navbar-collapse -->
+    </div>
+    <!-- /.container -->
+</nav>
+
+
+    <!-- Main Content -->
+    <!-- LEELOO POPUP -->
+<!-- Leeloo popup start -->
+<script>
+    window.LEELOO_LEADGENTOOLS = (window.LEELOO_LEADGENTOOLS || []).concat('f2mnds');
+</script>
+<!-- Leeloo popup start -->
+
+
+<!-- Page Header -->
+<!-- Set your background image for this header in your post front-matter: cover -->
+
+<header class="intro-header" style="background-image: url('/images/phantomjs/phantomjs-image-generation.jpg')">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <div class="post-heading">
+                    <h1>Face blurring with NodeJS and OpenCV once upon a time in... Hollywood</h1>
+                    
+                    <span class="meta">
+                        <!-- Date and Author -->
+                        
+                            Posted by Yurii Vlasiuk (Developer) on
+                        
+                        2019-09-17
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+<!-- Post Content -->
+<article>
+    <div class="container">
+        <div class="row">
+
+            <!-- Tags and categories -->
+           
+                <div class="col-lg-4 col-lg-offset-2 col-md-5 col-md-offset-1 post-tags">
+                    
+                        
+
+
+<a href="/tags/javascript-team/">#JavaScript Team</a> <a href="/tags/tutorial/">#Tutorial</a> <a href="/tags/ml/">#ML</a> <a href="/tags/face-detection/">#Face detection</a>
+
+
+                    
+                </div>
+                <div class="col-lg-4 col-md-5 post-categories">
+                    
+                </div>
+            
+
+            <!-- Gallery -->
+            
+
+            <!-- Post Main Content -->
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <h2 id="Introduction"><a href="#Introduction" class="headerlink" title="Introduction"></a>Introduction</h2><p>This reading is about a task which our team had on one of our projects. The main goal was next: we have some video with real people, and faces on it should be blurred to make not possible recognize any person on it. Today there are numerous different tools and APIs which can do it for you. <a href="https://cloud.google.com/vision/docs/detecting-faces" target="_blank" rel="noopener">Google</a> and <a href="https://aws.amazon.com/marketplace/pp/prodview-5ec5gmuixxuqw" target="_blank" rel="noopener">Amazon</a> already have ready-made solutions. But they need to be paid and also our task was a bit more complicated because it included video processing. After a few days of research and trying different tools we decided to use for this <a href="https://www.npmjs.com/package/opencv4nodejs" target="_blank" rel="noopener">opencv4nodejs</a>.</p>
+<p>Itself <a href="https://opencv.org/" target="_blank" rel="noopener">OpenCV</a> is powerful software which is opensource, highly optimized and cross-platform which provide tools for machine learning. The library has more than 2500 algorithms, which includes a comprehensive set of both classic and state-of-the-art computer vision and machine learning. These algorithms can be used to detect and recognize faces, identify objects, classify human actions in videos, track camera movements, track moving objects, extract 3D models of objects, produce 3D point clouds from stereo cameras, stitch images together to produce a high resolution image of an entire scene, find similar images from an image database, remove red eyes from images taken using flash, follow eye movements, recognize scenery and establish markers to overlay it with augmented reality, etc.</p>
+<p>We used a handy wrapper of this library which provides a comprehensive collection of NodeJS bindings to the API of OpenCV. Functionality which was needed for our purpose had already implemented interface needed for our problem-solving. In this article, I will cover only the first part of this process - detecting and blurring faces on images.</p>
+<h2 id="Step-1-Installing-dependencies"><a href="#Step-1-Installing-dependencies" class="headerlink" title="Step 1 - Installing dependencies"></a>Step 1 - Installing dependencies</h2><p>First of all to make it work you will need to install dependencies. Of course one of them is OpenCV itself because it’s used by opencv4nodejs. Good for us is that it’s already included in installing of npm package. Some of the binaries will be compiled during the installation so you can meet that you will need to install some additional packages like node-gyp. On my OSX it was installed right from the first time, but when was deploying it to Ubuntu server, I had issues which actually was resolved just googling errors which I’ve received during setup. It could vary depending on your OS. Anyway, you should follow recommendations from library <a href="https://www.npmjs.com/package/opencv4nodejs#how-to-install" target="_blank" rel="noopener">docs</a>.</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm i opencv4nodejs</span><br></pre></td></tr></table></figure>
+<p>Other packets are related to the next steps of processing: blurring detected rectangles with human faces on the image. I’ve used these tools because the also had bindings for NodeJS. Just follow these <a href="https://www.npmjs.com/package/gm#getting-started" target="_blank" rel="noopener">instructions</a>.</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">brew install imagemagick</span><br><span class="line">brew install graphicsmagick</span><br><span class="line">brew install imagemagick --with-webp</span><br><span class="line">npm install gm</span><br></pre></td></tr></table></figure>
+<h2 id="Step-2-Using-pretrained-models-for-face-detection"><a href="#Step-2-Using-pretrained-models-for-face-detection" class="headerlink" title="Step 2 - Using pretrained models for face detection"></a>Step 2 - Using pretrained models for face detection</h2><p>Now we want to start detecting faces from images. What is needed: require <code>opencv4nodejs</code> for reading and preprocessing images. We will use a pre-trained model which already provided by the library. So simple code looks like this:</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> cv = <span class="built_in">require</span>(<span class="string">'opencv4nodejs'</span>);</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> image = cv.imread(<span class="string">'/path/to/image.png'</span>);</span><br><span class="line"><span class="keyword">const</span> classifier = <span class="keyword">new</span> cv.CascadeClassifier(cv.HAAR_FRONTALFACE_ALT2);</span><br><span class="line"><span class="keyword">const</span> &#123; objects, numDetections &#125; = classifier.detectMultiScale(image.bgrToGray());</span><br><span class="line">image.drawRectangle(rect, <span class="keyword">new</span> cv.Vec(<span class="number">0</span>, <span class="number">0</span>, <span class="number">255</span>), thickness, cv.LINE_8);</span><br></pre></td></tr></table></figure>
+<p>As you see just in 5 lines of code we can get rectangle coordinates of faces on the image. So, first of all, we’ve read image with <code>cv.imread</code>. In fact, the library also provides async API <code>imreadAsync</code> for this (please check <a href="https://www.npmjs.com/package/opencv4nodejs#async-api" target="_blank" rel="noopener">here</a>) and it is recommended to use asynchronous call not to block event loop of NodeJS. For our case with CLI which we building in this article, I’ve used the sync method just to make the example simpler.</p>
+<p>Another line is creating instance of a classifier. Constructor <code>CascadeClassifier</code> accept one of provided by cv classifiers. Of course, you can train a new one using own dataset, for example how it’s described in this amazing <a href="https://medium.com/@muehler.v/node-js-face-recognition-js-simple-and-robust-face-recognition-using-deep-learning-ea5ba8e852" target="_blank" rel="noopener">reading</a>. We will use ready-made <code>HAAR_FRONTALFACE_ALT2</code> which let us detect face from anfas (in front). Full list of prepared classifiers includes also parts of face like eyes, mouth, full body or other objects like dishes, cars etc. Here is a full list of what the library provides:</p>
+<ul>
+<li>HAAR_EYE</li>
+<li>HAAR_EYE_TREE_EYEGLASSES</li>
+<li>HAAR_FRONTALCATFACE</li>
+<li>HAAR_FRONTALCATFACE_EXTENDED</li>
+<li>HAAR_FRONTALFACE_ALT</li>
+<li>HAAR_FRONTALFACE_ALT2</li>
+<li>HAAR_FRONTALFACE_ALT_TREE</li>
+<li>HAAR_FRONTALFACE_DEFAULT</li>
+<li>HAAR_FULLBODY</li>
+<li>HAAR_LEFTEYE_2SPLITS</li>
+<li>HAAR_LICENCE_PLATE_RUS_16STAGES</li>
+<li>HAAR_LOWERBODY</li>
+<li>HAAR_PROFILEFACE</li>
+<li>HAAR_RIGHTEYE_2SPLITS</li>
+<li>HAAR_RUSSIAN_PLATE_NUMBER</li>
+<li>HAAR_SMILE</li>
+<li>HAAR_UPPERBODY</li>
+<li>LBP_FRONTALCATFACE</li>
+<li>LBP_FRONTALFACE</li>
+<li>LBP_FRONTALFACE_IMPROVED</li>
+<li>LBP_PROFILEFACE</li>
+<li>LBP_SILVERWARE</li>
+</ul>
+<p>And the last step of detection is using <code>detectMultiScale</code> on <code>image</code> instance is to get coordinates of object we were looking for on image. In our case, it was human faces. Returned values look like this:</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">&#123; <span class="string">'faceRects'</span>:</span><br><span class="line">  [ Rect &#123; <span class="attr">height</span>: <span class="number">70</span>, <span class="attr">width</span>: <span class="number">70</span>, <span class="attr">y</span>: <span class="number">38</span>, <span class="attr">x</span>: <span class="number">148</span> &#125;,</span><br><span class="line">    Rect &#123; <span class="attr">height</span>: <span class="number">70</span>, <span class="attr">width</span>: <span class="number">70</span>, <span class="attr">y</span>: <span class="number">51</span>, <span class="attr">x</span>: <span class="number">26</span> &#125;,</span><br><span class="line">    Rect &#123; <span class="attr">height</span>: <span class="number">63</span>, <span class="attr">width</span>: <span class="number">63</span>, <span class="attr">y</span>: <span class="number">75</span>, <span class="attr">x</span>: <span class="number">327</span> &#125; ],</span><br><span class="line">  <span class="string">'confidences'</span>: [ <span class="number">84</span>, <span class="number">88</span>, <span class="number">48</span> ]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>Where <code>Rects</code> are instances which keep the position and size area. The top left corner of the rectangle where the face was detected are <code>x</code> and <code>y</code>. Other two values: <code>height</code> and <code>width</code> represent the size of the region. That’s it - face is detected.</p>
+<p>If we add to code above a few more lines we could see on the image where exactly faces were detected.</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span> (<span class="keyword">const</span> object <span class="keyword">of</span> objects) &#123;</span><br><span class="line">    image.drawRectangle(object, <span class="keyword">new</span> cv.Vec(<span class="number">0</span>, <span class="number">255</span>, <span class="number">0</span>), <span class="number">2</span>, cv.LINE_8);</span><br><span class="line">&#125;</span><br><span class="line">cv.imshowWait(<span class="string">'face detection'</span>, image);</span><br></pre></td></tr></table></figure>
+<p>And let’s take poster picture from “Once upon a time in… Hollywood”. Code above will open window with next image:</p>
+<p></p><p align="center"><img src="/images/face-blurring/1.jpg" alt="Proportion"></p>
+<h2 id="Step-3-Blurring-detected-faces-on-images-with-imagemagick"><a href="#Step-3-Blurring-detected-faces-on-images-with-imagemagick" class="headerlink" title="Step 3 - Blurring detected faces on images with imagemagick"></a>Step 3 - Blurring detected faces on images with imagemagick</h2><p>The last step what is left is to blur faces on images. In fact, you can find numerous tools for this. I found easy to use for me on npm called <a href="https://www.npmjs.com/package/gm" target="_blank" rel="noopener">gm</a>. It requires installing additional dependencies to work and actually provide just NodeJS API for <code>graphicsmagick</code> and <code>imagemagick</code>. On Mac it was like this (almost the same on ubuntu using apt-get instead):</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">brew install imagemagick</span><br><span class="line">brew install graphicsmagick</span><br><span class="line">npm install gm</span><br></pre></td></tr></table></figure>
+<p>As we have already coordinates we need just pass them into a function which makes blurring for us. API of gm is really easy to use (chaining on <code>region</code> call which defines size and position we call <code>blur</code> function):</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> gm  = <span class="built_in">require</span>(<span class="string">'gm'</span>);</span><br><span class="line"><span class="keyword">const</span> img = gm(<span class="string">'/path/to/image.png'</span>);</span><br><span class="line">img.size(<span class="function">(<span class="params">err, value</span>) =&gt;</span> &#123;</span><br><span class="line">    img.region(width, height, left, top).blur(<span class="number">25</span>, <span class="number">45</span>);</span><br><span class="line">    img.write(<span class="string">'/path/to/blurred_image.png'</span>,</span><br><span class="line">    (err) =&gt; &#123;</span><br><span class="line">        <span class="keyword">if</span> (err) <span class="built_in">console</span>.error(err);</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;)</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+<p>Numbers which was passed to blur are specifying the radius and optional sigma (standard deviation). Playing with them you will see the difference with the level of blurring. As a result, we get the next image where faces of people on it are anonymized:</p>
+<p>Before:</p>
+<p></p><p align="center"><img src="/images/face-blurring/0.jpg" alt="Proportion"></p>
+<p>After:</p>
+<p></p><p align="center"><img src="/images/face-blurring/0_blurred.jpg" alt="Proportion"></p>
+<h2 id="What-next-Try-it"><a href="#What-next-Try-it" class="headerlink" title="What next? Try it."></a>What next? Try it.</h2><p>Feel free to use my code with all examples we have here for NodeJS part. I’ve made for this simple CLI tool which let you blur faces on image and use code from examples <a href="https://github.com/unsigned6/face_detection" target="_blank" rel="noopener">https://github.com/unsigned6/face_detection</a>. Here is a description how to use it:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Usage: node face_detection.js &lt;path_to_image&gt;</span><br></pre></td></tr></table></figure>
+<h2 id="Conclusion"><a href="#Conclusion" class="headerlink" title="Conclusion"></a>Conclusion</h2><p>Hope you will enjoy <code>opencv4nodejs</code> and will try to use it with different images. Please feel free change classifiers, change blur function to something else (maybe you can build you own snapchat filter, who knows? 😉). Also, you see now that with the power of NodeJS and opensource you can do almost anything with javascript easily and play with different subjects which cover from now not only WEB but also topics like ML, image and video processing. </p>
+<h2 id="Useful-links"><a href="#Useful-links" class="headerlink" title="Useful links"></a>Useful links</h2><ol>
+<li><a href="https://opencv.org/" target="_blank" rel="noopener">OpenCV Project.</a></li>
+<li><a href="https://www.npmjs.com/package/opencv4nodejs" target="_blank" rel="noopener">NodeJS wrapper opencv4nodejs.</a></li>
+<li><a href="https://github.com/unsigned6/face_detection" target="_blank" rel="noopener">Example from the post.</a></li>
+<li><a href="https://medium.com/@muehler.v/node-js-face-recognition-js-simple-and-robust-face-recognition-using-deep-learning-ea5ba8e852" target="_blank" rel="noopener">Post on medium about training custom model for face recognition</a>.</li>
+</ol>
+
+
+                
+                    <!-- Go to www.addthis.com/dashboard to customize your tools -->
+                    <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-58f3c2d3d790e137"></script>
+
+                    <!-- Go to www.addthis.com/dashboard to customize your tools -->
+                    <div class="addthis_sharing_toolbox"></div>
+                
+            </div>
+        </div>
+
+        <div class="row">
+            <!-- LEELOO -->
+            <div class="center col-lg-12 col-md-12 col-sm-12">
+                <!-- Leeloo form start --> 
+<script>
+    window.LEELOO_LEADGENTOOLS = (window.LEELOO_LEADGENTOOLS || []).concat('dfepmc');
+</script>
+    
+<div class="wepster-hash-dfepmc"></div>
+<!-- Leeloo form end -->
+            </div>
+        </div>
+
+        <div class="row">
+            <!-- Comments -->
+            
+                <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                    
+    <hr />
+    <h3>Comments:</h3>
+    <div id="disqus_thread">
+        <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+    </div>
+
+
+
+                </div>
+            
+        </div>
+    </div>
+</article>
+
+
+    <!-- Footer -->
+    <hr />
+
+<!-- Footer -->
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <ul class="list-inline text-center">
+                    
+                        <li>
+                            <div class="twitter-footer">
+                                
+                                    <span class="action-footer">Follow us on twitter to become a better software development expert</span>
+                                
+                                <a href="https://twitter.com/webbylab" target="_blank">
+                                    <span class="fa-stack fa-lg">
+                                        <i class="fa fa-circle fa-stack-2x"></i>
+                                        <i class="fa fa-twitter fa-stack-1x fa-inverse"></i>
+                                    </span>
+                                </a>
+                            </div>
+                        </li>
+                    
+
+                    
+
+                    
+
+                    
+
+                    
+
+                    
+                </ul>
+                <p class="copyright text-muted">&copy; 2020 WebbyLab<br></p>
+                <!-- <p class="copyright text-muted">Original Theme <a target="_blank" href="http://startbootstrap.com/template-overviews/clean-blog/">Clean Blog</a> from <a href="http://startbootstrap.com/" target="_blank">Start Bootstrap</a></p>
+                <p class="copyright text-muted">Adapted for <a target="_blank" href="https://hexo.io/">Hexo</a> by <a href="http://www.codeblocq.com/" target="_blank">Jonathan Klughertz</a></p> -->
+            </div>
+        </div>
+    </div>
+</footer>
+
+
+    <!-- After footer scripts -->
+    
+<!-- jQuery -->
+<script src="//code.jquery.com/jquery-2.1.4.min.js"></script>
+
+<!-- Bootstrap -->
+<script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+
+<!-- Gallery -->
+<script src="//cdnjs.cloudflare.com/ajax/libs/featherlight/1.3.5/featherlight.min.js" type="text/javascript" charset="utf-8"></script>
+
+<!-- Disqus Comments -->
+
+<script type="text/javascript">
+    var disqus_shortname = 'blog-webbylab-com';
+
+    (function(){
+        var dsq = document.createElement('script');
+        dsq.type = 'text/javascript';
+        dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
+
+
+</body>
+
+</html>

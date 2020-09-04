@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<!-- Head tag -->
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!--Description-->
+    
+        <meta name="description" content="This article shares our experience of building a backend tool for banner generation using PhantomJS.">
+    
+
+    <!--Author-->
+    
+        <meta name="author" content="WebbyLab">
+    
+
+    <!--Open Graph Title-->
+    
+        <meta property="og:title" content="Best Approaches to Building a Banner Generation Tool with PhantomJS"/>
+    
+
+    <!--Open Graph Description-->
+    
+        <meta property="og:description" content="This article shares our experience of building a backend tool for banner generation using PhantomJS." />
+    
+
+    <!--Open Graph Site Name-->
+    <meta property="og:site_name" content="Agile developer"/>
+
+    <!--Type page-->
+    
+        <meta property="og:type" content="article" />
+    
+
+    <!--Page Cover-->
+    
+
+        <meta name="twitter:card" content="summary" />
+    
+
+    <!-- Title -->
+    
+    <title>Best Approaches to Building a Banner Generation Tool with PhantomJS - Agile developer</title>
+
+    <!-- Bootstrap Core CSS -->
+    <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet"/>
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/style.css">
+
+    <!-- Custom Fonts -->
+    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+    <link href="//fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic" rel="stylesheet" type="text/css">
+    <link href="//fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800" rel="stylesheet" type="text/css">
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+    <script src="//oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+    <script src="//oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+    <!-- Gallery -->
+    <link href="//cdnjs.cloudflare.com/ajax/libs/featherlight/1.3.5/featherlight.min.css" type="text/css" rel="stylesheet" />
+
+    <!-- Google Analytics -->
+    
+    <script>
+        (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+                    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+                m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+        })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+        ga('create', 'UA-9638621-10', 'auto');
+        ga('send', 'pageview');
+
+    </script>
+
+
+
+    <!-- LEELOO Init -->
+    <!-- leeloo init code -->
+<script>
+window.LEELOO = function(){
+    window.LEELOO_INIT = { id: "59049996ac641a00190cb1b4" };
+    var js = document.createElement('script');
+    js.src = 'https://app.leeloo.ai/init.js';
+    document.getElementsByTagName('head')[0].appendChild(js);
+}; LEELOO();
+</script>
+<!-- leeloo init code end -->
+
+
+    <!-- favicon -->
+    
+    <link rel="icon" href="/img/favicon.ico">
+    
+	
+</head>
+
+
+<body>
+    <!-- Menu -->
+    <!-- Navigation -->
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">WebbyLab's Engineering Blog</a>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+            <ul class="nav navbar-nav navbar-right">
+                
+                    <li>
+                        <a target="_blank" href="https://webbylab.com">
+                            
+                                Main Company Site
+                            
+                        </a>
+                    </li>
+                
+                    <li>
+                        <a target="_blank" href="https://react.webbylab.com">
+                            
+                                React/Mobile/Nodejs Department
+                            
+                        </a>
+                    </li>
+                
+            </ul>
+        </div>
+        <!-- /.navbar-collapse -->
+    </div>
+    <!-- /.container -->
+</nav>
+
+
+    <!-- Main Content -->
+    <!-- LEELOO POPUP -->
+<!-- Leeloo popup start -->
+<script>
+    window.LEELOO_LEADGENTOOLS = (window.LEELOO_LEADGENTOOLS || []).concat('f2mnds');
+</script>
+<!-- Leeloo popup start -->
+
+
+<!-- Page Header -->
+<!-- Set your background image for this header in your post front-matter: cover -->
+
+<header class="intro-header" style="background-image: url('/images/phantomjs/phantomjs-image-generation.jpg')">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <div class="post-heading">
+                    <h1>Best Approaches to Building a Banner Generation Tool with PhantomJS</h1>
+                    
+                    <span class="meta">
+                        <!-- Date and Author -->
+                        
+                            Posted by Yurii Vlasiuk (Developer) on
+                        
+                        2018-03-03
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+<!-- Post Content -->
+<article>
+    <div class="container">
+        <div class="row">
+
+            <!-- Tags and categories -->
+           
+                <div class="col-lg-4 col-lg-offset-2 col-md-5 col-md-offset-1 post-tags">
+                    
+                        
+
+
+<a href="/tags/javascript-team/">#JavaScript Team</a> <a href="/tags/tutorial/">#Tutorial</a> <a href="/tags/phantomjs/">#PhantomJS</a>
+
+
+                    
+                </div>
+                <div class="col-lg-4 col-md-5 post-categories">
+                    
+                </div>
+            
+
+            <!-- Gallery -->
+            
+
+            <!-- Post Main Content -->
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <h2 id="Introduction"><a href="#Introduction" class="headerlink" title="Introduction"></a>Introduction</h2><p>Today we want to share our experience of implementing the backend tool for the generation of graphical banners from HTML templates. WebbyLab’s customer was interested in automation of advertisement banners customisation based on the prepared templates. Basically, you have an index.html with fields where you can insert different components e.g. buttons, images or text. So I will tell about approaches we’ve used to implement such functionality. For our project we chose PhantomJS. You may argue that there are more innovative solutions in the npm repository. But when we started, none of these libraries were stable or well documented yet (<a href="https://github.com/GoogleChrome/puppeteer" target="_blank" rel="noopener">Puppeteer</a>, for example, - a Node.js library that provides a high-level API to control headless Chromium-based engines; among its most notable features - awesome capabilities for taking screenshots). The project’s specs required a great deal of stability. That’s why we decided to employ the tried and well-documented PhantomJS. The task was to create a function for taking screenshots with headless Chrome like described on Medium in the <a href="https://medium.com/@dschnr/using-headless-chrome-as-an-automated-screenshot-tool-4b07dffba79a" target="_blank" rel="noopener">article</a> by <a href="https://medium.com/@dschnr?source=post_header_lockup" target="_blank" rel="noopener">David Schnurr</a>.  </p>
+<p>Ok, enough with introductions. Let’s have a closer look at the framework we’ve decided to use. <a href="http://phantomjs.org/" target="_blank" rel="noopener">PhantomJS</a> (<a href="https://github.com/ariya/phantomjs" target="_blank" rel="noopener">https://github.com/ariya/phantomjs</a>) is a headless WebKit browser scriptable with a JavaScript API.</p>
+<p>A list of features according to creators is as follows:</p>
+<ul>
+<li>Headless web testing;</li>
+<li>Page automation;</li>
+<li>Screen capture;</li>
+<li>Network monitoring.</li>
+</ul>
+<p>I will not go deeper into each of them but concentrate on the task and approaches used for its resolution instead. The task implied implementing the following functions:</p>
+<ul>
+<li>HTML template-based image generation (which could be customized);</li>
+<li>image compression - to fit certain size restrictions;</li>
+<li>zoom images to gain quality improvement for Retina screens.</li>
+</ul>
+<h2 id="Preparation"><a href="#Preparation" class="headerlink" title="Preparation"></a>Preparation</h2><p>To set the stage up, you first need to download and install PhantomJS using npm. I’ve set up small express server with two routes - one for static hosting and another for sending generation requests (complete example is available at my Github).  </p>
+<p>First, we must create a core class for image generation. Start by creating an instance of Phantom and use it for creating the page, which will provide the image rendering on our back-end.<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> phantom <span class="keyword">from</span>  <span class="string">'phantom'</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> instance = <span class="keyword">await</span> phantom.create();</span><br><span class="line"><span class="keyword">const</span> page = <span class="keyword">await</span> instance.createPage();</span><br></pre></td></tr></table></figure></p>
+<p>Next, we must set the properties to our page - size of a page using <code>viewportSize</code> property and <code>clipRect</code> to define coordinates of the coordinates of the rectangle to render:<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">page.property(<span class="string">'viewportSize'</span>, &#123; width, height &#125;);</span><br><span class="line">page.property(<span class="string">'clipRect'</span>, &#123; <span class="attr">top</span>: <span class="number">0</span>, <span class="attr">left</span>: <span class="number">0</span>, width, height &#125;);</span><br></pre></td></tr></table></figure></p>
+<p>Then we need to open the page which will return the status of operation:<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> status = <span class="keyword">await</span> page.open(config.templatePath);</span><br></pre></td></tr></table></figure></p>
+<p>Also there it is possibility of evaluating JavaScript code in the context of the web page. For this, <code>evaluate()</code> function is used, which accepts another function as an argument. We used <code>evalFunction</code> to make changes in templates before rendering to images.<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">await</span> page.evaluate(evalFunction);</span><br></pre></td></tr></table></figure></p>
+<p>But for the beginning we will leave it out as it is optional and actually not needed for getting an image.</p>
+<p>The last step which is needed for screenshotting in headless mode is launching the actual rendering and exiting our instance of PhantomJS:<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">await</span> page.render(<span class="string">'/path/to/save/image'</span>, &#123; <span class="attr">format</span>: <span class="string">'png'</span> &#125;);</span><br><span class="line"><span class="keyword">await</span> instance.exit();</span><br></pre></td></tr></table></figure></p>
+<p>Also good practice is to check if the image was successfully created and throw ‘Error’ otherwise. This allows handling situations when Phantom haven’t been able to open a template.<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> (status !==  <span class="string">'success'</span>) &#123;</span><br><span class="line">    <span class="keyword">await</span> instance.exit(<span class="number">1</span>);</span><br><span class="line">    <span class="keyword">throw</span>  <span class="keyword">new</span>  <span class="built_in">Error</span>(<span class="string">'PHANTOM_FAILED'</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>Now we can collect all the pieces into the image generation class. We separated the operation of this class to three parts: creating the page, setting its size, and generating image. Here’s the listing:<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> phantom <span class="keyword">from</span>  <span class="string">'phantom'</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">default</span>  <span class="class"><span class="keyword">class</span>  <span class="title">ImageGenerator</span> </span>&#123;</span><br><span class="line">    <span class="keyword">async</span>  generate(width, height, config) &#123;</span><br><span class="line">        <span class="keyword">const</span> &#123; instance, page &#125; = <span class="keyword">await</span> <span class="keyword">this</span>._createPage()</span><br><span class="line">        <span class="keyword">this</span>._setSize(page, width, height);</span><br><span class="line"></span><br><span class="line">        <span class="keyword">await</span> page.open(config.templatePath);</span><br><span class="line">        <span class="keyword">await</span> page.render(config.destinationPath, &#123; <span class="attr">format</span>: <span class="string">'jpeg'</span> &#125;);</span><br><span class="line">        <span class="keyword">await</span> instance.exit();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">async</span>  _createPage() &#123;</span><br><span class="line">        <span class="keyword">const</span> instance = <span class="keyword">await</span> phantom.create();</span><br><span class="line">        <span class="keyword">const</span> page = <span class="keyword">await</span> instance.createPage();</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> &#123; instance, page &#125;;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    _setSize(page, width, height) &#123;</span><br><span class="line">        page.property(<span class="string">'viewportSize'</span>, &#123; width, height &#125;);</span><br><span class="line">        page.property(<span class="string">'clipRect'</span>, &#123; <span class="attr">top</span>: <span class="number">0</span>, <span class="attr">left</span>: <span class="number">0</span>, width, height &#125;);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>Thus, basic functionality for rendering image from template is ready and actually this is already a working example. If you call the <code>generate()</code> method passing to it the page sizes and config object with keys templatePath (location of HTML template which you want to render into image) and destinationPath (location of output image file), this will create image in the JPEG format. Further we will extend this example with additional options.</p>
+<h2 id="Error-Handling-and-Debugging"><a href="#Error-Handling-and-Debugging" class="headerlink" title="Error Handling and Debugging"></a>Error Handling and Debugging</h2><p>Method <code>page.open()</code> returns the status of operation. Good practice is checking if opening the page ended is <code>success</code> and throw exception otherwise. This will allow handling situations when Phantom haven’t been able to open a template.<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> status = <span class="keyword">await</span> page.open(config.templatePath);</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> (status !==  <span class="string">'success'</span>) &#123;</span><br><span class="line">    <span class="keyword">await</span> instance.exit(<span class="number">1</span>);</span><br><span class="line">    <span class="keyword">throw</span>  <span class="keyword">new</span>  <span class="built_in">Error</span>(<span class="string">'PHANTOM_FAILED'</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>To control what is happening during page rendering in the headless mode, I’ve added logging to Phantom page instance using <code>onConsoleMessage</code> property to output the page messages to the terminal console. This peace can be added to our <code>_createPage()</code> method of <code>ImageGenerator</code> class.<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">page.property(<span class="string">'onConsoleMessage'</span>, msg  =&gt; &#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">'CONSOLE from phantom:'</span> + msg);</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure></p>
+<h2 id="Template-Customization"><a href="#Template-Customization" class="headerlink" title="Template Customization"></a>Template Customization</h2><p>For the example, I’ve created simple template using image with meme, that was popular in summer of 2017. Here is the listing of ‘index.html’:<br><figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">html</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">head</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">title</span>&gt;</span>distructed boyfriend<span class="tag">&lt;/<span class="name">title</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">link</span> <span class="attr">rel</span>=<span class="string">"stylesheet"</span> <span class="attr">type</span>=<span class="string">"text/css"</span> <span class="attr">href</span>=<span class="string">"styles.css"</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">head</span>&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="tag">&lt;<span class="name">body</span> <span class="attr">style</span>=<span class="string">"background-color:#fff; margin:0px"</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">div</span> <span class="attr">id</span>=<span class="string">"container"</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">div</span> <span class="attr">id</span>=<span class="string">"image1"</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">img</span> <span class="attr">src</span>=<span class="string">"./distructred-boyfriend.png"</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line"></span><br><span class="line">            <span class="tag">&lt;<span class="name">div</span> <span class="attr">id</span>=<span class="string">"text1"</span> <span class="attr">class</span>=<span class="string">"text"</span>&gt;</span><span class="tag">&lt;<span class="name">div</span>&gt;</span>Text 1<span class="tag">&lt;/<span class="name">div</span>&gt;</span><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">div</span> <span class="attr">id</span>=<span class="string">"text2"</span> <span class="attr">class</span>=<span class="string">"text"</span>&gt;</span><span class="tag">&lt;<span class="name">div</span>&gt;</span>Text 2<span class="tag">&lt;/<span class="name">div</span>&gt;</span><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">div</span> <span class="attr">id</span>=<span class="string">"text3"</span> <span class="attr">class</span>=<span class="string">"text"</span>&gt;</span><span class="tag">&lt;<span class="name">div</span>&gt;</span>Text 3<span class="tag">&lt;/<span class="name">div</span>&gt;</span><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">body</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">html</span>&gt;</span></span><br></pre></td></tr></table></figure></p>
+<p>CSS styles are needed only for the positioning and sizing of textual blocks. All files related to template are located in ‘static/templates’ directory. When you’ve finished preparing the template, it’s time to extend the class example with <code>evaluate</code> function and add any JS scripts you might additionally require to the template. Keep in mind that any JavaScript code in the template would be evaluated and executed by Phantom, which doesn’t recognize any of the ES6-specific features (e.g. no string templating and only concatenation). I personally find it not fun. Also, Phantom does not support some CSS properties which are widely used in modern browsers. For example, if you are keen on using Flexbox, you can forget about it when prepare templates - while rendering them with Phantom, all the unsupported features will be ignored or even cause an error.  </p>
+<p>I think the easiest way to customise page texts in eval function is using <code>getElementById</code> and then replacing <code>innerHtml</code> in selected node or changing <code>src</code> property in the <code>img</code> tag. Also I’ve declarated this function not in the <code>imageGenerator</code> class itself but right before calling the <code>generate()</code> method. This provides the flexibility to pass different functions in different cases. For example, you can pass such function to <code>page.evaluate()</code>:<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span>  <span class="title">evaluateFunc</span>(<span class="params">config</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">var</span> id <span class="keyword">in</span> config.texts) &#123;</span><br><span class="line">        <span class="built_in">document</span>.getElementById(id).innerHTML =  <span class="string">'&lt;div&gt;'</span> + texts\[id\] +  <span class="string">'&lt;/div&gt;'</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>As you may already noticed, you also should standardise format of your templates and content IDs because they would be used by the evaluation function. That’s why better to keep naming conventions consistent across all templates so as not to write different evaluate functions for each of them. Second argument of <code>page.evaluate()</code> is used to pass parameters to <code>evaluateFunc</code>:<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">await</span> page.evaluate(evaluateFunc, config);</span><br></pre></td></tr></table></figure></p>
+<h2 id="Image-Compression"><a href="#Image-Compression" class="headerlink" title="Image Compression"></a>Image Compression</h2><p>The project, where we used PhantomJS, had another requirement for output images. There were file size and image dimensions (fixed height and width) restrictions on the platform for which the project was developed. Images should be as high-quality as possible while satisfying the restrictions. PhantomJS provides an option to choose the quality (or compression level) for PNG and JPEG formats:<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">await</span> page.render(config.destinationPath, &#123; <span class="attr">format</span>: <span class="string">'jpeg'</span>, <span class="attr">quality</span>: ‘<span class="number">96</span>’ &#125;);</span><br></pre></td></tr></table></figure></p>
+<p>Range is between 0 and 100, the default value being 75. Thus, we had to calculate the needed compression level before rendering somehow. For most cases I’ve used an approach of calculating value by resolving simple proportion for content combination. It gave me the biggest image size and the empirically-found value of quality parameter. Using this value, it became possible to calculate the coefficient (of course, we should not forget that compression level and output file size are inversely proportional).</p>
+<p>In the following example, 96 is level of compression, <code>size</code> is multiplication of height and width of the output image (known value), and <code>x</code> is the level of compression we seek:</p>
+<p></p><p align="center"><img src="/images/phantomjs/proportion.svg" alt="Proportion"></p>
+<p>Next, we extended <code>imageGenerator</code> with method for calculating the compression level depending on the picture dimensions:<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">_getQuality(width, height) &#123;</span><br><span class="line">    <span class="keyword">const</span> pictureSize = width * height;</span><br><span class="line">    </span><br><span class="line">    result = <span class="built_in">Math</span>.round(staticCoeff / pictureSize);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> result &gt;  <span class="number">100</span>  ?  <span class="string">'100'</span>  : result.toString();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>But this was not all. Other content (e.g. different backgrounds) may also exceed the size restriction. Moreover, upon compression, file size does not decrease linearly, which is illustrated by the following graph (dependency of quality to file size):</p>
+<p><img src="https://lh5.googleusercontent.com/7Yk60hxu44qgip77Msxo3zAlpsdt1EFvzdG0VWDQWbJ-8-W7XOjLpwBEwon6VNVxhVY9Bw-jujU_JsRtK9rOB6uErbMXwCZyCUuXWYTGtjCOATLWAorTLHe80t6SF7T4umpEQXRn" alt="" title="Points scored"><br>In the end, we employed another approach, still rather straightforward but working. If the content exceeds the size limit, we start iterating image rendering decrementing quality step by step and returning the found quality value from <code>generate</code> method:<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">async</span>  <span class="function"><span class="keyword">function</span>  <span class="title">rerenderInSizeLimit</span>(<span class="params">limit, quality, size, config, generator</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">const</span> currStat = <span class="keyword">await</span> fs.stat(config.destinationPath);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (currStat.size &lt; limit) <span class="keyword">return</span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">const</span> newQuality = quality - <span class="number">3</span>;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">const</span> currQuality = <span class="keyword">await</span> generator.generate(</span><br><span class="line">        size[<span class="number">0</span>], </span><br><span class="line">        size[<span class="number">1</span>], </span><br><span class="line">        config, </span><br><span class="line">        newQuality, </span><br><span class="line">        evaluateFunc</span><br><span class="line">    );</span><br><span class="line"></span><br><span class="line">    <span class="keyword">const</span> newStat = <span class="keyword">await</span> fs.stat(config.destinationPath);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (newStat.size &gt; limit) &#123;</span><br><span class="line">        <span class="keyword">await</span> rerenderInSizeLimit(limit, currQuality, size, config, generator);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>Combination of both approaches - pre-calculated factor and iterative quality decrementing - gives better results in performance because image rendering is a high-load operation. In the practice, the acceptable result was achieved immediately with static coefficient in most cases and only some pictures required 2-3 additional iterations (not a bad result, I think).</p>
+<h2 id="Picture-Quality-Improvement"><a href="#Picture-Quality-Improvement" class="headerlink" title="Picture Quality Improvement"></a>Picture Quality Improvement</h2><p>Another interesting task was improving the resulting images’ quality. Due to limitations, rendering in Phantom produces the compressed images. That’s why the HTML template opened in browser was looking better than rendered image with fixed dimension even with quality set to 100. Compressed image never looks as sharp as original thanks to the higher dimension of the latter - twice or even more times. It is apparent in the example below - on the left is image generated by Phantom with resolution of 1152*768 and quality set to 100 and on the right is the original, opened in browser:</p>
+<p><img src="https://lh3.googleusercontent.com/RhEw0pNmmF2MKurlQNxgdUni4FUw3TyzYgTkNAr8Nc5fv1Ss2QoRCyqmmtDPd_v_mo3xm5UDepoJvIZfpokZWJGrwfmWXc5nsvQet2MY4BULh081HK-vM6sdqgFtNRMycIDgMuve" alt=""></p>
+<p>In the left picture you can notice the pixel grain, which becomes even more notable when zooming.</p>
+<p>That’s why despite the image dimension limits, we also included the possibility to generate bigger pictures but with the same file size restriction. It was possible because some of pictures did not reach size limit at all in their normal dimensions. By the way, with Phantom it could be done simply. For this, <code>zoomFactor</code> property is set, which specifies how many times image should be scaled:<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">page.property(<span class="string">'zoomFactor'</span>, <span class="number">2</span>);</span><br></pre></td></tr></table></figure></p>
+<p>Both height and width must be multiplied by this value, otherwise only a cropped part of zoomed image would be rendered.</p>
+<p>To make this optional, we passed the flag to switch the zooming mode on to arguments of <code>generate</code> method of <code>ImageGenerator</code> class:<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">async</span>  generate(width, height, config, zoom) &#123;</span><br><span class="line">    <span class="keyword">const</span> &#123; instance, page &#125; = <span class="keyword">await</span> <span class="keyword">this</span>._createPage();</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (zoom) &#123;</span><br><span class="line">        <span class="keyword">this</span>._setSize(page, width * zoom, height * zoom);</span><br><span class="line">        page.property(<span class="string">'zoomFactor'</span>, zoom);</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">       <span class="keyword">this</span>._setSize(page, width, height);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">await</span> page.open(config.templatePath);</span><br><span class="line">    <span class="keyword">await</span> page.render(config.destinationPath, &#123; <span class="attr">format</span>: <span class="string">'jpeg'</span>, <span class="attr">quality</span>: <span class="string">'96'</span> &#125;);</span><br><span class="line">    <span class="keyword">await</span> instance.exit();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<h2 id="Events"><a href="#Events" class="headerlink" title="Events"></a>Events</h2><p>Another powerful mechanism in PhantomJS that can be used in template rendering is a page event system. It could be useful in case when some reactions are defined in the template - on hover or mouse click, for instance. Here is how to initiate the mouse click event at (10, 10) coordinates in template:<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">await</span> page.sendEvent(<span class="string">'click'</span>, <span class="number">10</span>, <span class="number">10</span>, <span class="string">'left'</span>);</span><br></pre></td></tr></table></figure></p>
+<p>Other supported types of events are ‘mouseup’, ‘mousedown’, ‘mousemove’, ‘doubleclick’. Two arguments representing the mouse position for the event are optional. And the last one indicates, which mouse button should be “clicked”, by default it is left.</p>
+<p>Also, Phantom supports sending keyboard events but I will not cover them in this article. If you’re interested, you can read more on this in the library’s <a href="http://phantomjs.org/api/webpage/method/send-event.html" target="_blank" rel="noopener">documentation</a>.</p>
+<p>To get the source code, use the subscribe form below, and you will recieve the link in the confirmation message.</p>
+
+
+                
+                    <!-- Go to www.addthis.com/dashboard to customize your tools -->
+                    <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-58f3c2d3d790e137"></script>
+
+                    <!-- Go to www.addthis.com/dashboard to customize your tools -->
+                    <div class="addthis_sharing_toolbox"></div>
+                
+            </div>
+        </div>
+
+        <div class="row">
+            <!-- LEELOO -->
+            <div class="center col-lg-12 col-md-12 col-sm-12">
+                <!-- Leeloo form start --> 
+<script>
+    window.LEELOO_LEADGENTOOLS = (window.LEELOO_LEADGENTOOLS || []).concat('dfepmc');
+</script>
+    
+<div class="wepster-hash-dfepmc"></div>
+<!-- Leeloo form end -->
+            </div>
+        </div>
+
+        <div class="row">
+            <!-- Comments -->
+            
+                <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                    
+    <hr />
+    <h3>Comments:</h3>
+    <div id="disqus_thread">
+        <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+    </div>
+
+
+
+                </div>
+            
+        </div>
+    </div>
+</article>
+
+
+    <!-- Footer -->
+    <hr />
+
+<!-- Footer -->
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <ul class="list-inline text-center">
+                    
+                        <li>
+                            <div class="twitter-footer">
+                                
+                                    <span class="action-footer">Follow us on twitter to become a better software development expert</span>
+                                
+                                <a href="https://twitter.com/webbylab" target="_blank">
+                                    <span class="fa-stack fa-lg">
+                                        <i class="fa fa-circle fa-stack-2x"></i>
+                                        <i class="fa fa-twitter fa-stack-1x fa-inverse"></i>
+                                    </span>
+                                </a>
+                            </div>
+                        </li>
+                    
+
+                    
+
+                    
+
+                    
+
+                    
+
+                    
+                </ul>
+                <p class="copyright text-muted">&copy; 2020 WebbyLab<br></p>
+                <!-- <p class="copyright text-muted">Original Theme <a target="_blank" href="http://startbootstrap.com/template-overviews/clean-blog/">Clean Blog</a> from <a href="http://startbootstrap.com/" target="_blank">Start Bootstrap</a></p>
+                <p class="copyright text-muted">Adapted for <a target="_blank" href="https://hexo.io/">Hexo</a> by <a href="http://www.codeblocq.com/" target="_blank">Jonathan Klughertz</a></p> -->
+            </div>
+        </div>
+    </div>
+</footer>
+
+
+    <!-- After footer scripts -->
+    
+<!-- jQuery -->
+<script src="//code.jquery.com/jquery-2.1.4.min.js"></script>
+
+<!-- Bootstrap -->
+<script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+
+<!-- Gallery -->
+<script src="//cdnjs.cloudflare.com/ajax/libs/featherlight/1.3.5/featherlight.min.js" type="text/javascript" charset="utf-8"></script>
+
+<!-- Disqus Comments -->
+
+<script type="text/javascript">
+    var disqus_shortname = 'blog-webbylab-com';
+
+    (function(){
+        var dsq = document.createElement('script');
+        dsq.type = 'text/javascript';
+        dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
+
+
+</body>
+
+</html>
